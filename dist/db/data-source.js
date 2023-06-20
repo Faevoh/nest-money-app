@@ -11,11 +11,11 @@ const transactionEntity_entity_1 = require("../src/Entities/transactionEntity.en
 (0, dotenv_1.config)();
 exports.dataSourceOptions = {
     type: "mysql",
-    host: "localhost",
-    port: 3306,
+    host: process.env.DB_HOST,
+    port: parseInt(process.env.DB_PORT),
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
-    database: "money_App",
+    database: process.env.DATABASE,
     entities: [userEntity_entity_1.User, compEntity_entity_1.Compliances, airtimeEntity_entity_1.Airtime, walletEntity_entity_1.Wallet, transactionEntity_entity_1.Transactions],
     synchronize: false,
     migrations: ["dist/db/migrations/*.js"]
