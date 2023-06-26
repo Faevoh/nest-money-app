@@ -19,11 +19,11 @@ export class User {
  
     @Column() 
     accountType: string;
-    
+
     @Column()
     password: string;
 
-    @Column()
+    @Column({nullable: true})
     phoneNumber: string;
 
    @Column()
