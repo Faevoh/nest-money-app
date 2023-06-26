@@ -1,12 +1,14 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class NewMigration031686308827699 implements MigrationInterface {
-    name = 'NewMigration031686308827699'
+export class UserModelChanges1687795897767 implements MigrationInterface {
+    name = 'UserModelChanges1687795897767'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`ALTER TABLE \`compliances\` DROP FOREIGN KEY \`FK_0fd7f2cb9ae4898e9947d42a0f1\``);
         await queryRunner.query(`ALTER TABLE \`transactions\` DROP FOREIGN KEY \`FK_6bb58f2b6e30cb51a6504599f41\``);
         await queryRunner.query(`ALTER TABLE \`wallet\` DROP FOREIGN KEY \`FK_35472b1fe48b6330cd349709564\``);
+        await queryRunner.query(`ALTER TABLE \`compliances\` DROP COLUMN \`accountType\``);
+        await queryRunner.query(`ALTER TABLE \`users\` ADD \`accountType\` varchar(255) NOT NULL`);
         await queryRunner.query(`DROP INDEX \`IDX_35d380a3d22b8ae0bce15736d3\` ON \`compliances\``);
         await queryRunner.query(`ALTER TABLE \`compliances\` DROP COLUMN \`BVN\``);
         await queryRunner.query(`ALTER TABLE \`compliances\` ADD \`BVN\` varchar(255) NOT NULL`);
@@ -21,8 +23,6 @@ export class NewMigration031686308827699 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE \`compliances\` DROP COLUMN \`accountNumber\``);
         await queryRunner.query(`ALTER TABLE \`compliances\` ADD \`accountNumber\` varchar(255) NOT NULL`);
         await queryRunner.query(`ALTER TABLE \`compliances\` ADD UNIQUE INDEX \`IDX_4d463ae2bd834ba1bb4eec65d8\` (\`accountNumber\`)`);
-        await queryRunner.query(`ALTER TABLE \`compliances\` DROP COLUMN \`accountType\``);
-        await queryRunner.query(`ALTER TABLE \`compliances\` ADD \`accountType\` varchar(255) NOT NULL`);
         await queryRunner.query(`ALTER TABLE \`compliances\` DROP COLUMN \`businessDetails\``);
         await queryRunner.query(`ALTER TABLE \`compliances\` ADD \`businessDetails\` varchar(255) NOT NULL`);
         await queryRunner.query(`DROP INDEX \`IDX_f3859c2ca7affcb6f62a1876d4\` ON \`compliances\``);
@@ -51,8 +51,6 @@ export class NewMigration031686308827699 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE \`users\` ADD \`phoneNumber\` varchar(255) NOT NULL`);
         await queryRunner.query(`ALTER TABLE \`users\` DROP COLUMN \`resetToken\``);
         await queryRunner.query(`ALTER TABLE \`users\` ADD \`resetToken\` varchar(255) NULL`);
-        await queryRunner.query(`ALTER TABLE \`airtime\` DROP COLUMN \`amount\``);
-        await queryRunner.query(`ALTER TABLE \`airtime\` ADD \`amount\` varchar(255) NOT NULL`);
         await queryRunner.query(`ALTER TABLE \`airtime\` DROP COLUMN \`phoneNumber\``);
         await queryRunner.query(`ALTER TABLE \`airtime\` ADD \`phoneNumber\` varchar(255) NOT NULL`);
         await queryRunner.query(`ALTER TABLE \`airtime\` DROP COLUMN \`serviceNetwork\``);
@@ -70,8 +68,6 @@ export class NewMigration031686308827699 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE \`airtime\` ADD \`serviceNetwork\` varchar(255) NOT NULL`);
         await queryRunner.query(`ALTER TABLE \`airtime\` DROP COLUMN \`phoneNumber\``);
         await queryRunner.query(`ALTER TABLE \`airtime\` ADD \`phoneNumber\` varchar(255) NOT NULL`);
-        await queryRunner.query(`ALTER TABLE \`airtime\` DROP COLUMN \`amount\``);
-        await queryRunner.query(`ALTER TABLE \`airtime\` ADD \`amount\` varchar(255) NOT NULL`);
         await queryRunner.query(`ALTER TABLE \`users\` DROP COLUMN \`resetToken\``);
         await queryRunner.query(`ALTER TABLE \`users\` ADD \`resetToken\` varchar(255) NULL`);
         await queryRunner.query(`ALTER TABLE \`users\` DROP COLUMN \`phoneNumber\``);
@@ -100,8 +96,6 @@ export class NewMigration031686308827699 implements MigrationInterface {
         await queryRunner.query(`CREATE UNIQUE INDEX \`IDX_f3859c2ca7affcb6f62a1876d4\` ON \`compliances\` (\`bankCode\`)`);
         await queryRunner.query(`ALTER TABLE \`compliances\` DROP COLUMN \`businessDetails\``);
         await queryRunner.query(`ALTER TABLE \`compliances\` ADD \`businessDetails\` varchar(255) NOT NULL`);
-        await queryRunner.query(`ALTER TABLE \`compliances\` DROP COLUMN \`accountType\``);
-        await queryRunner.query(`ALTER TABLE \`compliances\` ADD \`accountType\` varchar(255) NOT NULL`);
         await queryRunner.query(`ALTER TABLE \`compliances\` DROP INDEX \`IDX_4d463ae2bd834ba1bb4eec65d8\``);
         await queryRunner.query(`ALTER TABLE \`compliances\` DROP COLUMN \`accountNumber\``);
         await queryRunner.query(`ALTER TABLE \`compliances\` ADD \`accountNumber\` varchar(255) NOT NULL`);
@@ -116,6 +110,8 @@ export class NewMigration031686308827699 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE \`compliances\` DROP COLUMN \`BVN\``);
         await queryRunner.query(`ALTER TABLE \`compliances\` ADD \`BVN\` varchar(255) NOT NULL`);
         await queryRunner.query(`CREATE UNIQUE INDEX \`IDX_35d380a3d22b8ae0bce15736d3\` ON \`compliances\` (\`BVN\`)`);
+        await queryRunner.query(`ALTER TABLE \`users\` DROP COLUMN \`accountType\``);
+        await queryRunner.query(`ALTER TABLE \`compliances\` ADD \`accountType\` varchar(255) NOT NULL`);
         await queryRunner.query(`ALTER TABLE \`wallet\` ADD CONSTRAINT \`FK_35472b1fe48b6330cd349709564\` FOREIGN KEY (\`userId\`) REFERENCES \`money_app\`.\`users\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE \`transactions\` ADD CONSTRAINT \`FK_6bb58f2b6e30cb51a6504599f41\` FOREIGN KEY (\`userId\`) REFERENCES \`money_app\`.\`users\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE \`compliances\` ADD CONSTRAINT \`FK_0fd7f2cb9ae4898e9947d42a0f1\` FOREIGN KEY (\`userId\`) REFERENCES \`money_app\`.\`users\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);

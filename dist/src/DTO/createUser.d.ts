@@ -3,5 +3,5 @@ export declare class CreateUserDto {
     LastName: string;
     email: string;
     password: string;
-    phoneNumber: string;
+    accountType: string;
 }

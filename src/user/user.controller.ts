@@ -15,8 +15,10 @@ export class UserController {
     constructor(private userService: UserService, private mailService: MailService, private authService: AuthService){}
 
     @Post("/register")
-    async registerUser(@Body(ValidationPipe) createUserDto: CreateUserDto){
-        return await this.userService.register(createUserDto)
+    async registerUser(@Body(ValidationPipe) createUserDto: CreateUserDto){ 
+       const userdata = await this.userService.register(createUserDto)
+       console.log(userdata)
+        return userdata
     }
 
     @UseGuards(LocalAuthGuard)

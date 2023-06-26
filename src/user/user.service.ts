@@ -8,13 +8,14 @@ import { User } from 'src/Entities/userEntity.entity';
 import { UpdateUserDto } from 'src/DTO/updateUser';
 import { Wallet } from 'src/Entities/walletEntity.entity';
 import { WalletService } from 'src/wallet/wallet.service';
+import { accountGenerator } from 'src/auth/generator.service';
 @Injectable()
 export class UserService {
-    constructor(@InjectRepository(User) private userRepo: Repository<User>, private walletService: WalletService, private jwtService: JwtService,){}
+    constructor(@InjectRepository(User) private userRepo: Repository<User>, private walletService: WalletService, private jwtService: JwtService, private acctService: accountGenerator){}
 
     async register(createUserDto: CreateUserDto) {
         try{
-            const {FirstName, LastName, email, password,phoneNumber} = createUserDto
+            const {FirstName, LastName, email, password,accountType} = createUserDto
             
             /* If user already exists*/
             const userExist = await this.userRepo.findOneBy({email});
@@ -25,12 +26,14 @@ export class UserService {
             const hashed = await bcrypt.hash(password, 10);
             const salt = bcrypt.getSalt(hashed)
 
+            const AccountType = await this.acctService.accountnumberGenerator
+
             const data = new User();
             data.FirstName = FirstName;
             data.LastName = LastName;
             data.email = email;
             data.password = hashed;
-            data.phoneNumber = phoneNumber;
+            data.accountType = AccountType()
             data.createDate = new Date();
             data.updateDate = new Date();
             

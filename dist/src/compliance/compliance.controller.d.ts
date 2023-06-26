@@ -24,7 +24,6 @@ export declare class ComplianceController {
         BVN: string;
         NIN: string;
         accountNumber: string;
-        accountType: string;
         userId: number;
         user: import("../Entities/userEntity.entity").User;
     } & import("../Entities/compEntity.entity").Compliances>;

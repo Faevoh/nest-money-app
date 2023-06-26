@@ -10,6 +10,7 @@ import { JwtStrategy } from 'src/auth/jwt.strategy';
 import { ComplianceModule } from 'src/compliance/compliance.module';
 import { MailService } from 'src/mail/mail.service';
 import { WalletModule } from 'src/wallet/wallet.module';
+import { accountGenerator } from 'src/auth/generator.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User]), PassportModule, ComplianceModule, WalletModule, JwtModule.register({
@@ -20,7 +21,7 @@ import { WalletModule } from 'src/wallet/wallet.module';
     }
   })],
   controllers: [UserController],
-  providers: [UserService,AuthService,JwtStrategy,MailService ],
+  providers: [UserService,AuthService,JwtStrategy,MailService, accountGenerator],
   exports: [UserService, PassportModule]
 })
 export class UserModule {}

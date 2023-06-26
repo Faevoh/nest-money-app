@@ -5,7 +5,6 @@ export declare class Compliances {
     NIN: string;
     accountName: string;
     accountNumber: string;
-    accountType: string;
     businessDetails: string;
     bankCode: string;
     userId: number;

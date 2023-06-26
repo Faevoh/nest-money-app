@@ -10,6 +10,7 @@ export declare class AuthService {
             id: number;
             FirstName: string;
             LastName: string;
+            accountType: string;
             phoneNumber: string;
             createDate: Date;
             updateDate: Date;

@@ -4,11 +4,13 @@ import { CreateUserDto } from 'src/DTO/createUser';
 import { User } from 'src/Entities/userEntity.entity';
 import { UpdateUserDto } from 'src/DTO/updateUser';
 import { WalletService } from 'src/wallet/wallet.service';
+import { accountGenerator } from 'src/auth/generator.service';
 export declare class UserService {
     private userRepo;
     private walletService;
     private jwtService;
-    constructor(userRepo: Repository<User>, walletService: WalletService, jwtService: JwtService);
+    private acctService;
+    constructor(userRepo: Repository<User>, walletService: WalletService, jwtService: JwtService, acctService: accountGenerator);
     register(createUserDto: CreateUserDto): Promise<{
         statusCode: number;
         message: string;

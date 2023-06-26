@@ -18,9 +18,6 @@ export class Compliances {
     @Column({unique: true})
     accountNumber: string;
 
-    @Column() 
-    accountType: string;
-
     @Column()
     businessDetails: string;
 

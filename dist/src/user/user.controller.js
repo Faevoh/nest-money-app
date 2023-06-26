@@ -31,7 +31,9 @@ let UserController = class UserController {
         this.authService = authService;
     }
     async registerUser(createUserDto) {
-        return await this.userService.register(createUserDto);
+        const userdata = await this.userService.register(createUserDto);
+        console.log(userdata);
+        return userdata;
     }
     login(req) {
         return this.authService.login(req.user);

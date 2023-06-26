@@ -20,27 +20,30 @@ const bcrypt = require("bcryptjs");
 const jwt_1 = require("@nestjs/jwt");
 const userEntity_entity_1 = require("../Entities/userEntity.entity");
 const wallet_service_1 = require("../wallet/wallet.service");
+const generator_service_1 = require("../auth/generator.service");
 let UserService = class UserService {
-    constructor(userRepo, walletService, jwtService) {
+    constructor(userRepo, walletService, jwtService, acctService) {
         this.userRepo = userRepo;
         this.walletService = walletService;
         this.jwtService = jwtService;
+        this.acctService = acctService;
     }
     async register(createUserDto) {
         try {
-            const { FirstName, LastName, email, password, phoneNumber } = createUserDto;
+            const { FirstName, LastName, email, password, accountType } = createUserDto;
             const userExist = await this.userRepo.findOneBy({ email });
             if (userExist) {
                 return { statusCode: 400, message: "User Exists Already", data: null };
             }
             const hashed = await bcrypt.hash(password, 10);
             const salt = bcrypt.getSalt(hashed);
+            const AccountType = await this.acctService.accountnumberGenerator;
             const data = new userEntity_entity_1.User();
             data.FirstName = FirstName;
             data.LastName = LastName;
             data.email = email;
             data.password = hashed;
-            data.phoneNumber = phoneNumber;
+            data.accountType = AccountType();
             data.createDate = new Date();
             data.updateDate = new Date();
             this.userRepo.create(data);
@@ -104,7 +107,7 @@ let UserService = class UserService {
 UserService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(userEntity_entity_1.User)),
-    __metadata("design:paramtypes", [typeorm_2.Repository, wallet_service_1.WalletService, jwt_1.JwtService])
+    __metadata("design:paramtypes", [typeorm_2.Repository, wallet_service_1.WalletService, jwt_1.JwtService, generator_service_1.accountGenerator])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

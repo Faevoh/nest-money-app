@@ -6,6 +6,7 @@ export declare class User {
     FirstName: string;
     LastName: string;
     email: string;
+    accountType: string;
     password: string;
     phoneNumber: string;
     createDate: Date;

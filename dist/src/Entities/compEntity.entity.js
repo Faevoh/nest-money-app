@@ -37,10 +37,6 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Compliances.prototype, "accountType", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
 ], Compliances.prototype, "businessDetails", void 0);
 __decorate([
     (0, typeorm_1.Column)({ unique: true }),

@@ -35,7 +35,6 @@ let ComplianceService = class ComplianceService {
             comp.accountNumber = accountNumber;
             comp.businessDetails = businessDetails;
             comp.bankCode = bankCode;
-            comp.accountType = accountType;
             comp.userId = user.id;
             const newComp = this.compRepo.create(comp);
             const result = await this.compRepo.save(newComp);
