@@ -4,8 +4,10 @@ import {  CreateCompDto } from 'src/DTO/createComp';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { RequestWithUser } from 'src/auth/userRequest';
 import { UpdateCompDto } from 'src/DTO/updateComp';
+import { AuthService } from 'src/auth/auth.service';
 
 @Controller('compliance')
+@UseGuards(JwtAuthGuard)
 export class ComplianceController {
     constructor(private compService: ComplianceService) {}
 

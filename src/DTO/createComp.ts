@@ -7,18 +7,7 @@ export class CreateCompDto {
     @IsNotEmpty()
     NIN: string;
 
-    @IsNotEmpty()
-    accountType: string;
-    
-    @IsNotEmpty()
-    accountName: string;
-
-    @IsNotEmpty()
-    accountNumber: string;
-
-    @IsNotEmpty()
     businessDetails: string;
 
-    @IsNotEmpty()
     bankCode: string;
 }

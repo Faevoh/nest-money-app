@@ -6,7 +6,9 @@ export declare class User {
     FirstName: string;
     LastName: string;
     email: string;
-    accountType: string;
+    accountType: "business || personal";
+    accountNumber: string;
+    accountName: string;
     password: string;
     phoneNumber: string;
     createDate: Date;

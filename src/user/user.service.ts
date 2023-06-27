@@ -9,38 +9,40 @@ import { UpdateUserDto } from 'src/DTO/updateUser';
 import { Wallet } from 'src/Entities/walletEntity.entity';
 import { WalletService } from 'src/wallet/wallet.service';
 import { accountGenerator } from 'src/auth/generator.service';
+import { MailService } from 'src/mail/mail.service';
 @Injectable()
 export class UserService {
-    constructor(@InjectRepository(User) private userRepo: Repository<User>, private walletService: WalletService, private jwtService: JwtService, private acctService: accountGenerator){}
+    constructor(@InjectRepository(User) private userRepo: Repository<User>, private walletService: WalletService, private jwtService: JwtService, private acctService: accountGenerator, private mailService: MailService){}
 
     async register(createUserDto: CreateUserDto) {
         try{
-            const {FirstName, LastName, email, password,accountType} = createUserDto
+            const {FirstName, LastName, email, password, accountType} = createUserDto
             
             /* If user already exists*/
             const userExist = await this.userRepo.findOneBy({email});
             if(userExist) {
                 return {statusCode: 400, message: "User Exists Already", data: null};
             }
+            
             /* Creating New User*/
             const hashed = await bcrypt.hash(password, 10);
             const salt = bcrypt.getSalt(hashed)
-
-            const AccountType = await this.acctService.accountnumberGenerator
 
             const data = new User();
             data.FirstName = FirstName;
             data.LastName = LastName;
             data.email = email;
             data.password = hashed;
-            data.accountType = AccountType()
+            data.accountType = accountType;
+            data.accountNumber = this.acctService.accountnumberGenerator();
+            data.accountName = `${data.LastName} ${data.FirstName}`
             data.createDate = new Date();
             data.updateDate = new Date();
             
             this.userRepo.create(data)
             await this.userRepo.save(data)
             await this.walletService.newWallet(data)
-            console.log(data)
+            // console.log(data)
             // const createdUser = await this.userRepo.save(user)
             // console.log("user" ,user)
             
@@ -48,6 +50,18 @@ export class UserService {
             // const jwtToken = await this.jwtService.sign(jwtPayload)
             // console.log(jwtToken)
 
+            delete data.phoneNumber
+            delete data.resetToken 
+            delete data.resetTokenExpiry
+
+
+            const verify = `http://localhost:3000/api`
+            const text = `Dear ${createUserDto.FirstName}, 
+            Welcome to Money App. 
+            Kindly click on the link to verify your email ${verify} `;
+
+            await this.mailService.welcomeMail(text, data);
+           
             return {statusCode: 201, message: "User successfully Created", data: data}
         }catch(err){
             throw new InternalServerErrorException("Something went wrong, User not Created")

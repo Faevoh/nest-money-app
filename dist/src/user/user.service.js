@@ -21,12 +21,14 @@ const jwt_1 = require("@nestjs/jwt");
 const userEntity_entity_1 = require("../Entities/userEntity.entity");
 const wallet_service_1 = require("../wallet/wallet.service");
 const generator_service_1 = require("../auth/generator.service");
+const mail_service_1 = require("../mail/mail.service");
 let UserService = class UserService {
-    constructor(userRepo, walletService, jwtService, acctService) {
+    constructor(userRepo, walletService, jwtService, acctService, mailService) {
         this.userRepo = userRepo;
         this.walletService = walletService;
         this.jwtService = jwtService;
         this.acctService = acctService;
+        this.mailService = mailService;
     }
     async register(createUserDto) {
         try {
@@ -37,19 +39,27 @@ let UserService = class UserService {
             }
             const hashed = await bcrypt.hash(password, 10);
             const salt = bcrypt.getSalt(hashed);
-            const AccountType = await this.acctService.accountnumberGenerator;
             const data = new userEntity_entity_1.User();
             data.FirstName = FirstName;
             data.LastName = LastName;
             data.email = email;
             data.password = hashed;
-            data.accountType = AccountType();
+            data.accountType = accountType;
+            data.accountNumber = this.acctService.accountnumberGenerator();
+            data.accountName = `${data.LastName} ${data.FirstName}`;
             data.createDate = new Date();
             data.updateDate = new Date();
             this.userRepo.create(data);
             await this.userRepo.save(data);
             await this.walletService.newWallet(data);
-            console.log(data);
+            delete data.phoneNumber;
+            delete data.resetToken;
+            delete data.resetTokenExpiry;
+            const verify = `http://localhost:3000/api`;
+            const text = `Dear ${createUserDto.FirstName}, 
+            Welcome to Money App. 
+            Kindly click on the link to verify your email ${verify} `;
+            await this.mailService.welcomeMail(text, data);
             return { statusCode: 201, message: "User successfully Created", data: data };
         }
         catch (err) {
@@ -107,7 +117,7 @@ let UserService = class UserService {
 UserService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(userEntity_entity_1.User)),
-    __metadata("design:paramtypes", [typeorm_2.Repository, wallet_service_1.WalletService, jwt_1.JwtService, generator_service_1.accountGenerator])
+    __metadata("design:paramtypes", [typeorm_2.Repository, wallet_service_1.WalletService, jwt_1.JwtService, generator_service_1.accountGenerator, mail_service_1.MailService])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

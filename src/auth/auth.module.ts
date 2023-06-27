@@ -4,6 +4,7 @@ import { UserModule } from 'src/user/user.module';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStraregy } from './local.strategy';
 import { JwtModule } from '@nestjs/jwt';
+import { ComplianceModule } from 'src/compliance/compliance.module';
 
 @Module({
   imports: [UserModule, PassportModule, JwtModule.register({

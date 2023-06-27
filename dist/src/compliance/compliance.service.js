@@ -23,16 +23,10 @@ let ComplianceService = class ComplianceService {
     }
     async createComp(createCompDto, user) {
         try {
-            const { BVN, NIN, accountName, accountNumber, accountType, businessDetails, bankCode } = createCompDto;
-            const compExists = await this.compRepo.findOneBy({ accountNumber });
-            if (compExists) {
-                return { statuscode: 400, message: "User with Compliance Exists already", data: null };
-            }
+            const { BVN, NIN, businessDetails, bankCode } = createCompDto;
             const comp = new compEntity_entity_1.Compliances();
             comp.BVN = BVN;
             comp.NIN = NIN;
-            comp.accountName = accountName;
-            comp.accountNumber = accountNumber;
             comp.businessDetails = businessDetails;
             comp.bankCode = bankCode;
             comp.userId = user.id;

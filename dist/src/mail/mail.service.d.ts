@@ -4,4 +4,5 @@ export declare class MailService {
     private mailerService;
     constructor(mailerService: MailerService);
     sendMail(url: string, user: User): Promise<boolean>;
+    welcomeMail(url: string, user: User): Promise<boolean>;
 }

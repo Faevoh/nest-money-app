@@ -9,16 +9,16 @@ import {v4 as uuidv4} from "uuid"
 import { MailService } from 'src/mail/mail.service';
 import { ResetPasswordDto } from 'src/DTO/resetPassword';
 import * as bcrypt from 'bcryptjs'
+import { accountGenerator } from 'src/auth/generator.service';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('user')
 export class UserController {
-    constructor(private userService: UserService, private mailService: MailService, private authService: AuthService){}
+    constructor(private userService: UserService, private mailService: MailService, private authService: AuthService, private acctService: accountGenerator){}
 
     @Post("/register")
     async registerUser(@Body(ValidationPipe) createUserDto: CreateUserDto){ 
-       const userdata = await this.userService.register(createUserDto)
-       console.log(userdata)
-        return userdata
+        return this.userService.register(createUserDto)
     }
 
     @UseGuards(LocalAuthGuard)
@@ -40,16 +40,19 @@ export class UserController {
     @Get("/:id")
     async getOne(@Param("id", ParseIntPipe) id: number ) {
         const result = await this.userService.findById(id)
-        return {statusCode: 200, message: `success, data of ${id}`, data: result}
+        const{resetToken,resetTokenExpiry, ...others} = result
+        return {statusCode: 200, message: `success, data of ${id}`, data: others}
     }
 
     @Patch("/:id/profile-update")
+    @UseGuards(JwtAuthGuard)
     async updateUser(@Param("id", ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
         const updatedUser = await this.userService.updateUser(id, updateUserDto);
         return { statusCode: 200, message: "success", user: updatedUser };
     }
 
     @Post("/recover-password")
+    @UseGuards(JwtAuthGuard)
     async recoverPassword(@Body(ValidationPipe) forgotPasswordDto: ForgotPasswordDto){
         try{
             const {email} = forgotPasswordDto;
@@ -71,7 +74,7 @@ export class UserController {
 
             await this.userService.saveUser(checkUser)
 
-            const resetLink = `http://localhost:2040/reset-password?token=${resetToken}`;
+            const resetLink = `http://localhost:3000/reset-password?token=${resetToken}`;
             const subject = "Password Reset";
             const text = `To reset your password, Kindly click on the link ${resetLink}`
 
@@ -84,6 +87,7 @@ export class UserController {
     }
 
     @Post("/reset-password")
+    @UseGuards(JwtAuthGuard)
     async resetPassword(@Body(ValidationPipe) resetPasswordDto: ResetPasswordDto) {
         const {token, password} = resetPasswordDto;
 

@@ -25,6 +25,8 @@ const common_1 = require("@nestjs/common");
 const user_service_1 = require("../user/user.service");
 const bcrypt = require("bcryptjs");
 const jwt_1 = require("@nestjs/jwt");
+const dotenv_1 = require("dotenv");
+(0, dotenv_1.config)();
 let AuthService = class AuthService {
     constructor(userService, jwtService) {
         this.userService = userService;
@@ -42,9 +44,19 @@ let AuthService = class AuthService {
         const users = await this.userService.findById(payload.sub);
         const { password, email } = users, data = __rest(users, ["password", "email"]);
         return {
-            data,
             access_token: this.jwtService.sign(payload)
         };
+    }
+    async validateToken(access_token) {
+        try {
+            const verifyToken = this.jwtService.verify(access_token, { secret: process.env.SECRET });
+            const verifyId = verifyToken.id;
+            console.log(verifyToken);
+            console.log(verifyId);
+        }
+        catch (err) {
+            throw new Error("Invalid token");
+        }
     }
 };
 AuthService = __decorate([

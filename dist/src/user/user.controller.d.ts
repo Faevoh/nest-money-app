@@ -5,31 +5,19 @@ import { UpdateUserDto } from 'src/DTO/updateUser';
 import { ForgotPasswordDto } from 'src/DTO/forgotPassword';
 import { MailService } from 'src/mail/mail.service';
 import { ResetPasswordDto } from 'src/DTO/resetPassword';
+import { accountGenerator } from 'src/auth/generator.service';
 export declare class UserController {
     private userService;
     private mailService;
     private authService;
-    constructor(userService: UserService, mailService: MailService, authService: AuthService);
+    private acctService;
+    constructor(userService: UserService, mailService: MailService, authService: AuthService, acctService: accountGenerator);
     registerUser(createUserDto: CreateUserDto): Promise<{
         statusCode: number;
         message: string;
         data: import("../Entities/userEntity.entity").User;
     }>;
     login(req: any): Promise<{
-        data: {
-            id: number;
-            FirstName: string;
-            LastName: string;
-            accountType: string;
-            phoneNumber: string;
-            createDate: Date;
-            updateDate: Date;
-            resetToken: string;
-            resetTokenExpiry: Date;
-            compliance: import("../Entities/compEntity.entity").Compliances;
-            wallet: import("../Entities/walletEntity.entity").Wallet;
-            transaction: import("../Entities/transactionEntity.entity").Transactions;
-        };
         access_token: string;
     }>;
     removeUser(id: number): Promise<{
@@ -40,7 +28,22 @@ export declare class UserController {
     getOne(id: number): Promise<{
         statusCode: number;
         message: string;
-        data: import("../Entities/userEntity.entity").User;
+        data: {
+            id: number;
+            FirstName: string;
+            LastName: string;
+            email: string;
+            accountType: "business || personal";
+            accountNumber: string;
+            accountName: string;
+            password: string;
+            phoneNumber: string;
+            createDate: Date;
+            updateDate: Date;
+            compliance: import("../Entities/compEntity.entity").Compliances;
+            wallet: import("../Entities/walletEntity.entity").Wallet;
+            transaction: import("../Entities/transactionEntity.entity").Transactions;
+        };
     }>;
     updateUser(id: number, updateUserDto: UpdateUserDto): Promise<{
         statusCode: number;

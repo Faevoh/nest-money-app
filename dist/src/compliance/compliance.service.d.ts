@@ -7,24 +7,17 @@ export declare class ComplianceService {
     private compRepo;
     constructor(compRepo: Repository<Compliances>);
     createComp(createCompDto: CreateCompDto, user: User): Promise<{
-        statuscode: number;
-        message: string;
-        data: any;
-        statusCode?: undefined;
-    } | {
         statusCode: number;
         message: string;
         data: Compliances;
-        statuscode?: undefined;
     }>;
     updateComp(id: number, updateCompDto: UpdateCompDto): Promise<{
-        accountName: string;
+        accountName?: string;
         businessDetails: string;
         bankCode: string;
         id: number;
         BVN: string;
         NIN: string;
-        accountNumber: string;
         userId: number;
         user: User;
     } & Compliances>;

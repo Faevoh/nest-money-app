@@ -12,16 +12,10 @@ export class Compliances {
     @Column({unique: true})
     NIN: string;
 
-    @Column()
-    accountName: string;
-
-    @Column({unique: true})
-    accountNumber: string;
-
-    @Column()
+    @Column({nullable: true})
     businessDetails: string;
 
-    @Column({unique: true})
+    @Column({unique: true, nullable:true})
     bankCode: string
 
     @Column()

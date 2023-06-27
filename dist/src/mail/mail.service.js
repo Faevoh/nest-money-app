@@ -33,6 +33,23 @@ let MailService = class MailService {
             return false;
         }
     }
+    async welcomeMail(url, user) {
+        try {
+            await this.mailerService.sendMail({
+                to: user.email,
+                subject: `Welcome To Money App ${user.FirstName}`,
+                template: './welcome',
+                context: {
+                    url: url,
+                },
+            });
+            return true;
+        }
+        catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
 };
 MailService = __decorate([
     (0, common_1.Injectable)(),

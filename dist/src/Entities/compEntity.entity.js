@@ -27,19 +27,11 @@ __decorate([
     __metadata("design:type", String)
 ], Compliances.prototype, "NIN", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Compliances.prototype, "accountName", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ unique: true }),
-    __metadata("design:type", String)
-], Compliances.prototype, "accountNumber", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Compliances.prototype, "businessDetails", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ unique: true }),
+    (0, typeorm_1.Column)({ unique: true, nullable: true }),
     __metadata("design:type", String)
 ], Compliances.prototype, "bankCode", void 0);
 __decorate([

@@ -18,7 +18,13 @@ export class User {
     email: string;
  
     @Column() 
-    accountType: string;
+    accountType: "business || personal";
+
+    @Column()
+    accountNumber: string;
+
+    @Column()
+    accountName: string;
 
     @Column()
     password: string;

@@ -5,12 +5,14 @@ import { User } from 'src/Entities/userEntity.entity';
 import { UpdateUserDto } from 'src/DTO/updateUser';
 import { WalletService } from 'src/wallet/wallet.service';
 import { accountGenerator } from 'src/auth/generator.service';
+import { MailService } from 'src/mail/mail.service';
 export declare class UserService {
     private userRepo;
     private walletService;
     private jwtService;
     private acctService;
-    constructor(userRepo: Repository<User>, walletService: WalletService, jwtService: JwtService, acctService: accountGenerator);
+    private mailService;
+    constructor(userRepo: Repository<User>, walletService: WalletService, jwtService: JwtService, acctService: accountGenerator, mailService: MailService);
     register(createUserDto: CreateUserDto): Promise<{
         statusCode: number;
         message: string;

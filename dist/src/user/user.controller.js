@@ -11,6 +11,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
@@ -24,16 +35,17 @@ const uuid_1 = require("uuid");
 const mail_service_1 = require("../mail/mail.service");
 const resetPassword_1 = require("../DTO/resetPassword");
 const bcrypt = require("bcryptjs");
+const generator_service_1 = require("../auth/generator.service");
+const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
 let UserController = class UserController {
-    constructor(userService, mailService, authService) {
+    constructor(userService, mailService, authService, acctService) {
         this.userService = userService;
         this.mailService = mailService;
         this.authService = authService;
+        this.acctService = acctService;
     }
     async registerUser(createUserDto) {
-        const userdata = await this.userService.register(createUserDto);
-        console.log(userdata);
-        return userdata;
+        return this.userService.register(createUserDto);
     }
     login(req) {
         return this.authService.login(req.user);
@@ -46,7 +58,8 @@ let UserController = class UserController {
     }
     async getOne(id) {
         const result = await this.userService.findById(id);
-        return { statusCode: 200, message: `success, data of ${id}`, data: result };
+        const { resetToken, resetTokenExpiry } = result, others = __rest(result, ["resetToken", "resetTokenExpiry"]);
+        return { statusCode: 200, message: `success, data of ${id}`, data: others };
     }
     async updateUser(id, updateUserDto) {
         const updatedUser = await this.userService.updateUser(id, updateUserDto);
@@ -67,7 +80,7 @@ let UserController = class UserController {
             console.log(resetToken);
             console.log(checkUser.resetTokenExpiry);
             await this.userService.saveUser(checkUser);
-            const resetLink = `http://localhost:2040/reset-password?token=${resetToken}`;
+            const resetLink = `http://localhost:3000/reset-password?token=${resetToken}`;
             const subject = "Password Reset";
             const text = `To reset your password, Kindly click on the link ${resetLink}`;
             await this.mailService.sendMail(text, checkUser);
@@ -129,6 +142,7 @@ __decorate([
 ], UserController.prototype, "getOne", null);
 __decorate([
     (0, common_1.Patch)("/:id/profile-update"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Param)("id", common_1.ParseIntPipe)),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -137,6 +151,7 @@ __decorate([
 ], UserController.prototype, "updateUser", null);
 __decorate([
     (0, common_1.Post)("/recover-password"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Body)(common_1.ValidationPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [forgotPassword_1.ForgotPasswordDto]),
@@ -144,6 +159,7 @@ __decorate([
 ], UserController.prototype, "recoverPassword", null);
 __decorate([
     (0, common_1.Post)("/reset-password"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Body)(common_1.ValidationPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [resetPassword_1.ResetPasswordDto]),
@@ -151,7 +167,7 @@ __decorate([
 ], UserController.prototype, "resetPassword", null);
 UserController = __decorate([
     (0, common_1.Controller)('user'),
-    __metadata("design:paramtypes", [user_service_1.UserService, mail_service_1.MailService, auth_service_1.AuthService])
+    __metadata("design:paramtypes", [user_service_1.UserService, mail_service_1.MailService, auth_service_1.AuthService, generator_service_1.accountGenerator])
 ], UserController);
 exports.UserController = UserController;
 //# sourceMappingURL=user.controller.js.map
