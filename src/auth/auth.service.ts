@@ -24,6 +24,8 @@ export class AuthService {
         const users = await this.userService.findById(payload.sub)
         const {password, email, ...data} = users
         return{
+            statusCode: 201,
+            message: "Successfully logged in",
             access_token: this.jwtService.sign(payload)
         }
     }
