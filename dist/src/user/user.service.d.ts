@@ -4,7 +4,7 @@ import { CreateUserDto } from 'src/DTO/createUser';
 import { User } from 'src/Entities/userEntity.entity';
 import { UpdateUserDto } from 'src/DTO/updateUser';
 import { WalletService } from 'src/wallet/wallet.service';
-import { accountGenerator } from 'src/auth/generator.service';
+import { accountGenerator } from "../auth/generator.service";
 import { MailService } from 'src/mail/mail.service';
 export declare class UserService {
     private userRepo;

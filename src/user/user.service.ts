@@ -8,7 +8,8 @@ import { User } from 'src/Entities/userEntity.entity';
 import { UpdateUserDto } from 'src/DTO/updateUser';
 import { Wallet } from 'src/Entities/walletEntity.entity';
 import { WalletService } from 'src/wallet/wallet.service';
-import { accountGenerator } from 'src/auth/generator.service';
+// import { accountGenerator } from 'src/auth/generator.service';
+import {accountGenerator} from "../auth/generator.service"
 import { MailService } from 'src/mail/mail.service';
 @Injectable()
 export class UserService {

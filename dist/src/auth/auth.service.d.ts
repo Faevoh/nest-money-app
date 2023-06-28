@@ -6,6 +6,8 @@ export declare class AuthService {
     constructor(userService: UserService, jwtService: JwtService);
     validateUser(email: string, password: string): Promise<import("../Entities/userEntity.entity").User>;
     login(user: any): Promise<{
+        statusCode: number;
+        message: string;
         access_token: string;
     }>;
     validateToken(access_token: string): Promise<void>;

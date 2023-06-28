@@ -18,6 +18,8 @@ export declare class UserController {
         data: import("../Entities/userEntity.entity").User;
     }>;
     login(req: any): Promise<{
+        statusCode: number;
+        message: string;
         access_token: string;
     }>;
     removeUser(id: number): Promise<{
