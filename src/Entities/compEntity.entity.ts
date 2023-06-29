@@ -12,9 +12,6 @@ export class Compliances {
     @Column({unique: true})
     NIN: string;
 
-    @Column({unique: true})
-    account: string;
-
     @Column({nullable: true})
     businessDetails: string;
 

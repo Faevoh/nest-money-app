@@ -18,7 +18,6 @@ export declare class ComplianceService {
         id: number;
         BVN: string;
         NIN: string;
-        account: string;
         userId: number;
         user: User;
     } & Compliances>;
