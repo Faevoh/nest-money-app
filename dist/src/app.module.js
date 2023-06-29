@@ -21,6 +21,7 @@ const mail_module_1 = require("./mail/mail.module");
 const wallet_module_1 = require("./wallet/wallet.module");
 const transaction_module_1 = require("./transaction/transaction.module");
 const mail_config_1 = require("./config/mail.config");
+const host_data_source_1 = require("../db/host-data-source");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -30,6 +31,7 @@ AppModule = __decorate([
                 isGlobal: true
             }),
             typeorm_1.TypeOrmModule.forRoot(data_source_1.dataSourceOptions),
+            typeorm_1.TypeOrmModule.forRoot(host_data_source_1.hostDataSourceOptions),
             user_module_1.UserModule, auth_module_1.AuthModule, compliance_module_1.ComplianceModule, airtime_module_1.AirtimeModule, mail_module_1.MailModule, config_1.ConfigModule.forRoot({
                 isGlobal: true,
                 cache: true,

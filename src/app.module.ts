@@ -12,6 +12,7 @@ import { MailModule } from './mail/mail.module';
 import { WalletModule } from './wallet/wallet.module';
 import { TransactionModule } from './transaction/transaction.module';
 import mailConfig from './config/mail.config';
+import { hostDataSourceOptions } from 'db/host-data-source';
 
 @Module({
   imports: [ ConfigModule.forRoot({
@@ -19,6 +20,7 @@ import mailConfig from './config/mail.config';
     isGlobal: true
   }),
   TypeOrmModule.forRoot(dataSourceOptions), 
+  TypeOrmModule.forRoot(hostDataSourceOptions),
   UserModule, AuthModule, ComplianceModule, AirtimeModule, MailModule, ConfigModule.forRoot({ 
     isGlobal: true,
     cache: true,
