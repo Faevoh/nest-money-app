@@ -3,7 +3,7 @@ export declare class CreateUserDto {
     LastName: string;
     email: string;
     password: string;
-    accountType: "business || personal";
+    accountType: "business " | "personal";
     accountNumber: string;
     accountName: string;
 }
