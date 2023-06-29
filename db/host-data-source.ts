@@ -17,7 +17,8 @@ export const hostDataSourceOptions: DataSourceOptions = {
     database: process.env.MYSQLDATABASE,
     entities: [User, Compliances, Airtime, Wallet, Transactions ],
     synchronize: true,
-    migrations: ["dist/db/migrations/*.js"]
+    migrations: ["dist/db/migrations/*.js"],
+    url: process.env.MYSQL_URL
 }
 
 const hostDataSource = new DataSource(hostDataSourceOptions);

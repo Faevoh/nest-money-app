@@ -18,7 +18,8 @@ exports.hostDataSourceOptions = {
     database: process.env.MYSQLDATABASE,
     entities: [userEntity_entity_1.User, compEntity_entity_1.Compliances, airtimeEntity_entity_1.Airtime, walletEntity_entity_1.Wallet, transactionEntity_entity_1.Transactions],
     synchronize: true,
-    migrations: ["dist/db/migrations/*.js"]
+    migrations: ["dist/db/migrations/*.js"],
+    url: process.env.MYSQL_URL
 };
 const hostDataSource = new typeorm_1.DataSource(exports.hostDataSourceOptions);
 exports.default = hostDataSource;
