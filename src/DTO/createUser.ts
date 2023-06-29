@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, Matches, MaxLength, MinLength } from "class-validator";
+import { IsEmail, IsNotEmpty, IsNumberString, Matches, MaxLength, MinLength } from "class-validator";
 
 export class CreateUserDto {
     @IsNotEmpty()
@@ -19,6 +19,7 @@ export class CreateUserDto {
 
     accountType: "business || personal";
 
+    @IsNumberString()
     accountNumber: string;
 
     accountName: string;
