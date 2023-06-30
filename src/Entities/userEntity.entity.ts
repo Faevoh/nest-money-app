@@ -20,7 +20,7 @@ export class User {
     @Column() 
     accountType: "business "| "personal";
 
-    @Column()
+    @Column({nullable: true})
     accountNumber: string;
 
     @Column()
