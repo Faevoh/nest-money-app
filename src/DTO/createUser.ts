@@ -19,6 +19,7 @@ export class CreateUserDto {
 
     accountType: "business " | "personal";
 
+    @IsNumberString()
     accountNumber: string;
 
     accountName: string;
