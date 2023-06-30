@@ -18,6 +18,7 @@ export class UserController {
 
     @Post("/register")
     async registerUser(@Body(ValidationPipe) createUserDto: CreateUserDto){ 
+        createUserDto.accountNumber = this.acctService.accountnumberGenerator()
         return this.userService.register(createUserDto)
     }
 

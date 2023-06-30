@@ -35,7 +35,6 @@ export class UserService {
             data.email = email;
             data.password = hashed;
             data.accountType = accountType;
-            data.accountNumber = this.acctService.accountnumberGenerator()
             data.accountName = `${data.LastName} ${data.FirstName}`
             data.createDate = new Date();
             data.updateDate = new Date();
