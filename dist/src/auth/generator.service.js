@@ -19,6 +19,7 @@ let accountGenerator = class accountGenerator {
             accountNumbers.add(randomNumber.toString().padStart(numberLength, '0'));
         }
         const result = Array.from(accountNumbers)[0];
+        console.log("this is the result:", result);
         return result;
     }
 };

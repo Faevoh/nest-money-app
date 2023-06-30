@@ -14,7 +14,7 @@ export class accountGenerator {
     }
 
     const result =  Array.from(accountNumbers)[0];
-    // console.log("this is the result:",result)
+    console.log("this is the result:",result)
     return result;
     }
 }
