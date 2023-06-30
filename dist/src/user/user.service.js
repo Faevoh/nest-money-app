@@ -57,7 +57,7 @@ let UserService = class UserService {
             delete data.phoneNumber;
             delete data.resetToken;
             delete data.resetTokenExpiry;
-            const verify = `http://localhost:3000/api`;
+            const verify = `https://marco-lyart.vercel.app/#/verify`;
             const text = `Dear ${createUserDto.FirstName}, 
             Welcome to Money App. 
             Kindly click on the link to verify your email ${verify} `;

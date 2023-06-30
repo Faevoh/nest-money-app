@@ -82,7 +82,7 @@ let UserController = class UserController {
             await this.userService.saveUser(checkUser);
             const resetLink = `http://localhost:3000/reset-password?token=${resetToken}`;
             const subject = "Password Reset";
-            const text = `To reset your password, Kindly click on the link ${resetLink}`;
+            const text = `${resetToken}`;
             await this.mailService.sendMail(text, checkUser);
             return { statusCode: 201, message: "An Email has been sent to you" };
         }
