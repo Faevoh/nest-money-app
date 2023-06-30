@@ -1,21 +1,20 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.FirstMigration1687871630096 = void 0;
-class FirstMigration1687871630096 {
-    constructor() {
-        this.name = 'FirstMigration1687871630096';
-    }
-    async up(queryRunner) {
+import { MigrationInterface, QueryRunner } from "typeorm";
+
+export class UpdateMigration11688119217604 implements MigrationInterface {
+    name = 'UpdateMigration11688119217604'
+
+    public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE \`compliances\` (\`id\` int NOT NULL AUTO_INCREMENT, \`BVN\` varchar(255) NOT NULL, \`NIN\` varchar(255) NOT NULL, \`businessDetails\` varchar(255) NULL, \`bankCode\` varchar(255) NULL, \`userId\` int NOT NULL, UNIQUE INDEX \`IDX_35d380a3d22b8ae0bce15736d3\` (\`BVN\`), UNIQUE INDEX \`IDX_5d46e6250c7f8c99f4cd042cbf\` (\`NIN\`), UNIQUE INDEX \`IDX_f3859c2ca7affcb6f62a1876d4\` (\`bankCode\`), UNIQUE INDEX \`REL_0fd7f2cb9ae4898e9947d42a0f\` (\`userId\`), PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`transactions\` (\`id\` int NOT NULL AUTO_INCREMENT, \`currency\` varchar(255) NOT NULL, \`amount\` double(20,3) NULL, \`transactionType\` varchar(255) NOT NULL, \`transactionRef\` varchar(255) NOT NULL, \`transactionPin\` varchar(255) NULL, \`userId\` int NOT NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`wallet\` (\`id\` int NOT NULL AUTO_INCREMENT, \`accountBalance\` double(20,2) NULL DEFAULT '0.00', \`userId\` int NOT NULL, \`createDate\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), \`updateDate\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6), PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
-        await queryRunner.query(`CREATE TABLE \`users\` (\`id\` int NOT NULL AUTO_INCREMENT, \`FirstName\` varchar(255) NOT NULL, \`LastName\` varchar(255) NOT NULL, \`email\` varchar(255) NOT NULL, \`accountType\` varchar(255) NOT NULL, \`accountNumber\` varchar(255) NOT NULL, \`accountName\` varchar(255) NOT NULL, \`password\` varchar(255) NOT NULL, \`phoneNumber\` varchar(255) NULL, \`createDate\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), \`updateDate\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6), \`resetToken\` varchar(255) NULL, \`resetTokenExpiry\` datetime NULL, UNIQUE INDEX \`IDX_97672ac88f789774dd47f7c8be\` (\`email\`), PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
+        await queryRunner.query(`CREATE TABLE \`users\` (\`id\` int NOT NULL AUTO_INCREMENT, \`FirstName\` varchar(255) NOT NULL, \`LastName\` varchar(255) NOT NULL, \`email\` varchar(255) NOT NULL, \`accountType\` varchar(255) NOT NULL, \`accountNumber\` varchar(255) NULL, \`accountName\` varchar(255) NOT NULL, \`password\` varchar(255) NOT NULL, \`phoneNumber\` varchar(255) NULL, \`createDate\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), \`updateDate\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6), \`resetToken\` varchar(255) NULL, \`resetTokenExpiry\` datetime NULL, UNIQUE INDEX \`IDX_97672ac88f789774dd47f7c8be\` (\`email\`), PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`airtime\` (\`id\` int NOT NULL AUTO_INCREMENT, \`amount\` int NOT NULL, \`phoneNumber\` varchar(255) NOT NULL, \`serviceNetwork\` varchar(255) NOT NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
         await queryRunner.query(`ALTER TABLE \`compliances\` ADD CONSTRAINT \`FK_0fd7f2cb9ae4898e9947d42a0f1\` FOREIGN KEY (\`userId\`) REFERENCES \`users\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE \`transactions\` ADD CONSTRAINT \`FK_6bb58f2b6e30cb51a6504599f41\` FOREIGN KEY (\`userId\`) REFERENCES \`users\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE \`wallet\` ADD CONSTRAINT \`FK_35472b1fe48b6330cd349709564\` FOREIGN KEY (\`userId\`) REFERENCES \`users\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
     }
-    async down(queryRunner) {
+
+    public async down(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`ALTER TABLE \`wallet\` DROP FOREIGN KEY \`FK_35472b1fe48b6330cd349709564\``);
         await queryRunner.query(`ALTER TABLE \`transactions\` DROP FOREIGN KEY \`FK_6bb58f2b6e30cb51a6504599f41\``);
         await queryRunner.query(`ALTER TABLE \`compliances\` DROP FOREIGN KEY \`FK_0fd7f2cb9ae4898e9947d42a0f1\``);
@@ -30,6 +29,5 @@ class FirstMigration1687871630096 {
         await queryRunner.query(`DROP INDEX \`IDX_35d380a3d22b8ae0bce15736d3\` ON \`compliances\``);
         await queryRunner.query(`DROP TABLE \`compliances\``);
     }
+
 }
-exports.FirstMigration1687871630096 = FirstMigration1687871630096;
-//# sourceMappingURL=1687871630096-FirstMigration.js.map
