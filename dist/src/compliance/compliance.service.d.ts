@@ -2,10 +2,14 @@ import { CreateCompDto } from 'src/DTO/createComp';
 import { UpdateCompDto } from 'src/DTO/updateComp';
 import { Compliances } from 'src/Entities/compEntity.entity';
 import { User } from 'src/Entities/userEntity.entity';
+import { AuthService } from 'src/auth/auth.service';
+import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 export declare class ComplianceService {
     private compRepo;
-    constructor(compRepo: Repository<Compliances>);
+    private authService;
+    private userService;
+    constructor(compRepo: Repository<Compliances>, authService: AuthService, userService: UserService);
     createComp(createCompDto: CreateCompDto, user: User): Promise<{
         statusCode: number;
         message: string;
@@ -13,11 +17,12 @@ export declare class ComplianceService {
     }>;
     updateComp(id: number, updateCompDto: UpdateCompDto): Promise<{
         accountName?: string;
-        businessDetails: string;
-        bankCode: string;
+        businessDetails?: string;
+        bankCode?: string;
         id: number;
         BVN: string;
         NIN: string;
+        completed: boolean;
         userId: number;
         user: User;
     } & Compliances>;

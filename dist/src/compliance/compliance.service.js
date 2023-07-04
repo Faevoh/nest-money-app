@@ -16,26 +16,35 @@ exports.ComplianceService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const compEntity_entity_1 = require("../Entities/compEntity.entity");
+const auth_service_1 = require("../auth/auth.service");
+const user_service_1 = require("../user/user.service");
 const typeorm_2 = require("typeorm");
 let ComplianceService = class ComplianceService {
-    constructor(compRepo) {
+    constructor(compRepo, authService, userService) {
         this.compRepo = compRepo;
+        this.authService = authService;
+        this.userService = userService;
     }
     async createComp(createCompDto, user) {
         try {
-            const { BVN, NIN, businessDetails, bankCode } = createCompDto;
+            const { BVN, NIN, businessDetails } = createCompDto;
             const comp = new compEntity_entity_1.Compliances();
             comp.BVN = BVN;
             comp.NIN = NIN;
+            if (user.accountType === "business" && (!businessDetails || businessDetails.trim() === "")) {
+                throw new common_1.BadRequestException("This is a Business Account. Business Details must be provided");
+            }
             comp.businessDetails = businessDetails;
-            comp.bankCode = bankCode;
-            comp.userId = user.id;
+            comp.userId = user.id,
+                comp.completed = false;
+            console.log(user);
             const newComp = this.compRepo.create(comp);
             const result = await this.compRepo.save(newComp);
             console.log(result);
             return { statusCode: 201, message: "Compliance Added", data: result };
         }
         catch (err) {
+            console.log(err);
             throw new common_1.InternalServerErrorException("Something occoured, Compliance not Added");
         }
     }
@@ -62,7 +71,7 @@ let ComplianceService = class ComplianceService {
 ComplianceService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(compEntity_entity_1.Compliances)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __metadata("design:paramtypes", [typeorm_2.Repository, auth_service_1.AuthService, user_service_1.UserService])
 ], ComplianceService);
 exports.ComplianceService = ComplianceService;
 //# sourceMappingURL=compliance.service.js.map

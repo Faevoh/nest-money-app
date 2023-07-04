@@ -16,7 +16,6 @@ const passport_1 = require("@nestjs/passport");
 const jwt_1 = require("@nestjs/jwt");
 const auth_service_1 = require("../auth/auth.service");
 const jwt_strategy_1 = require("../auth/jwt.strategy");
-const compliance_module_1 = require("../compliance/compliance.module");
 const mail_service_1 = require("../mail/mail.service");
 const wallet_module_1 = require("../wallet/wallet.module");
 const generator_service_1 = require("../auth/generator.service");
@@ -24,7 +23,7 @@ let UserModule = class UserModule {
 };
 UserModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([userEntity_entity_1.User]), passport_1.PassportModule, compliance_module_1.ComplianceModule, wallet_module_1.WalletModule, jwt_1.JwtModule.register({
+        imports: [typeorm_1.TypeOrmModule.forFeature([userEntity_entity_1.User]), passport_1.PassportModule, wallet_module_1.WalletModule, jwt_1.JwtModule.register({
                 secret: process.env.SECRET,
                 signOptions: {
                     algorithm: "HS512",

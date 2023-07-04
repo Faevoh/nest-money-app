@@ -35,6 +35,10 @@ __decorate([
     __metadata("design:type", String)
 ], Compliances.prototype, "bankCode", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ default: false }),
+    __metadata("design:type", Boolean)
+], Compliances.prototype, "completed", void 0);
+__decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Compliances.prototype, "userId", void 0);

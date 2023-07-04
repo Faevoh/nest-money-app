@@ -51,13 +51,15 @@ let AuthService = class AuthService {
     }
     async validateToken(access_token) {
         try {
-            const verifyToken = this.jwtService.verify(access_token, { secret: process.env.SECRET });
-            const verifyId = verifyToken.id;
-            console.log(verifyToken);
-            console.log(verifyId);
+            const verifyToken = this.jwtService.verifyAsync(access_token, { secret: process.env.SECRET });
+            if (verifyToken) {
+                const getUserId = verifyToken["sub"];
+                const user = this.userService.findById(getUserId);
+                return user;
+            }
         }
         catch (err) {
-            throw new Error("Invalid token");
+            throw new common_1.UnauthorizedException("Invalid token");
         }
     }
 };

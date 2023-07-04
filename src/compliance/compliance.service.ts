@@ -1,38 +1,42 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateCompDto } from 'src/DTO/createComp';
 import { UpdateCompDto } from 'src/DTO/updateComp';
 import { Compliances } from 'src/Entities/compEntity.entity';
 import { User } from 'src/Entities/userEntity.entity';
+import { AuthService } from 'src/auth/auth.service';
+import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class ComplianceService {
-    constructor(@InjectRepository(Compliances) private compRepo: Repository<Compliances>) {}
+    constructor(@InjectRepository(Compliances) private compRepo: Repository<Compliances>, private authService: AuthService, private userService: UserService) {}
 
     async createComp (createCompDto: CreateCompDto, user: User) {
         try{
-            const {BVN, NIN, businessDetails, bankCode} =createCompDto
-
-            // const compExists = await this.compRepo.findOneBy({accountNumber})
-            // if(compExists) {
-            //     return {statuscode: 400, message: "User with Compliance Exists already", data: null}
-            // }
+            const {BVN, NIN, businessDetails} =createCompDto
 
             const comp = new Compliances()
             comp.BVN = BVN
             comp.NIN = NIN
+            
+            // if(user.accountType === "business" && (!businessDetails || businessDetails.trim() === "")) {
+            //     throw new BadRequestException("This is a Business Account. Business Details must be provided");
+            // }   
             comp.businessDetails = businessDetails
-            comp.bankCode = bankCode
-            comp.userId = user.id
+           
+            comp.userId = user.id,
+            comp.completed = false
 
+            console.log(user)
             const newComp = this.compRepo.create(comp)
             const result = await this.compRepo.save(newComp)
             console.log(result)
             return {statusCode: 201, message: "Compliance Added", data: result}
         }catch(err) {
+            console.log(err)
             throw new InternalServerErrorException("Something occoured, Compliance not Added")
-            // console.log(err)
+            
         }
     }
 

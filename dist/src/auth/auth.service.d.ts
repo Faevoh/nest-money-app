@@ -10,5 +10,5 @@ export declare class AuthService {
         message: string;
         access_token: string;
     }>;
-    validateToken(access_token: string): Promise<void>;
+    validateToken(access_token: string): Promise<import("../Entities/userEntity.entity").User>;
 }

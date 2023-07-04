@@ -80,7 +80,7 @@ export class UserController {
 
             await this.mailService.sendMail(text, checkUser);
 
-            return {statusCode: 201, message: "An Email has been sent to you"}
+            return {statusCode: 201, message: "An Email with your token has been sent to you"}
         }catch(err){
             throw new BadRequestException("Failed to Send Email")
         }

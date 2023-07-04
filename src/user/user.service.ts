@@ -79,6 +79,10 @@ export class UserService {
         return await this.userRepo.findOneBy({id})
     }
 
+    async findByAccountType(accountType) {
+        return await this.userRepo.findOneBy({accountType})
+    }
+
     async findByEmail(email: string) {
         return await this.userRepo.findOneBy({email})
     }

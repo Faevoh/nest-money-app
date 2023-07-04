@@ -20,6 +20,7 @@ export declare class UserService {
     }>;
     login(email: string): Promise<User>;
     findById(id: number): Promise<User>;
+    findByAccountType(accountType: any): Promise<User>;
     findByEmail(email: string): Promise<User>;
     saveUser(user: User): Promise<User>;
     update(id: number, data: any): Promise<import("typeorm").UpdateResult>;

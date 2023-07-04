@@ -12,13 +12,29 @@ const compliance_controller_1 = require("./compliance.controller");
 const compliance_service_1 = require("./compliance.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const compEntity_entity_1 = require("../Entities/compEntity.entity");
+const jwt_1 = require("@nestjs/jwt");
+const user_module_1 = require("../user/user.module");
+const user_service_1 = require("../user/user.service");
+const userEntity_entity_1 = require("../Entities/userEntity.entity");
+const walletEntity_entity_1 = require("../Entities/walletEntity.entity");
+const wallet_service_1 = require("../wallet/wallet.service");
+const generator_service_1 = require("../auth/generator.service");
+const mail_service_1 = require("../mail/mail.service");
+const auth_module_1 = require("../auth/auth.module");
+const auth_service_1 = require("../auth/auth.service");
 let ComplianceModule = class ComplianceModule {
 };
 ComplianceModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([compEntity_entity_1.Compliances])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([compEntity_entity_1.Compliances, userEntity_entity_1.User, walletEntity_entity_1.Wallet]), jwt_1.JwtModule.register({
+                secret: process.env.SECRET,
+                signOptions: {
+                    algorithm: "HS512",
+                    expiresIn: process.env.EXPIRES_IN
+                }
+            }), user_module_1.UserModule, auth_module_1.AuthModule],
         controllers: [compliance_controller_1.ComplianceController],
-        providers: [compliance_service_1.ComplianceService],
+        providers: [compliance_service_1.ComplianceService, user_service_1.UserService, wallet_service_1.WalletService, generator_service_1.accountGenerator, mail_service_1.MailService, auth_service_1.AuthService],
         exports: [compliance_service_1.ComplianceService]
     })
 ], ComplianceModule);

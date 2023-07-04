@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
@@ -32,27 +32,15 @@ export class AuthService {
 
     async validateToken(access_token: string){
        try{
-        const verifyToken = this.jwtService.verify(access_token,{secret: process.env.SECRET})
-        const verifyId = verifyToken.id
-        console.log(verifyToken)
-        console.log(verifyId)
+        const verifyToken = this.jwtService.verifyAsync(access_token,{secret: process.env.SECRET})
+        if(verifyToken){
+            const getUserId = verifyToken["sub"];
+            const user = this.userService.findById(getUserId)
+            return user;
+        }
        }catch(err){
-        throw new Error("Invalid token")
+        throw new UnauthorizedException("Invalid token")
        }
     }
     
 }
-
-
-// async validateToken(token: string): Promise<any> {
-//     try {
-//       // Verify the token using the JWT secret key
-//       const payload = verify(token, jwtSecretKey);
-
-//       // Return the user data extracted from the token
-//       return payload;
-//     } catch (error) {
-//       // Token is invalid or has expired
-//       throw new Error('Invalid token');
-//     }
-//   }

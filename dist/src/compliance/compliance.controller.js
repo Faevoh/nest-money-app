@@ -18,9 +18,13 @@ const compliance_service_1 = require("./compliance.service");
 const createComp_1 = require("../DTO/createComp");
 const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
 const updateComp_1 = require("../DTO/updateComp");
+const jwt_1 = require("@nestjs/jwt");
+const user_service_1 = require("../user/user.service");
 let ComplianceController = class ComplianceController {
-    constructor(compService) {
+    constructor(compService, jwtService, userService) {
         this.compService = compService;
+        this.jwtService = jwtService;
+        this.userService = userService;
     }
     async addCompliance(createCompDto, request) {
         const user = request.user;
@@ -28,6 +32,20 @@ let ComplianceController = class ComplianceController {
     }
     async updateCompliance(updateCompDto, id) {
         return await this.compService.updateComp(id, updateCompDto);
+    }
+    tokenCheck(authorization) {
+        const token = authorization.split(" ")[1];
+        try {
+            const verifyToken = this.jwtService.verifyAsync(token, { secret: process.env.SECRET });
+            if (verifyToken) {
+                const getUserId = verifyToken["sub"];
+                const user = this.userService.findById(getUserId);
+                return user;
+            }
+        }
+        catch (err) {
+            throw new common_1.UnauthorizedException("Invalid token");
+        }
     }
 };
 __decorate([
@@ -47,10 +65,17 @@ __decorate([
     __metadata("design:paramtypes", [updateComp_1.UpdateCompDto, Number]),
     __metadata("design:returntype", Promise)
 ], ComplianceController.prototype, "updateCompliance", null);
+__decorate([
+    (0, common_1.Get)(),
+    __param(0, (0, common_1.Headers)("authorization")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], ComplianceController.prototype, "tokenCheck", null);
 ComplianceController = __decorate([
     (0, common_1.Controller)('compliance'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
-    __metadata("design:paramtypes", [compliance_service_1.ComplianceService])
+    __metadata("design:paramtypes", [compliance_service_1.ComplianceService, jwt_1.JwtService, user_service_1.UserService])
 ], ComplianceController);
 exports.ComplianceController = ComplianceController;
 //# sourceMappingURL=compliance.controller.js.map

@@ -13,13 +13,16 @@ export class Compliances {
     NIN: string;
 
     @Column({nullable: true})
-    businessDetails: string;
+    businessDetails ?: string;
 
     @Column({unique: true, nullable:true})
-    bankCode: string
+    bankCode ?: string;
+
+    @Column({default: false})
+    completed: boolean;
 
     @Column()
-    userId: number
+    userId: number;
 
     @OneToOne( () => User, (user) => user.compliance)
     @JoinColumn()

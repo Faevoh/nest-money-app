@@ -17,7 +17,8 @@ export class CreateUserDto {
          message: "Password should contain atleast capital letter,small letter,number and special character, And must be at least 6 to 12 characters long"})
     password: string;
 
-    accountType: "business " | "personal";
+    @IsNotEmpty()
+    accountType: "business" | "personal";
 
     accountNumber: string;
 

@@ -84,7 +84,7 @@ let UserController = class UserController {
             const subject = "Password Reset";
             const text = `${resetToken}`;
             await this.mailService.sendMail(text, checkUser);
-            return { statusCode: 201, message: "An Email has been sent to you" };
+            return { statusCode: 201, message: "An Email with your token has been sent to you" };
         }
         catch (err) {
             throw new common_1.BadRequestException("Failed to Send Email");
