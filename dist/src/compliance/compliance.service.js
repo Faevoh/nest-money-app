@@ -31,9 +31,6 @@ let ComplianceService = class ComplianceService {
             const comp = new compEntity_entity_1.Compliances();
             comp.BVN = BVN;
             comp.NIN = NIN;
-            if (user.accountType === "business" && (!businessDetails || businessDetails.trim() === "")) {
-                throw new common_1.BadRequestException("This is a Business Account. Business Details must be provided");
-            }
             comp.businessDetails = businessDetails;
             comp.userId = user.id,
                 comp.completed = false;

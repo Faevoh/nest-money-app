@@ -4,6 +4,6 @@ export declare class CreateUserDto {
     email: string;
     password: string;
     accountType: "business" | "personal";
-    accountNumber: string;
+    accountNumber?: string;
     accountName: string;
 }
