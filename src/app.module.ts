@@ -19,8 +19,7 @@ import { hostDataSourceOptions } from 'db/host-data-source';
     envFilePath: [".env"],
     isGlobal: true
   }),
-  TypeOrmModule.forRoot(dataSourceOptions), 
-  TypeOrmModule.forRoot(hostDataSourceOptions),
+  TypeOrmModule.forRoot(dataSourceOptions),
   UserModule, AuthModule, ComplianceModule, AirtimeModule, MailModule, ConfigModule.forRoot({ 
     isGlobal: true,
     cache: true,
