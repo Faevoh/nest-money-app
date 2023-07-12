@@ -68,7 +68,6 @@ let UserController = class UserController {
     async recoverPassword(forgotPasswordDto) {
         try {
             const { email } = forgotPasswordDto;
-            console.log(email);
             const checkUser = await this.userService.findByEmail(email);
             if (!checkUser) {
                 throw new common_1.BadRequestException("Email does not exist");
@@ -76,9 +75,6 @@ let UserController = class UserController {
             const resetToken = (0, uuid_1.v4)();
             checkUser.resetToken = resetToken;
             checkUser.resetTokenExpiry = new Date(Date.now() + 3600000);
-            console.log(checkUser);
-            console.log(resetToken);
-            console.log(checkUser.resetTokenExpiry);
             await this.userService.saveUser(checkUser);
             const resetLink = `http://localhost:3000/reset-password?token=${resetToken}`;
             const subject = "Password Reset";
@@ -101,7 +97,6 @@ let UserController = class UserController {
         checkUser.resetTokenExpiry = null;
         const hashed = await bcrypt.hash(password, 10);
         await this.userService.update(checkUser.id, { password: hashed });
-        console.log(checkUser);
         return { statusCode: 200, message: "New Password saved" };
     }
 };

@@ -17,7 +17,7 @@ export class MailService {
       });
       return true;
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       return false;
     }
   }
@@ -35,7 +35,7 @@ export class MailService {
       // console.log(user.email)
       return true;
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       return false;
     }
   }

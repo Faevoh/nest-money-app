@@ -34,14 +34,11 @@ let ComplianceService = class ComplianceService {
             comp.businessDetails = businessDetails;
             comp.userId = user.id,
                 comp.completed = false;
-            console.log(user);
             const newComp = this.compRepo.create(comp);
             const result = await this.compRepo.save(newComp);
-            console.log(result);
             return { statusCode: 201, message: "Compliance Added", data: result };
         }
         catch (err) {
-            console.log(err);
             throw new common_1.InternalServerErrorException("Something occoured, Compliance not Added");
         }
     }

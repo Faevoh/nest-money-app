@@ -26,7 +26,6 @@ let WalletService = class WalletService {
         wallet.accountBalance = 0;
         wallet.user = user;
         wallet.userId = user.id;
-        console.log(wallet);
         return await this.walletRepo.save(wallet);
     }
     async getWallet() {

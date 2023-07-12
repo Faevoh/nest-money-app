@@ -21,7 +21,7 @@ export class TransactionService {
         const fillString = uuidv4();
         const randomNum = Math.floor(Math.random() * 10000).toString().padStart(50, fillString);
         const result =  `${prefix}-${timestamp}-${randomNum}`
-        console.log(result)
+        // console.log(result)
         data.transactionRef =  result;
         // const id = await this.userService.findById(user.id)
         // console.log(id)
@@ -38,7 +38,7 @@ export class TransactionService {
         const fillString = uuidv4();
         const randomNum = Math.floor(Math.random() * 10000).toString().padStart(50, fillString);
         const result =  `${prefix}-${timestamp}-${randomNum}`
-        console.log(result)
+        // console.log(result)
         data.transactionRef =  result;
         // const id = await this.userService.findById(user.id)
         // console.log(id)

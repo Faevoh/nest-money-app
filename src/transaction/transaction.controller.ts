@@ -24,7 +24,7 @@ export class TransactionController {
         console.log(walletdata.accountBalance)
 
         const savedWallet = await this.walletService.saveWallet(walletdata)
-        console.log(savedWallet)
+        // console.log(savedWallet)
 
         // console.log(userData)
         const maindata = await this.transactionService.credit(transaction, user, wallet)
@@ -38,7 +38,7 @@ export class TransactionController {
         transaction.userId = userData.id
 
         const walletdata = await this.walletService.findById(walletid)
-        console.log(walletdata)
+        // console.log(walletdata)
 
         if(walletdata.accountBalance === 0|| walletdata.accountBalance < 0 || walletdata.accountBalance <transaction.amount){
 
@@ -46,12 +46,12 @@ export class TransactionController {
         }
 
         walletdata.accountBalance -= transaction.amount
-        console.log(walletdata.accountBalance)
+        // console.log(walletdata.accountBalance)
 
         await this.walletService.saveWallet(walletdata)
 
         const compData = await this.compService.findByUserId(id)
-        console.log(compData)
+        // console.log(compData)
 
         const maindata = await this.transactionService.debit(transaction, user, wallet, comp)
 

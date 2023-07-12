@@ -31,7 +31,6 @@ let UserService = class UserService {
         this.mailService = mailService;
     }
     async register(createUserDto) {
-        console.log("A");
         try {
             const { firstName, lastName, email, password } = createUserDto;
             const userExist = await this.userRepo.findOneBy({ email });
@@ -51,7 +50,6 @@ let UserService = class UserService {
             data.createDate = new Date();
             data.updateDate = new Date();
             this.userRepo.create(data);
-            console.log("heyy" + data.accountNumber);
             await this.userRepo.save(data);
             await this.walletService.newWallet(data);
             delete data.phoneNumber;

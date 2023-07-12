@@ -31,7 +31,6 @@ let TransactionService = class TransactionService {
         const fillString = (0, uuid_1.v4)();
         const randomNum = Math.floor(Math.random() * 10000).toString().padStart(50, fillString);
         const result = `${prefix}-${timestamp}-${randomNum}`;
-        console.log(result);
         data.transactionRef = result;
         return await this.transRepo.save(data);
     }
@@ -42,7 +41,6 @@ let TransactionService = class TransactionService {
         const fillString = (0, uuid_1.v4)();
         const randomNum = Math.floor(Math.random() * 10000).toString().padStart(50, fillString);
         const result = `${prefix}-${timestamp}-${randomNum}`;
-        console.log(result);
         data.transactionRef = result;
         return await this.transRepo.save(data);
     }

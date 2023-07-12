@@ -56,7 +56,7 @@ export class UserController {
     async recoverPassword(@Body(ValidationPipe) forgotPasswordDto: ForgotPasswordDto){
         try{
             const {email} = forgotPasswordDto;
-            console.log(email)
+            // console.log(email)
 
             const checkUser = await this.userService.findByEmail(email)
             if(!checkUser) {
@@ -68,9 +68,9 @@ export class UserController {
             checkUser.resetToken = resetToken;
             checkUser.resetTokenExpiry = new Date(Date.now() + 3600000)
 
-            console.log(checkUser)
-            console.log(resetToken)
-            console.log(checkUser.resetTokenExpiry)
+            // console.log(checkUser)
+            // console.log(resetToken)
+            // console.log(checkUser.resetTokenExpiry)
 
             await this.userService.saveUser(checkUser)
 
@@ -104,7 +104,7 @@ export class UserController {
 
         // const data = await this.userService.saveUser(checkUser);
 
-        console.log(checkUser)
+        // console.log(checkUser)
         // console.log(data)
         return {statusCode: 200, message: "New Password saved"}
     }

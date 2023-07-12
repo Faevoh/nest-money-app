@@ -29,7 +29,6 @@ let MailService = class MailService {
             return true;
         }
         catch (error) {
-            console.log(error);
             return false;
         }
     }
@@ -46,7 +45,6 @@ let MailService = class MailService {
             return true;
         }
         catch (error) {
-            console.log(error);
             return false;
         }
     }

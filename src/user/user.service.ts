@@ -16,7 +16,7 @@ export class UserService {
     constructor(@InjectRepository(User) private userRepo: Repository<User>, private walletService: WalletService, private jwtService: JwtService, private acctService: accountGenerator, private mailService: MailService){}
 
     async register(createUserDto: CreateUserDto) {
-        console.log("A")
+        // console.log("A")
         try{
             const {firstName, lastName, email, password} = createUserDto
             
@@ -42,7 +42,7 @@ export class UserService {
             data.updateDate = new Date();
             
             this.userRepo.create(data)
-            console.log("heyy" + data.accountNumber)
+            // console.log("heyy" + data.accountNumber)
             await this.userRepo.save(data)
             await this.walletService.newWallet(data)
             // console.log(data)
