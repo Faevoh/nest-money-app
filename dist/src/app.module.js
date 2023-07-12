@@ -13,7 +13,6 @@ const app_service_1 = require("./app.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const config_1 = require("@nestjs/config");
 const user_module_1 = require("./user/user.module");
-const data_source_1 = require("../db/data-source");
 const auth_module_1 = require("./auth/auth.module");
 const compliance_module_1 = require("./compliance/compliance.module");
 const airtime_module_1 = require("./airtime/airtime.module");
@@ -29,7 +28,7 @@ AppModule = __decorate([
         imports: [config_1.ConfigModule.forRoot({
                 envFilePath: [".env"],
                 isGlobal: true
-            }), typeorm_1.TypeOrmModule.forRoot(host_data_source_1.hostDataSourceOptions), typeorm_1.TypeOrmModule.forRoot(data_source_1.dataSourceOptions),
+            }), typeorm_1.TypeOrmModule.forRoot(host_data_source_1.hostDataSourceOptions),
             user_module_1.UserModule, auth_module_1.AuthModule, compliance_module_1.ComplianceModule, airtime_module_1.AirtimeModule, mail_module_1.MailModule, config_1.ConfigModule.forRoot({
                 isGlobal: true,
                 cache: true,
