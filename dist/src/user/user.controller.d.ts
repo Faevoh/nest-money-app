@@ -32,10 +32,10 @@ export declare class UserController {
         message: string;
         data: {
             id: number;
-            FirstName: string;
-            LastName: string;
+            firstName: string;
+            lastName: string;
             email: string;
-            accountType: "business" | "personal";
+            accountType: boolean;
             accountNumber: string;
             accountName: string;
             password: string;

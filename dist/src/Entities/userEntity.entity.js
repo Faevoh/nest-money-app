@@ -23,18 +23,18 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], User.prototype, "FirstName", void 0);
+], User.prototype, "firstName", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], User.prototype, "LastName", void 0);
+], User.prototype, "lastName", void 0);
 __decorate([
     (0, typeorm_1.Column)({ unique: true }),
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
+    (0, typeorm_1.Column)({ default: false }),
+    __metadata("design:type", Boolean)
 ], User.prototype, "accountType", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),

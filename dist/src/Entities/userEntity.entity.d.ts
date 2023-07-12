@@ -3,10 +3,10 @@ import { Wallet } from "./walletEntity.entity";
 import { Transactions } from "./transactionEntity.entity";
 export declare class User {
     id: number;
-    FirstName: string;
-    LastName: string;
+    firstName: string;
+    lastName: string;
     email: string;
-    accountType: "business" | "personal";
+    accountType: boolean;
     accountNumber: string;
     accountName: string;
     password: string;

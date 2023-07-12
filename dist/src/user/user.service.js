@@ -33,7 +33,7 @@ let UserService = class UserService {
     async register(createUserDto) {
         console.log("A");
         try {
-            const { FirstName, LastName, email, password, accountType } = createUserDto;
+            const { firstName, lastName, email, password } = createUserDto;
             const userExist = await this.userRepo.findOneBy({ email });
             if (userExist) {
                 return { statusCode: 400, message: "User Exists Already", data: null };
@@ -41,12 +41,12 @@ let UserService = class UserService {
             const hashed = await bcrypt.hash(password, 10);
             const salt = bcrypt.getSalt(hashed);
             const data = new userEntity_entity_1.User();
-            data.FirstName = FirstName;
-            data.LastName = LastName;
+            data.firstName = firstName;
+            data.lastName = lastName;
             data.email = email;
             data.password = hashed;
-            data.accountType = accountType;
-            data.accountName = `${data.LastName} ${data.FirstName}`;
+            data.accountType = false;
+            data.accountName = `${data.lastName} ${data.firstName}`;
             data.accountNumber = this.acctService.accountnumberGenerator();
             data.createDate = new Date();
             data.updateDate = new Date();
@@ -58,7 +58,7 @@ let UserService = class UserService {
             delete data.resetToken;
             delete data.resetTokenExpiry;
             const verify = `https://marco-lyart.vercel.app/#/verify`;
-            const text = `Dear ${createUserDto.FirstName}, 
+            const text = `Dear ${createUserDto.firstName}, 
             Welcome to Money App. 
             Kindly click on the link to verify your email ${verify} `;
             await this.mailService.welcomeMail(text, data);

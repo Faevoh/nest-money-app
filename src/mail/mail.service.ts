@@ -26,7 +26,7 @@ export class MailService {
     try {
       await this.mailerService.sendMail({
         to: user.email,
-        subject: `Welcome To Money App ${user.FirstName}`,
+        subject: `Welcome To Money App ${user.firstName}`,
         template: './welcome',
         context: {
           url: url,

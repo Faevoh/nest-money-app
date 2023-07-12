@@ -3,10 +3,10 @@ import { IsEmail, IsNotEmpty, IsNumberString, Matches, MaxLength, MinLength } fr
 
 export class CreateUserDto {
     @IsNotEmpty()
-    FirstName: string;
+    firstName: string;
 
     @IsNotEmpty()
-    LastName: string;
+    lastName: string;
 
     @IsNotEmpty()
     @IsEmail()
@@ -19,11 +19,5 @@ export class CreateUserDto {
     password: string;
 
     @IsNotEmpty()
-    accountType: "business" | "personal";
-
-    @Optional()
-    accountNumber?: string;
-
-    accountName: string;
-
+    accountType: boolean;
 }

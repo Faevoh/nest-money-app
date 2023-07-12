@@ -1,9 +1,7 @@
 export declare class CreateUserDto {
-    FirstName: string;
-    LastName: string;
+    firstName: string;
+    lastName: string;
     email: string;
     password: string;
-    accountType: "business" | "personal";
-    accountNumber?: string;
-    accountName: string;
+    accountType: boolean;
 }

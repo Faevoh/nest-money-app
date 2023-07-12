@@ -9,16 +9,17 @@ export class User {
     id: number;
 
     @Column()
-    FirstName: string;
+    firstName: string;
 
     @Column()
-    LastName: string;
+    lastName: string;
 
     @Column({unique: true})
     email: string;
  
-    @Column() 
-    accountType: "business"| "personal";
+    //if accountType is false then accountType = personal; if accountType is true then accountType = business
+    @Column({default: false}) 
+    accountType: boolean;
 
     @Column({nullable: true})
     accountNumber: string;

@@ -18,7 +18,7 @@ export class UserService {
     async register(createUserDto: CreateUserDto) {
         console.log("A")
         try{
-            const {FirstName, LastName, email, password, accountType} = createUserDto
+            const {firstName, lastName, email, password} = createUserDto
             
             /* If user already exists*/
             const userExist = await this.userRepo.findOneBy({email});
@@ -31,12 +31,12 @@ export class UserService {
             const salt = bcrypt.getSalt(hashed)
 
             const data = new User();
-            data.FirstName = FirstName;
-            data.LastName = LastName;
+            data.firstName = firstName;
+            data.lastName = lastName;
             data.email = email;
             data.password = hashed;
-            data.accountType = accountType;
-            data.accountName = `${data.LastName} ${data.FirstName}`
+            data.accountType = false;
+            data.accountName = `${data.lastName} ${data.firstName}`
             data.accountNumber = this.acctService.accountnumberGenerator()
             data.createDate = new Date();
             data.updateDate = new Date();
@@ -59,7 +59,7 @@ export class UserService {
 
 
             const verify = `https://marco-lyart.vercel.app/#/verify`
-            const text = `Dear ${createUserDto.FirstName}, 
+            const text = `Dear ${createUserDto.firstName}, 
             Welcome to Money App. 
             Kindly click on the link to verify your email ${verify} `;
 
