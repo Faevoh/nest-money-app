@@ -60,7 +60,7 @@ let UserService = class UserService {
             Welcome to Money App. 
             Kindly click on the link to verify your email ${verify} `;
             await this.mailService.welcomeMail(text, data);
-            return { statusCode: 201, message: "User successfully Created", data: data };
+            return { statusCode: 201, message: "User successfully Created" };
         }
         catch (err) {
             throw new common_1.InternalServerErrorException("Something went wrong, User not Created");

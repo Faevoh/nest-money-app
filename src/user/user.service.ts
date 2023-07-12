@@ -65,7 +65,7 @@ export class UserService {
 
             await this.mailService.welcomeMail(text, data);
            
-            return {statusCode: 201, message: "User successfully Created", data: data}
+            return {statusCode: 201, message: "User successfully Created"}
         }catch(err){
             throw new InternalServerErrorException("Something went wrong, User not Created")
         }

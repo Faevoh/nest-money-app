@@ -15,7 +15,11 @@ export declare class UserController {
     registerUser(createUserDto: CreateUserDto): Promise<{
         statusCode: number;
         message: string;
-        data: import("../Entities/userEntity.entity").User;
+        data: any;
+    } | {
+        statusCode: number;
+        message: string;
+        data?: undefined;
     }>;
     login(req: any): Promise<{
         statusCode: number;
