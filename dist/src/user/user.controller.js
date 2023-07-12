@@ -37,6 +37,7 @@ const resetPassword_1 = require("../DTO/resetPassword");
 const bcrypt = require("bcryptjs");
 const generator_service_1 = require("../auth/generator.service");
 const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
+const userEntity_entity_1 = require("../Entities/userEntity.entity");
 let UserController = class UserController {
     constructor(userService, mailService, authService, acctService) {
         this.userService = userService;
@@ -86,9 +87,10 @@ let UserController = class UserController {
             throw new common_1.BadRequestException("Failed to Send Email");
         }
     }
-    async resetPassword(resetPasswordDto) {
-        const { token, password } = resetPasswordDto;
-        const checkUser = await this.userService.findByToken(token);
+    async resetPassword(resetPasswordDto, users) {
+        const { password } = resetPasswordDto;
+        const { resetToken } = users;
+        const checkUser = await this.userService.findByToken(resetToken);
         if (!checkUser) {
             throw new common_1.NotFoundException("User token is invalid or has expired");
         }
@@ -153,10 +155,9 @@ __decorate([
 ], UserController.prototype, "recoverPassword", null);
 __decorate([
     (0, common_1.Post)("/reset-password"),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Body)(common_1.ValidationPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [resetPassword_1.ResetPasswordDto]),
+    __metadata("design:paramtypes", [resetPassword_1.ResetPasswordDto, userEntity_entity_1.User]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "resetPassword", null);
 UserController = __decorate([

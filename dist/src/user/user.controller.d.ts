@@ -6,6 +6,7 @@ import { ForgotPasswordDto } from 'src/DTO/forgotPassword';
 import { MailService } from 'src/mail/mail.service';
 import { ResetPasswordDto } from 'src/DTO/resetPassword';
 import { accountGenerator } from 'src/auth/generator.service';
+import { User } from 'src/Entities/userEntity.entity';
 export declare class UserController {
     private userService;
     private mailService;
@@ -30,7 +31,7 @@ export declare class UserController {
         success: boolean;
         message: string;
     }>;
-    getAll(): Promise<import("../Entities/userEntity.entity").User[]>;
+    getAll(): Promise<User[]>;
     getOne(id: number): Promise<{
         statusCode: number;
         message: string;
@@ -54,13 +55,13 @@ export declare class UserController {
     updateUser(id: number, updateUserDto: UpdateUserDto): Promise<{
         statusCode: number;
         message: string;
-        user: import("../Entities/userEntity.entity").User;
+        user: User;
     }>;
     recoverPassword(forgotPasswordDto: ForgotPasswordDto): Promise<{
         statusCode: number;
         message: string;
     }>;
-    resetPassword(resetPasswordDto: ResetPasswordDto): Promise<{
+    resetPassword(resetPasswordDto: ResetPasswordDto, users: User): Promise<{
         statusCode: number;
         message: string;
     }>;

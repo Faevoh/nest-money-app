@@ -95,8 +95,8 @@ export class UserService {
         return await this.userRepo.update(id, data)
     }
 
-    async findByToken(token: string) {
-        return await this.userRepo.findOneBy({resetToken: token})
+    async findByToken(resetToken: string) {
+        return await this.userRepo.findOneBy({resetToken})
     }
 
     async deleteUser(id: number) {

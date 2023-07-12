@@ -84,8 +84,8 @@ let UserService = class UserService {
     async update(id, data) {
         return await this.userRepo.update(id, data);
     }
-    async findByToken(token) {
-        return await this.userRepo.findOneBy({ resetToken: token });
+    async findByToken(resetToken) {
+        return await this.userRepo.findOneBy({ resetToken });
     }
     async deleteUser(id) {
         const deleteuser = await this.findById(id);

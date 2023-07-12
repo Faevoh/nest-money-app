@@ -16,10 +16,6 @@ class ResetPasswordDto {
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
-], ResetPasswordDto.prototype, "token", void 0);
-__decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
 ], ResetPasswordDto.prototype, "password", void 0);
 exports.ResetPasswordDto = ResetPasswordDto;
 //# sourceMappingURL=resetPassword.js.map

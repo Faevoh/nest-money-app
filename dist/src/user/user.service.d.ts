@@ -28,7 +28,7 @@ export declare class UserService {
     findByEmail(email: string): Promise<User>;
     saveUser(user: User): Promise<User>;
     update(id: number, data: any): Promise<import("typeorm").UpdateResult>;
-    findByToken(token: string): Promise<User>;
+    findByToken(resetToken: string): Promise<User>;
     deleteUser(id: number): Promise<{
         success: boolean;
         message: string;

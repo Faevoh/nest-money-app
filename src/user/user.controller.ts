@@ -11,6 +11,7 @@ import { ResetPasswordDto } from 'src/DTO/resetPassword';
 import * as bcrypt from 'bcryptjs'
 import { accountGenerator } from 'src/auth/generator.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { User } from 'src/Entities/userEntity.entity';
 
 @Controller('user')
 export class UserController {
@@ -86,11 +87,10 @@ export class UserController {
     }
 
     @Post("/reset-password")
-    @UseGuards(JwtAuthGuard)
-    async resetPassword(@Body(ValidationPipe) resetPasswordDto: ResetPasswordDto) {
-        const {token, password} = resetPasswordDto;
-
-        const checkUser = await this.userService.findByToken(token);
+    async resetPassword(@Body(ValidationPipe) resetPasswordDto: ResetPasswordDto, users: User) {
+        const {password} = resetPasswordDto;
+        const {resetToken} = users
+        const checkUser = await this.userService.findByToken(resetToken);
         if(!checkUser) { throw new NotFoundException ("User token is invalid or has expired")}
 
         checkUser.password = password;
