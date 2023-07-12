@@ -52,7 +52,6 @@ export class UserController {
     }
 
     @Post("/recover-password")
-    @UseGuards(JwtAuthGuard)
     async recoverPassword(@Body(ValidationPipe) forgotPasswordDto: ForgotPasswordDto){
         try{
             const {email} = forgotPasswordDto;
