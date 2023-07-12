@@ -29,8 +29,7 @@ AppModule = __decorate([
         imports: [config_1.ConfigModule.forRoot({
                 envFilePath: [".env"],
                 isGlobal: true
-            }),
-            typeorm_1.TypeOrmModule.forRoot(data_source_1.dataSourceOptions), typeorm_1.TypeOrmModule.forRoot(host_data_source_1.hostDataSourceOptions),
+            }), typeorm_1.TypeOrmModule.forRoot(host_data_source_1.hostDataSourceOptions), typeorm_1.TypeOrmModule.forRoot(data_source_1.dataSourceOptions),
             user_module_1.UserModule, auth_module_1.AuthModule, compliance_module_1.ComplianceModule, airtime_module_1.AirtimeModule, mail_module_1.MailModule, config_1.ConfigModule.forRoot({
                 isGlobal: true,
                 cache: true,
