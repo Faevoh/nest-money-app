@@ -23,7 +23,7 @@ export class UserService {
             /* If user already exists*/
             const userExist = await this.userRepo.findOneBy({email});
             if(userExist) {
-               return new BadRequestException ("User Exists Already");
+               throw new BadRequestException ("User Exists Already");
             }
             
             /* Creating New User*/

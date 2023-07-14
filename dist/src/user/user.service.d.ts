@@ -1,4 +1,3 @@
-import { BadRequestException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/DTO/createUser';
@@ -14,7 +13,7 @@ export declare class UserService {
     private acctService;
     private mailService;
     constructor(userRepo: Repository<User>, walletService: WalletService, jwtService: JwtService, acctService: accountGenerator, mailService: MailService);
-    register(createUserDto: CreateUserDto): Promise<BadRequestException | {
+    register(createUserDto: CreateUserDto): Promise<{
         statusCode: number;
         message: string;
     }>;

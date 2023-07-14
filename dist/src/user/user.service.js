@@ -35,7 +35,7 @@ let UserService = class UserService {
             const { firstName, lastName, email, password } = createUserDto;
             const userExist = await this.userRepo.findOneBy({ email });
             if (userExist) {
-                return new common_1.BadRequestException("User Exists Already");
+                throw new common_1.BadRequestException("User Exists Already");
             }
             const hashed = await bcrypt.hash(password, 10);
             const salt = bcrypt.getSalt(hashed);
