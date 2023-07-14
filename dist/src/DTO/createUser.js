@@ -29,7 +29,7 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.MinLength)(6),
-    (0, class_validator_1.MaxLength)(12),
+    (0, class_validator_1.MaxLength)(20),
     (0, class_validator_1.Matches)(/(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
         message: "Password should contain atleast capital letter,small letter,number and special character, And must be at least 6 to 12 characters long"
     }),

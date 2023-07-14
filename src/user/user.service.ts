@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs'
@@ -23,7 +23,7 @@ export class UserService {
             /* If user already exists*/
             const userExist = await this.userRepo.findOneBy({email});
             if(userExist) {
-                return {statusCode: 400, message: "User Exists Already", data: null};
+                throw new BadRequestException ({statusCode: 400, message: "User Exists Already", data: null});
             }
             
             /* Creating New User*/

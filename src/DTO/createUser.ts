@@ -13,7 +13,7 @@ export class CreateUserDto {
     email: string;
 
     @IsNotEmpty()
-    @MinLength(6) @MaxLength(12)
+    @MinLength(6) @MaxLength(20)
     @Matches(/(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/ ,{
          message: "Password should contain atleast capital letter,small letter,number and special character, And must be at least 6 to 12 characters long"})
     password: string;

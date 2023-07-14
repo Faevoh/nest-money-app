@@ -16,11 +16,6 @@ export declare class UserService {
     register(createUserDto: CreateUserDto): Promise<{
         statusCode: number;
         message: string;
-        data: any;
-    } | {
-        statusCode: number;
-        message: string;
-        data?: undefined;
     }>;
     login(email: string): Promise<User>;
     findById(id: number): Promise<User>;
