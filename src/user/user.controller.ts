@@ -18,7 +18,11 @@ export class UserController {
     constructor(private userService: UserService, private mailService: MailService, private authService: AuthService, private acctService: accountGenerator){}
 
     @Post("/register")
-    async registerUser(@Body(ValidationPipe) createUserDto: CreateUserDto){ 
+    async registerUser(@Body(ValidationPipe) createUserDto: CreateUserDto, email: string){ 
+        const userExist = await this.userService.findByEmail(email);
+            if(userExist) {
+               throw new BadRequestException("User Exists Already");
+            }
         return this.userService.register(createUserDto)
     }
 

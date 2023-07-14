@@ -13,7 +13,7 @@ export declare class UserController {
     private authService;
     private acctService;
     constructor(userService: UserService, mailService: MailService, authService: AuthService, acctService: accountGenerator);
-    registerUser(createUserDto: CreateUserDto): Promise<{
+    registerUser(createUserDto: CreateUserDto, email: string): Promise<{
         statusCode: number;
         message: string;
     }>;
