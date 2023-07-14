@@ -1,3 +1,4 @@
+import { BadRequestException } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from 'src/DTO/createUser';
 import { AuthService } from 'src/auth/auth.service';
@@ -13,7 +14,7 @@ export declare class UserController {
     private authService;
     private acctService;
     constructor(userService: UserService, mailService: MailService, authService: AuthService, acctService: accountGenerator);
-    registerUser(createUserDto: CreateUserDto): Promise<{
+    registerUser(createUserDto: CreateUserDto): Promise<BadRequestException | {
         statusCode: number;
         message: string;
     }>;

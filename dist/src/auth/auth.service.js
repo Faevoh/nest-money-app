@@ -34,6 +34,12 @@ let AuthService = class AuthService {
     }
     async validateUser(email, password) {
         const user = await this.userService.login(email);
+        if (!email) {
+            return new common_1.NotFoundException("Invalid User");
+        }
+        if (!await bcrypt.compare(password, user.password)) {
+            return new common_1.NotFoundException("Email or Password are Invalid");
+        }
         if (user && await bcrypt.compare(password, user.password)) {
             return user;
         }
