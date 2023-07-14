@@ -24,10 +24,10 @@ export class AuthService {
         const users = await this.userService.findById(payload.sub)
         const {password, email, ...data} = users
 
-        if(!users.email){
+        if(!email){
             throw new NotFoundException("Invalid User")
         }
-        if(!users.password){
+        if(!password){
             throw new NotFoundException("Email or Password are Invalid")
         }
 
