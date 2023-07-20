@@ -34,21 +34,19 @@ let AuthService = class AuthService {
     }
     async validateUser(email, password) {
         const user = await this.userService.login(email);
-        if (user && await bcrypt.compare(password, user.password)) {
-            return user;
+        if (!user) {
+            throw new common_1.NotFoundException("Invalid User");
         }
-        return null;
+        const checkPassword = await bcrypt.compare(password, user.password);
+        if (!checkPassword) {
+            throw new common_1.UnauthorizedException("Wrong User Credentials");
+        }
+        return user;
     }
     async login(user) {
         const payload = { email: user.email, sub: user.id };
         const users = await this.userService.findById(payload.sub);
         const { password, email } = users, data = __rest(users, ["password", "email"]);
-        if (!email) {
-            throw new common_1.NotFoundException("Invalid User");
-        }
-        if (!password) {
-            throw new common_1.NotFoundException("Email or Password are Invalid");
-        }
         return {
             statusCode: 201,
             message: "Successfully logged in",

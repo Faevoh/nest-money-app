@@ -27,7 +27,13 @@ let LocalStraregy = class LocalStraregy extends (0, passport_1.PassportStrategy)
             return user;
         }
         catch (err) {
-            throw new common_1.UnauthorizedException("You are not authorized");
+            if (err instanceof common_1.NotFoundException) {
+                throw new common_1.UnauthorizedException("Invalid User");
+            }
+            if (err instanceof common_1.UnauthorizedException) {
+                throw new common_1.UnauthorizedException("Wrong User Credentials");
+            }
+            throw err;
         }
     }
 };

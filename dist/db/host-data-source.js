@@ -11,14 +11,15 @@ const transactionEntity_entity_1 = require("../src/Entities/transactionEntity.en
 (0, dotenv_1.config)();
 exports.hostDataSourceOptions = {
     type: "mysql",
-    host: process.env.RSD_ENDPOINT,
-    port: parseInt(process.env.RSD_PORT),
-    username: process.env.RSD_USERNAME,
-    password: process.env.RSD_PASSWORD,
-    database: process.env.RSD_DATABASE,
+    host: process.env.MYSQLHOST,
+    port: parseInt(process.env.MYSQLPORT),
+    username: process.env.MYSQLUSER,
+    password: process.env.MYSQLPASSWORD,
+    database: process.env.MYSQLDATABASE,
     entities: [userEntity_entity_1.User, compEntity_entity_1.Compliances, airtimeEntity_entity_1.Airtime, walletEntity_entity_1.Wallet, transactionEntity_entity_1.Transactions],
     synchronize: true,
-    migrations: ["dist/db/migrations/*.js"]
+    migrations: ["dist/db/migrations/*.js"],
+    url: process.env.MYSQL_URL
 };
 const hostDataSource = new typeorm_1.DataSource(exports.hostDataSourceOptions);
 exports.default = hostDataSource;
