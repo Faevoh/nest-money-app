@@ -18,7 +18,7 @@ export class UserService {
     async register(createUserDto: CreateUserDto) {
         console.log("A")
         try{
-            const {firstName, lastName, email, password} = createUserDto
+            const {firstName, lastName, email, password, accountType} = createUserDto
             
             /* If user already exists*/
             const userExist = await this.userRepo.findOneBy({email});

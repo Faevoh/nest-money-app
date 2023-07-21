@@ -32,8 +32,9 @@ let UserService = class UserService {
         this.mailService = mailService;
     }
     async register(createUserDto) {
+        console.log("A");
         try {
-            const { firstName, lastName, email, password } = createUserDto;
+            const { firstName, lastName, email, password, accountType } = createUserDto;
             const userExist = await this.userRepo.findOneBy({ email });
             if (userExist) {
                 throw new common_1.BadRequestException("User Exists Already");
