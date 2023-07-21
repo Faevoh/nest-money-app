@@ -16,12 +16,29 @@ let MailService = class MailService {
     constructor(mailerService) {
         this.mailerService = mailerService;
     }
+    async loginMail(text, link, user) {
+        try {
+            await this.mailerService.sendMail({
+                to: user.email,
+                subject: `Login to Money App`,
+                template: './loginMail',
+                context: {
+                    text: text,
+                    link: link
+                },
+            });
+            return true;
+        }
+        catch (error) {
+            return false;
+        }
+    }
     async sendMail(url, user) {
         try {
             await this.mailerService.sendMail({
                 to: user.email,
                 subject: 'Reset Password Notification',
-                template: './template',
+                template: './resetPassword',
                 context: {
                     url: url,
                 },
@@ -32,12 +49,12 @@ let MailService = class MailService {
             return false;
         }
     }
-    async welcomeMail(text, link, user) {
+    async VerifyMail(text, link, user) {
         try {
             await this.mailerService.sendMail({
                 to: user.email,
-                subject: `Welcome To Money App ${user.firstName}`,
-                template: './welcome',
+                subject: `Verify your Money App account`,
+                template: './verifyEmail',
                 context: {
                     text: text,
                     link: link

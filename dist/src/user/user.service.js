@@ -58,12 +58,12 @@ let UserService = class UserService {
             delete data.phoneNumber;
             delete data.resetToken;
             delete data.resetTokenExpiry;
-            const verify = `https://marco-lyart.vercel.app/#/verify?email=${encodeURIComponent(data.email)}&token=${data.verifyToken}`;
+            const verify = `https://moneyapp-oj7v.onrender.com/api/user/verify?email=${encodeURIComponent(data.email)}&token=${data.verifyToken}`;
             const text = ` Welcome to Money App,
             Thank you for signing up.
             Kindly click on the link to verify your email`;
             const link = `${verify}`;
-            await this.mailService.welcomeMail(text, link, data);
+            await this.mailService.VerifyMail(text, link, data);
             return { statusCode: 201, message: "User successfully Created" };
         }
         catch (err) {

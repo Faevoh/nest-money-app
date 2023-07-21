@@ -30,7 +30,16 @@ export class UserController {
             return "Invalid verification link"
         }
         await this.userService.updateStatus(check.id, true);
-        return {statuscode:200,message:"Email verification successful"}
+
+        const verify = `https://marco-lyart.vercel.app/#/verify`
+        const text = ` Welcome to Money App,
+        Thank you for signing up.
+        Kindly click on the link to login to your account`;
+        const link = `${verify}`
+
+        await this.mailService.loginMail(text,link,check);
+
+        return {statuscode:200,message:"Email verification successful, Check email to login"}
     }
 
     @UseGuards(LocalAuthGuard)

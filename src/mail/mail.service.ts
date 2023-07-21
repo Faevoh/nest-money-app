@@ -5,12 +5,31 @@ import { User } from 'src/Entities/userEntity.entity';
 export class MailService {
   constructor(private mailerService: MailerService) {}
 
+  async loginMail(text: string, link: string, user: User) {
+    try {
+      await this.mailerService.sendMail({
+        to: user.email,
+        subject: `Login to Money App`,
+        template: './loginMail',
+        context: {
+          text: text,
+          link: link
+        },
+      });
+      // console.log(user.email)
+      return true;
+    } catch (error) {
+      // console.log(error);
+      return false;
+    }
+  }
+
   async sendMail(url: string, user: User) {
     try {
       await this.mailerService.sendMail({
         to: user.email,
         subject: 'Reset Password Notification',
-        template: './template',
+        template: './resetPassword',
         context: {
           url: url,
         },
@@ -22,12 +41,12 @@ export class MailService {
     }
   }
 
-  async welcomeMail(text: string, link: string, user: User) {
+  async VerifyMail(text: string, link: string, user: User) {
     try {
       await this.mailerService.sendMail({
         to: user.email,
-        subject: `Welcome To Money App ${user.firstName}`,
-        template: './welcome',
+        subject: `Verify your Money App account`,
+        template: './verifyEmail',
         context: {
           text: text,
           link: link
