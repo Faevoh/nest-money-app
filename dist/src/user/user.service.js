@@ -33,6 +33,10 @@ let UserService = class UserService {
     async register(createUserDto) {
         try {
             const { firstName, lastName, email, password } = createUserDto;
+            const userExist = await this.userRepo.findOneBy({ email });
+            if (userExist) {
+                throw new common_1.BadRequestException("User Exists Already");
+            }
             const hashed = await bcrypt.hash(password, 10);
             const salt = bcrypt.getSalt(hashed);
             const data = new userEntity_entity_1.User();

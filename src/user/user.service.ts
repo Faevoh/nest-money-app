@@ -21,10 +21,10 @@ export class UserService {
             const {firstName, lastName, email, password} = createUserDto
             
             /* If user already exists*/
-            // const userExist = await this.userRepo.findOneBy({email});
-            // if(userExist) {
-            //    throw new BadRequestException("User Exists Already");
-            // }
+            const userExist = await this.userRepo.findOneBy({email});
+            if(userExist) {
+               throw new BadRequestException("User Exists Already");
+            }
             
             /* Creating New User*/
             const hashed = await bcrypt.hash(password, 10);

@@ -45,11 +45,7 @@ let UserController = class UserController {
         this.authService = authService;
         this.acctService = acctService;
     }
-    async registerUser(createUserDto, email) {
-        const userExist = await this.userService.findByEmail(email);
-        if (userExist) {
-            throw new common_1.BadRequestException("User Exists Already");
-        }
+    async registerUser(createUserDto) {
         return this.userService.register(createUserDto);
     }
     login(req) {
@@ -110,7 +106,7 @@ __decorate([
     (0, common_1.Post)("/register"),
     __param(0, (0, common_1.Body)(common_1.ValidationPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [createUser_1.CreateUserDto, String]),
+    __metadata("design:paramtypes", [createUser_1.CreateUserDto]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "registerUser", null);
 __decorate([
