@@ -32,14 +32,12 @@ let UserService = class UserService {
         this.mailService = mailService;
     }
     async register(createUserDto) {
-        console.log("A");
         try {
             const { firstName, lastName, email, password, accountType } = createUserDto;
             const userExist = await this.userRepo.findOneBy({ email });
             if (userExist) {
                 throw new common_1.BadRequestException("User Exists Already");
             }
-            console.log("hey1");
             const hashed = await bcrypt.hash(password, 10);
             const salt = bcrypt.getSalt(hashed);
             const data = new userEntity_entity_1.User();
@@ -54,12 +52,8 @@ let UserService = class UserService {
             data.verifyToken = (0, uuid_1.v4)();
             data.createDate = new Date();
             data.updateDate = new Date();
-            console.log("hey2");
             this.userRepo.create(data);
-            console.log(data);
-            console.log("hey3");
             await this.userRepo.save(data);
-            console.log("hey4" + data);
             await this.walletService.newWallet(data);
             delete data.phoneNumber;
             delete data.resetToken;
