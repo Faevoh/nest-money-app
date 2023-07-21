@@ -8,7 +8,7 @@ import { User } from 'src/Entities/userEntity.entity';
 import { UpdateUserDto } from 'src/DTO/updateUser';
 import { Wallet } from 'src/Entities/walletEntity.entity';
 import { WalletService } from 'src/wallet/wallet.service';
-// import { accountGenerator } from 'src/auth/generator.service';
+import {v4 as uuidv4} from "uuid"
 import {accountGenerator} from "../auth/generator.service"
 import { MailService } from 'src/mail/mail.service';
 @Injectable()
@@ -36,8 +36,10 @@ export class UserService {
             data.email = email;
             data.password = hashed;
             data.accountType = false;
-            data.accountName = `${data.lastName} ${data.firstName}`
-            data.accountNumber = this.acctService.accountnumberGenerator()
+            data.accountName = `${data.lastName} ${data.firstName}`;
+            data.accountNumber = this.acctService.accountnumberGenerator();
+            data.verified = false;
+            data.verifyToken = uuidv4();
             data.createDate = new Date();
             data.updateDate = new Date();
             
@@ -58,9 +60,10 @@ export class UserService {
             delete data.resetTokenExpiry
 
 
-            const verify = `https://marco-lyart.vercel.app/#/verify`
-            const text = `Dear ${createUserDto.firstName}, 
-            Welcome to Money App. 
+            // const verify = `https://marco-lyart.vercel.app/#/verify`
+            const verify = `https://marco-lyart.vercel.app/#/verify?email=${encodeURIComponent(data.email)}&token=${data.verifyToken}`
+            const text = ` Welcome to Money App,
+            Thank you for signing up.
             Kindly click on the link to verify your email ${verify} `;
 
             await this.mailService.welcomeMail(text, data);
@@ -101,7 +104,6 @@ export class UserService {
 
     async deleteUser(id: number) {
         const deleteuser = await this.findById(id)
-        // return await this.userRepo.remove(deleteuser)
 
         const result = await this.userRepo.delete(deleteuser)
 
@@ -135,5 +137,12 @@ export class UserService {
             throw new NotFoundException("User not found, update not processed")
         }
     }
+
+    async findByEmailAndVerifyToken(email: string, verifyToken: string) {
+        return await this.userRepo.findOneBy({email, verifyToken});
+    }
     
+    async updateStatus(id: number, verified:  boolean) {
+        return this.userRepo.update(id, {verified});
+    }
 }

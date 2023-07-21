@@ -11,6 +11,8 @@ export declare class User {
     accountName: string;
     password: string;
     phoneNumber: string;
+    verified: boolean;
+    verifyToken: string;
     createDate: Date;
     updateDate: Date;
     resetToken: string;

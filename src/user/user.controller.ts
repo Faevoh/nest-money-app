@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Patch, Post, Request, UseGuards, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Patch, Post, Query, Request, UseGuards, ValidationPipe } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from 'src/DTO/createUser';
 import { LocalAuthGuard } from 'src/auth/local.auth.guard';
@@ -20,6 +20,16 @@ export class UserController {
     @Post("/register")
     async registerUser(@Body(ValidationPipe) createUserDto: CreateUserDto){ 
         return this.userService.register(createUserDto)
+    }
+
+    @Get("/verify")
+    async emailVerification(@Query("email") email: string, @Query("verifyToken") verifyToken: string) {
+        const check = await this.userService.findByEmailAndVerifyToken(email, verifyToken);
+        if(!check){
+            return "Invalid verification link"
+        }
+        await this.userService.updateStatus(check.id, true);
+        return "Email verification successfull"
     }
 
     @UseGuards(LocalAuthGuard)

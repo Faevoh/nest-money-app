@@ -20,6 +20,7 @@ const bcrypt = require("bcryptjs");
 const jwt_1 = require("@nestjs/jwt");
 const userEntity_entity_1 = require("../Entities/userEntity.entity");
 const wallet_service_1 = require("../wallet/wallet.service");
+const uuid_1 = require("uuid");
 const generator_service_1 = require("../auth/generator.service");
 const mail_service_1 = require("../mail/mail.service");
 let UserService = class UserService {
@@ -47,6 +48,8 @@ let UserService = class UserService {
             data.accountType = false;
             data.accountName = `${data.lastName} ${data.firstName}`;
             data.accountNumber = this.acctService.accountnumberGenerator();
+            data.verified = false;
+            data.verifyToken = (0, uuid_1.v4)();
             data.createDate = new Date();
             data.updateDate = new Date();
             this.userRepo.create(data);
@@ -55,9 +58,9 @@ let UserService = class UserService {
             delete data.phoneNumber;
             delete data.resetToken;
             delete data.resetTokenExpiry;
-            const verify = `https://marco-lyart.vercel.app/#/verify`;
-            const text = `Dear ${createUserDto.firstName}, 
-            Welcome to Money App. 
+            const verify = `https://marco-lyart.vercel.app/#/verify?email=${encodeURIComponent(data.email)}&token=${data.verifyToken}`;
+            const text = ` Welcome to Money App,
+            Thank you for signing up.
             Kindly click on the link to verify your email ${verify} `;
             await this.mailService.welcomeMail(text, data);
             return { statusCode: 201, message: "User successfully Created" };
@@ -115,6 +118,12 @@ let UserService = class UserService {
         catch (err) {
             throw new common_1.NotFoundException("User not found, update not processed");
         }
+    }
+    async findByEmailAndVerifyToken(email, verifyToken) {
+        return await this.userRepo.findOneBy({ email, verifyToken });
+    }
+    async updateStatus(id, verified) {
+        return this.userRepo.update(id, { verified });
     }
 };
 UserService = __decorate([

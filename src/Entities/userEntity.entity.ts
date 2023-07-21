@@ -33,26 +33,32 @@ export class User {
     @Column({nullable: true})
     phoneNumber: string;
 
-   @Column()
-   @CreateDateColumn()
-   createDate: Date;
+    @Column({default: false})
+    verified: boolean;
 
-   @Column()
-   @UpdateDateColumn()
-   updateDate: Date;
+    @Column()
+    verifyToken: string;
 
-   @Column({ nullable: true })
-   resetToken: string;
+    @Column()
+    @CreateDateColumn()
+    createDate: Date;
 
-   @Column({ nullable: true })
-   resetTokenExpiry: Date;
+    @Column()
+    @UpdateDateColumn()
+    updateDate: Date;
 
-   @OneToOne( () => Compliances, (compliance) => compliance.user, {onDelete: "CASCADE"})
-   compliance: Compliances;
+    @Column({ nullable: true })
+    resetToken: string;
 
-   @OneToMany( () => Wallet, (wallet) => wallet.user)
-   wallet: Wallet;
+    @Column({ nullable: true })
+    resetTokenExpiry: Date;
 
-   @OneToMany( () => Transactions, (transaction) => transaction.user)
-   transaction: Transactions;
+    @OneToOne( () => Compliances, (compliance) => compliance.user, {onDelete: "CASCADE"})
+    compliance: Compliances;
+
+    @OneToMany( () => Wallet, (wallet) => wallet.user)
+    wallet: Wallet;
+
+    @OneToMany( () => Transactions, (transaction) => transaction.user)
+    transaction: Transactions;
 }

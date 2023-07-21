@@ -33,6 +33,9 @@ let LocalStraregy = class LocalStraregy extends (0, passport_1.PassportStrategy)
             if (err instanceof common_1.UnauthorizedException) {
                 throw new common_1.UnauthorizedException("Wrong User Credentials");
             }
+            if (err instanceof common_1.BadRequestException) {
+                throw new common_1.UnauthorizedException("Check email and verify account before sign in");
+            }
             throw err;
         }
     }

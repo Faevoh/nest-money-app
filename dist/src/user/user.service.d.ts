@@ -30,4 +30,6 @@ export declare class UserService {
     }>;
     allUser(): Promise<User[]>;
     updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User>;
+    findByEmailAndVerifyToken(email: string, verifyToken: string): Promise<User>;
+    updateStatus(id: number, verified: boolean): Promise<import("typeorm").UpdateResult>;
 }

@@ -41,6 +41,9 @@ let AuthService = class AuthService {
         if (!checkPassword) {
             throw new common_1.UnauthorizedException("Wrong User Credentials");
         }
+        if (user.verified == !true) {
+            throw new common_1.BadRequestException("Check email and verify account before sign in");
+        }
         return user;
     }
     async login(user) {

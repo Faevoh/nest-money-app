@@ -17,6 +17,7 @@ export declare class UserController {
         statusCode: number;
         message: string;
     }>;
+    emailVerification(email: string, verifyToken: string): Promise<"Invalid verification link" | "Email verification successfull">;
     login(req: any): Promise<{
         statusCode: number;
         message: string;
@@ -40,6 +41,8 @@ export declare class UserController {
             accountName: string;
             password: string;
             phoneNumber: string;
+            verified: boolean;
+            verifyToken: string;
             createDate: Date;
             updateDate: Date;
             compliance: import("../Entities/compEntity.entity").Compliances;

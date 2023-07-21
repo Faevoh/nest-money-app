@@ -48,6 +48,14 @@ let UserController = class UserController {
     async registerUser(createUserDto) {
         return this.userService.register(createUserDto);
     }
+    async emailVerification(email, verifyToken) {
+        const check = await this.userService.findByEmailAndVerifyToken(email, verifyToken);
+        if (!check) {
+            return "Invalid verification link";
+        }
+        await this.userService.updateStatus(check.id, true);
+        return "Email verification successfull";
+    }
     login(req) {
         return this.authService.login(req.user);
     }
@@ -109,6 +117,14 @@ __decorate([
     __metadata("design:paramtypes", [createUser_1.CreateUserDto]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "registerUser", null);
+__decorate([
+    (0, common_1.Get)("/verify"),
+    __param(0, (0, common_1.Query)("email")),
+    __param(1, (0, common_1.Query)("verifyToken")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "emailVerification", null);
 __decorate([
     (0, common_1.UseGuards)(local_auth_guard_1.LocalAuthGuard),
     (0, common_1.Post)("login"),

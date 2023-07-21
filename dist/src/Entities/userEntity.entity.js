@@ -53,6 +53,14 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "phoneNumber", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ default: false }),
+    __metadata("design:type", Boolean)
+], User.prototype, "verified", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], User.prototype, "verifyToken", void 0);
+__decorate([
     (0, typeorm_1.Column)(),
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)

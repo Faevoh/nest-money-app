@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { Strategy } from "passport-local";
 import { AuthService } from "./auth.service";
@@ -21,6 +21,9 @@ export class LocalStraregy extends PassportStrategy(Strategy) {
             }
             if (err instanceof UnauthorizedException){
                 throw new UnauthorizedException("Wrong User Credentials");
+            }
+            if (err instanceof BadRequestException){
+                throw new UnauthorizedException("Check email and verify account before sign in")
             }
             throw err;
         }
