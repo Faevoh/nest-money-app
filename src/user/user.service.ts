@@ -25,7 +25,7 @@ export class UserService {
             if(userExist) {
                throw new BadRequestException("User Exists Already");
             }
-            
+            console.log("hey1")
             /* Creating New User*/
             const hashed = await bcrypt.hash(password, 10);
             const salt = bcrypt.getSalt(hashed)
@@ -42,12 +42,13 @@ export class UserService {
             data.verifyToken = uuidv4();
             data.createDate = new Date();
             data.updateDate = new Date();
-            
+            console.log("hey2")
             this.userRepo.create(data)
             console.log(data)
+            console.log("hey3")
             // console.log("heyy" + data.accountNumber)
             await this.userRepo.save(data)
-            console.log("hey" + data)
+            console.log("hey4" + data)
             await this.walletService.newWallet(data)
             // console.log(data)
             // const createdUser = await this.userRepo.save(user)
@@ -73,6 +74,7 @@ export class UserService {
            
             return {statusCode: 201, message: "User successfully Created"}
         }catch(err){
+            console.log(err.message)
             throw new InternalServerErrorException("Something went wrong, User not Created")
         }
     }

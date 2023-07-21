@@ -39,6 +39,7 @@ let UserService = class UserService {
             if (userExist) {
                 throw new common_1.BadRequestException("User Exists Already");
             }
+            console.log("hey1");
             const hashed = await bcrypt.hash(password, 10);
             const salt = bcrypt.getSalt(hashed);
             const data = new userEntity_entity_1.User();
@@ -46,17 +47,19 @@ let UserService = class UserService {
             data.lastName = lastName;
             data.email = email;
             data.password = hashed;
-            data.accountType = false;
+            data.accountType = accountType;
             data.accountName = `${data.lastName} ${data.firstName}`;
             data.accountNumber = this.acctService.accountnumberGenerator();
             data.verified = false;
             data.verifyToken = (0, uuid_1.v4)();
             data.createDate = new Date();
             data.updateDate = new Date();
+            console.log("hey2");
             this.userRepo.create(data);
             console.log(data);
+            console.log("hey3");
             await this.userRepo.save(data);
-            console.log("hey" + data);
+            console.log("hey4" + data);
             await this.walletService.newWallet(data);
             delete data.phoneNumber;
             delete data.resetToken;
@@ -70,6 +73,7 @@ let UserService = class UserService {
             return { statusCode: 201, message: "User successfully Created" };
         }
         catch (err) {
+            console.log(err.message);
             throw new common_1.InternalServerErrorException("Something went wrong, User not Created");
         }
     }
