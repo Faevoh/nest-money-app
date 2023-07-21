@@ -16,23 +16,6 @@ let MailService = class MailService {
     constructor(mailerService) {
         this.mailerService = mailerService;
     }
-    async loginMail(text, link, user) {
-        try {
-            await this.mailerService.sendMail({
-                to: user.email,
-                subject: `Login to Money App`,
-                template: './loginMail',
-                context: {
-                    text: text,
-                    link: link
-                },
-            });
-            return true;
-        }
-        catch (error) {
-            return false;
-        }
-    }
     async sendMail(url, user) {
         try {
             await this.mailerService.sendMail({

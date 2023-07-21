@@ -39,7 +39,7 @@ export class UserController {
 
         // await this.mailService.loginMail(text,link,check);
 
-        return verify;
+        return `${verify}`;
     }
 
     @UseGuards(LocalAuthGuard)
