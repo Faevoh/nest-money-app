@@ -35,7 +35,7 @@ export class UserService {
             data.lastName = lastName;
             data.email = email;
             data.password = hashed;
-            data.accountType = false;
+            data.accountType = accountType;
             data.accountName = `${data.lastName} ${data.firstName}`;
             data.accountNumber = this.acctService.accountnumberGenerator();
             data.verified = false;
