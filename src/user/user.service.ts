@@ -44,8 +44,10 @@ export class UserService {
             data.updateDate = new Date();
             
             this.userRepo.create(data)
+            console.log(data)
             // console.log("heyy" + data.accountNumber)
             await this.userRepo.save(data)
+            console.log("hey" + data)
             await this.walletService.newWallet(data)
             // console.log(data)
             // const createdUser = await this.userRepo.save(user)

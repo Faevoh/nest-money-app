@@ -53,7 +53,9 @@ let UserService = class UserService {
             data.createDate = new Date();
             data.updateDate = new Date();
             this.userRepo.create(data);
+            console.log(data);
             await this.userRepo.save(data);
+            console.log("hey" + data);
             await this.walletService.newWallet(data);
             delete data.phoneNumber;
             delete data.resetToken;
