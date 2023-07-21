@@ -113,7 +113,6 @@ export class UserService {
         }else{
             return {success: true, message: "Sucessfully deleted"};
         } 
-
     }
 
     async allUser():Promise<User[]> {
