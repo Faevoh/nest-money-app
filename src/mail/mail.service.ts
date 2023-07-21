@@ -5,24 +5,24 @@ import { User } from 'src/Entities/userEntity.entity';
 export class MailService {
   constructor(private mailerService: MailerService) {}
 
-  async loginMail(text: string, link: string, user: User) {
-    try {
-      await this.mailerService.sendMail({
-        to: user.email,
-        subject: `Login to Money App`,
-        template: './loginMail',
-        context: {
-          text: text,
-          link: link
-        },
-      });
-      // console.log(user.email)
-      return true;
-    } catch (error) {
-      // console.log(error);
-      return false;
-    }
-  }
+  // async loginMail(text: string, link: string, user: User) {
+  //   try {
+  //     await this.mailerService.sendMail({
+  //       to: user.email,
+  //       subject: `Login to Money App`,
+  //       template: './loginMail',
+  //       context: {
+  //         text: text,
+  //         link: link
+  //       },
+  //     });
+  //     // console.log(user.email)
+  //     return true;
+  //   } catch (error) {
+  //     // console.log(error);
+  //     return false;
+  //   }
+  // }
 
   async sendMail(url: string, user: User) {
     try {
