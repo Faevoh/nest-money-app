@@ -22,14 +22,14 @@ export class MailService {
     }
   }
 
-  async welcomeMail(url: string, user: User) {
+  async welcomeMail(text: string, user: User) {
     try {
       await this.mailerService.sendMail({
         to: user.email,
         subject: `Welcome To Money App ${user.firstName}`,
         template: './welcome',
         context: {
-          url: url,
+          text: text,
         },
       });
       // console.log(user.email)

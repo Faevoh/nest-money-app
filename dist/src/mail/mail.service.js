@@ -32,14 +32,14 @@ let MailService = class MailService {
             return false;
         }
     }
-    async welcomeMail(url, user) {
+    async welcomeMail(text, user) {
         try {
             await this.mailerService.sendMail({
                 to: user.email,
                 subject: `Welcome To Money App ${user.firstName}`,
                 template: './welcome',
                 context: {
-                    url: url,
+                    text: text,
                 },
             });
             return true;
