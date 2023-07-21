@@ -17,7 +17,10 @@ export declare class UserController {
         statusCode: number;
         message: string;
     }>;
-    emailVerification(email: string, verifyToken: string): Promise<"Invalid verification link" | "Email verification successfull">;
+    emailVerification(email: string, verifyToken: string): Promise<"Invalid verification link" | {
+        statuscode: number;
+        message: string;
+    }>;
     login(req: any): Promise<{
         statusCode: number;
         message: string;

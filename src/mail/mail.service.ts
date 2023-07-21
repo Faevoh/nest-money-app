@@ -22,7 +22,7 @@ export class MailService {
     }
   }
 
-  async welcomeMail(text: string, user: User) {
+  async welcomeMail(text: string, link: string, user: User) {
     try {
       await this.mailerService.sendMail({
         to: user.email,
@@ -30,6 +30,7 @@ export class MailService {
         template: './welcome',
         context: {
           text: text,
+          link: link
         },
       });
       // console.log(user.email)

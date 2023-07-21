@@ -32,7 +32,7 @@ let MailService = class MailService {
             return false;
         }
     }
-    async welcomeMail(text, user) {
+    async welcomeMail(text, link, user) {
         try {
             await this.mailerService.sendMail({
                 to: user.email,
@@ -40,6 +40,7 @@ let MailService = class MailService {
                 template: './welcome',
                 context: {
                     text: text,
+                    link: link
                 },
             });
             return true;

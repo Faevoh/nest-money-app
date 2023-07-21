@@ -64,9 +64,10 @@ export class UserService {
             const verify = `https://marco-lyart.vercel.app/#/verify?email=${encodeURIComponent(data.email)}&token=${data.verifyToken}`
             const text = ` Welcome to Money App,
             Thank you for signing up.
-            Kindly click on the link to verify your email ${verify} `;
+            Kindly click on the link to verify your email`;
+            const link = `${verify}`
 
-            await this.mailService.welcomeMail(text, data);
+            await this.mailService.welcomeMail(text,link,data);
            
             return {statusCode: 201, message: "User successfully Created"}
         }catch(err){
