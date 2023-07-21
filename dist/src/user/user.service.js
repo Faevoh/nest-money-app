@@ -16,11 +16,9 @@ exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
-const bcrypt = require("bcryptjs");
 const jwt_1 = require("@nestjs/jwt");
 const userEntity_entity_1 = require("../Entities/userEntity.entity");
 const wallet_service_1 = require("../wallet/wallet.service");
-const uuid_1 = require("uuid");
 const generator_service_1 = require("../auth/generator.service");
 const mail_service_1 = require("../mail/mail.service");
 let UserService = class UserService {
@@ -34,42 +32,6 @@ let UserService = class UserService {
     async register(createUserDto) {
         console.log("A");
         try {
-            const { firstName, lastName, email, password, accountType } = createUserDto;
-            const userExist = await this.userRepo.findOneBy({ email });
-            if (userExist) {
-                throw new common_1.BadRequestException("User Exists Already");
-            }
-            console.log("hey1");
-            const hashed = await bcrypt.hash(password, 10);
-            const salt = bcrypt.getSalt(hashed);
-            const data = new userEntity_entity_1.User();
-            data.firstName = firstName;
-            data.lastName = lastName;
-            data.email = email;
-            data.password = hashed;
-            data.accountType = accountType;
-            data.accountName = `${data.lastName} ${data.firstName}`;
-            data.accountNumber = this.acctService.accountnumberGenerator();
-            data.verified = false;
-            data.verifyToken = (0, uuid_1.v4)();
-            data.createDate = new Date();
-            data.updateDate = new Date();
-            console.log("hey2");
-            this.userRepo.create(data);
-            console.log(data);
-            console.log("hey3");
-            await this.userRepo.save(data);
-            console.log("hey4" + data);
-            await this.walletService.newWallet(data);
-            delete data.phoneNumber;
-            delete data.resetToken;
-            delete data.resetTokenExpiry;
-            const verify = `https://moneyapp-oj7v.onrender.com/api/user/verify?email=${encodeURIComponent(data.email)}&token=${data.verifyToken}`;
-            const text = ` Welcome to Money App,
-            Thank you for signing up.
-            Kindly click on the link to verify your email`;
-            const link = `${verify}`;
-            await this.mailService.VerifyMail(text, link, data);
             return { statusCode: 201, message: "User successfully Created" };
         }
         catch (err) {

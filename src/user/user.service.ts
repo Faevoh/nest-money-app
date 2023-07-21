@@ -18,60 +18,7 @@ export class UserService {
     async register(createUserDto: CreateUserDto) {
         console.log("A")
         try{
-            const {firstName, lastName, email, password, accountType} = createUserDto
             
-            /* If user already exists*/
-            const userExist = await this.userRepo.findOneBy({email});
-            if(userExist) {
-               throw new BadRequestException("User Exists Already");
-            }
-            console.log("hey1")
-            /* Creating New User*/
-            const hashed = await bcrypt.hash(password, 10);
-            const salt = bcrypt.getSalt(hashed)
-
-            const data = new User();
-            data.firstName = firstName;
-            data.lastName = lastName;
-            data.email = email;
-            data.password = hashed;
-            data.accountType = accountType;
-            data.accountName = `${data.lastName} ${data.firstName}`;
-            data.accountNumber = this.acctService.accountnumberGenerator();
-            data.verified = false;
-            data.verifyToken = uuidv4();
-            data.createDate = new Date();
-            data.updateDate = new Date();
-            console.log("hey2")
-            this.userRepo.create(data)
-            console.log(data)
-            console.log("hey3")
-            // console.log("heyy" + data.accountNumber)
-            await this.userRepo.save(data)
-            console.log("hey4" + data)
-            await this.walletService.newWallet(data)
-            // console.log(data)
-            // const createdUser = await this.userRepo.save(user)
-            // console.log("user" ,user)
-            
-            // const jwtPayload = {sub: createdUser.id, email: user.email};
-            // const jwtToken = await this.jwtService.sign(jwtPayload)
-            // console.log(jwtToken)
-
-            delete data.phoneNumber
-            delete data.resetToken 
-            delete data.resetTokenExpiry
-
-
-            // const verify = `https://marco-lyart.vercel.app/#/verify`
-            const verify = `https://moneyapp-oj7v.onrender.com/api/user/verify?email=${encodeURIComponent(data.email)}&token=${data.verifyToken}`
-            const text = ` Welcome to Money App,
-            Thank you for signing up.
-            Kindly click on the link to verify your email`;
-            const link = `${verify}`
-
-            await this.mailService.VerifyMail(text,link,data);
-           
             return {statusCode: 201, message: "User successfully Created"}
         }catch(err){
             console.log(err.message)
