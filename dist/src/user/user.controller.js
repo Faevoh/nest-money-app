@@ -72,7 +72,7 @@ let UserController = class UserController {
         const id = req.user.id;
         const result = await this.userService.findById(id);
         const { resetToken, resetTokenExpiry, verifyToken } = result, others = __rest(result, ["resetToken", "resetTokenExpiry", "verifyToken"]);
-        return { statusCode: 200, message: `success, data of user${req.user.firstName} ${id}`, data: others };
+        return { statusCode: 200, message: `success, data of user${result.firstName} ${id}`, data: others };
     }
     async updateUser(id, updateUserDto) {
         const updatedUser = await this.userService.updateUser(id, updateUserDto);
