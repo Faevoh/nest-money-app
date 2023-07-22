@@ -25,10 +25,16 @@ let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(pas
         this.userService = userService;
     }
     async validate(payload) {
+        if (this.isTokenExpired(payload.exp)) {
+            throw new common_1.UnauthorizedException("Token has expired");
+        }
         return {
             id: payload.sub,
             email: payload.email
         };
+    }
+    isTokenExpired(expirationTime) {
+        return Date.now() >= expirationTime * 1000;
     }
 };
 JwtStrategy = __decorate([

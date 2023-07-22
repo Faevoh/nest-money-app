@@ -31,7 +31,7 @@ export declare class UserController {
         message: string;
     }>;
     getAll(): Promise<User[]>;
-    getOne(id: number): Promise<{
+    getUserProfile(req: any): Promise<{
         statusCode: number;
         message: string;
         data: {
@@ -45,7 +45,6 @@ export declare class UserController {
             password: string;
             phoneNumber: string;
             verified: boolean;
-            verifyToken: string;
             createDate: Date;
             updateDate: Date;
             compliance: import("../Entities/compEntity.entity").Compliances;

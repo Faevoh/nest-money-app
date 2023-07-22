@@ -54,7 +54,7 @@ let UserController = class UserController {
             return "Invalid verification link";
         }
         await this.userService.updateStatus(check.id, true);
-        return { statuscode: 20, message: "You have been verified" };
+        return { statuscode: 200, message: "You have been verified" };
     }
     login(req) {
         return this.authService.login(req.user);
@@ -65,9 +65,13 @@ let UserController = class UserController {
     getAll() {
         return this.userService.allUser();
     }
-    async getOne(id) {
+    async getUserProfile(req) {
+        if (!req.user) {
+            throw new common_1.UnauthorizedException("Invalid token");
+        }
+        const id = req.user.id;
         const result = await this.userService.findById(id);
-        const { resetToken, resetTokenExpiry } = result, others = __rest(result, ["resetToken", "resetTokenExpiry"]);
+        const { resetToken, resetTokenExpiry, verifyToken } = result, others = __rest(result, ["resetToken", "resetTokenExpiry", "verifyToken"]);
         return { statusCode: 200, message: `success, data of ${id}`, data: others };
     }
     async updateUser(id, updateUserDto) {
@@ -147,12 +151,13 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "getAll", null);
 __decorate([
-    (0, common_1.Get)("/:id"),
-    __param(0, (0, common_1.Param)("id", common_1.ParseIntPipe)),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.Get)("/profile"),
+    __param(0, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "getOne", null);
+], UserController.prototype, "getUserProfile", null);
 __decorate([
     (0, common_1.Patch)("/:id/profile-update"),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),

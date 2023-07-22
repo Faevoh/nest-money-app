@@ -8,5 +8,6 @@ export declare class JwtStrategy extends JwtStrategy_base {
         id: any;
         email: any;
     }>;
+    private isTokenExpired;
 }
 export {};

@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Patch, Post, Query, Request, UseGuards, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Patch, Post, Query, Request, UnauthorizedException, UseGuards, ValidationPipe } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from 'src/DTO/createUser';
 import { LocalAuthGuard } from 'src/auth/local.auth.guard';
@@ -49,10 +49,23 @@ export class UserController {
         return this.userService.allUser()
     }
 
-    @Get("/:id")
-    async getOne(@Param("id", ParseIntPipe) id: number ) {
+    // @UseGuards(JwtAuthGuard)
+    // @Get("/:id")
+    // async getOne(@Param("id", ParseIntPipe) id: number ) {
+    //     const result = await this.userService.findById(id)
+    //     const{resetToken,resetTokenExpiry, verifyToken, ...others} = result
+    //     return {statusCode: 200, message: `success, data of ${id}`, data: others}
+    // }
+
+    @UseGuards(JwtAuthGuard)
+    @Get("/profile")
+    async getUserProfile(@Request() req) {
+        if(!req.user){
+            throw new UnauthorizedException("Invalid token")
+        }
+        const id = req.user.id
         const result = await this.userService.findById(id)
-        const{resetToken,resetTokenExpiry, ...others} = result
+        const{resetToken,resetTokenExpiry, verifyToken, ...others} = result
         return {statusCode: 200, message: `success, data of ${id}`, data: others}
     }
 
