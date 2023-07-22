@@ -87,7 +87,16 @@ export class UserService {
     }
 
     async findByEmail(email: string) {
-        return await this.userRepo.findOneBy({email})
+       const user= await this.userRepo.findOneBy({email})
+       return user || null
+    }
+
+    async checkUserEmail(email: string){
+        const userEmail = await this.findByEmail(email);
+        if(!userEmail){
+            throw new NotFoundException("Email doesn't exist");
+        }
+        return userEmail;
     }
 
     async saveUser(user: User): Promise<User> {

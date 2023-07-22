@@ -82,10 +82,7 @@ export class UserController {
             const {email} = forgotPasswordDto;
             // console.log(email)
 
-            const checkUser = await this.userService.findByEmail(email)
-            if(!checkUser) {
-                throw new BadRequestException("Email does not exist")
-            }
+            const checkUser = await this.userService.checkUserEmail(email)
 
             const resetToken = uuidv4();
 
@@ -98,7 +95,6 @@ export class UserController {
 
             await this.userService.saveUser(checkUser)
 
-            const resetLink = `http://localhost:3000/reset-password?token=${resetToken}`;
             const subject = "Password Reset";
             const text = `${resetToken}`
 

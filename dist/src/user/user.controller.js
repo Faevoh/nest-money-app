@@ -89,7 +89,6 @@ let UserController = class UserController {
             checkUser.resetToken = resetToken;
             checkUser.resetTokenExpiry = new Date(Date.now() + 3600000);
             await this.userService.saveUser(checkUser);
-            const resetLink = `http://localhost:3000/reset-password?token=${resetToken}`;
             const subject = "Password Reset";
             const text = `${resetToken}`;
             await this.mailService.sendMail(text, checkUser);
