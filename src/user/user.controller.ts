@@ -66,7 +66,7 @@ export class UserController {
         const id = req.user.id
         const result = await this.userService.findById(id)
         const{resetToken,resetTokenExpiry, verifyToken, ...others} = result
-        return {statusCode: 200, message: `success, data of ${id}`, data: others}
+        return {statusCode: 200, message: `success, data of user${req.user.firstName} ${id}`, data: others}
     }
 
     @Patch("/:id/profile-update")
