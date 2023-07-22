@@ -50,13 +50,11 @@ let UserController = class UserController {
     }
     async emailVerification(email, verifyToken) {
         const check = await this.userService.findByEmailAndVerifyToken(email, verifyToken);
-        console.log(email, verifyToken);
         if (!check) {
             return "Invalid verification link";
         }
         await this.userService.updateStatus(check.id, true);
-        const verify = `https://marco-lyart.vercel.app/#/verify/`;
-        return;
+        return { statuscode: 201, message: "You have been verified" };
     }
     login(req) {
         return this.authService.login(req.user);
