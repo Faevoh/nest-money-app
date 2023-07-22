@@ -83,7 +83,9 @@ export class UserController {
             // console.log(email)
 
             const checkUser = await this.userService.checkUserEmail(email)
-
+            if(!checkUser) {
+                throw new BadRequestException("Email does not exist")
+            }
             const resetToken = uuidv4();
 
             checkUser.resetToken = resetToken;

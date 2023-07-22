@@ -81,7 +81,7 @@ let UserController = class UserController {
     async recoverPassword(forgotPasswordDto) {
         try {
             const { email } = forgotPasswordDto;
-            const checkUser = await this.userService.findByEmail(email);
+            const checkUser = await this.userService.checkUserEmail(email);
             if (!checkUser) {
                 throw new common_1.BadRequestException("Email does not exist");
             }
