@@ -25,21 +25,11 @@ export class UserController {
     @Get("/verify")
     async emailVerification(@Query("email") email: string, @Query("verifyToken") verifyToken: string) {
         const check = await this.userService.findByEmailAndVerifyToken(email, verifyToken);
-        console.log(email , verifyToken)
+        // console.log(email , verifyToken)
         if(!check){
             return "Invalid verification link"
         }
         await this.userService.updateStatus(check.id, true);
-
-        const verify = `https://marco-lyart.vercel.app/#/verify/${verifyToken}`
-        // const text = ` Welcome to Money App,
-        // Thank you for signing up.
-        // Kindly click on the link to login to your account`;
-        // const link = `${verify}`
-
-        // await this.mailService.loginMail(text,link,check);
-
-        return `${verify}`;
     }
 
     @UseGuards(LocalAuthGuard)

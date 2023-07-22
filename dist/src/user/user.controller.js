@@ -55,8 +55,8 @@ let UserController = class UserController {
             return "Invalid verification link";
         }
         await this.userService.updateStatus(check.id, true);
-        const verify = `https://marco-lyart.vercel.app/#/verify/${verifyToken}`;
-        return `${verify}`;
+        const verify = `https://marco-lyart.vercel.app/#/verify/`;
+        return;
     }
     login(req) {
         return this.authService.login(req.user);
