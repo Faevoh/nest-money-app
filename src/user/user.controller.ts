@@ -82,9 +82,9 @@ export class UserController {
             const {email} = forgotPasswordDto;
             // console.log(email)
 
-            const checkUser = await this.userService.checkUserEmail(email)
+            const checkUser = await this.userService.findByEmail(email)
             if(!checkUser) {
-                throw new BadRequestException("Email does not exist")
+                throw new NotFoundException("Email does not exist")
             }
             const resetToken = uuidv4();
 
@@ -97,13 +97,15 @@ export class UserController {
 
             await this.userService.saveUser(checkUser)
 
-            const subject = "Password Reset";
             const text = `${resetToken}`
 
             await this.mailService.sendMail(text, checkUser);
 
-            return {statusCode: 201, message: "An Email with your token has been sent to you"}
+            return {statusCode: 201, message: "An Email has been sent to you"}
         }catch(err){
+            if(err instanceof NotFoundException){
+                throw new BadRequestException(err.message)
+            }
             throw new BadRequestException("Failed to Send Email")
         }
     }

@@ -81,20 +81,22 @@ let UserController = class UserController {
     async recoverPassword(forgotPasswordDto) {
         try {
             const { email } = forgotPasswordDto;
-            const checkUser = await this.userService.checkUserEmail(email);
+            const checkUser = await this.userService.findByEmail(email);
             if (!checkUser) {
-                throw new common_1.BadRequestException("Email does not exist");
+                throw new common_1.NotFoundException("Email does not exist");
             }
             const resetToken = (0, uuid_1.v4)();
             checkUser.resetToken = resetToken;
             checkUser.resetTokenExpiry = new Date(Date.now() + 3600000);
             await this.userService.saveUser(checkUser);
-            const subject = "Password Reset";
             const text = `${resetToken}`;
             await this.mailService.sendMail(text, checkUser);
-            return { statusCode: 201, message: "An Email with your token has been sent to you" };
+            return { statusCode: 201, message: "An Email has been sent to you" };
         }
         catch (err) {
+            if (err instanceof common_1.NotFoundException) {
+                throw new common_1.BadRequestException(err.message);
+            }
             throw new common_1.BadRequestException("Failed to Send Email");
         }
     }

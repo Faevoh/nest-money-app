@@ -83,15 +83,7 @@ let UserService = class UserService {
         return await this.userRepo.findOneBy({ accountType });
     }
     async findByEmail(email) {
-        const user = await this.userRepo.findOneBy({ email });
-        return user || null;
-    }
-    async checkUserEmail(email) {
-        const userEmail = await this.findByEmail(email);
-        if (!userEmail) {
-            throw new common_1.NotFoundException("Email doesn't exist");
-        }
-        return userEmail;
+        return await this.userRepo.findOneBy({ email });
     }
     async saveUser(user) {
         return this.userRepo.save(user);
