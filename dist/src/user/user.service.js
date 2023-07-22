@@ -66,7 +66,7 @@ let UserService = class UserService {
             Kindly click on the link to verify your email`;
             const link = `${verify}`;
             await this.mailService.VerifyMail(text, link, data);
-            return { statusCode: 200, message: "User successfully Created" };
+            return { statusCode: 201, message: "User successfully Created" };
         }
         catch (err) {
             console.log(err.message);

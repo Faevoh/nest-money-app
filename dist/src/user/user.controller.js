@@ -54,7 +54,7 @@ let UserController = class UserController {
             return "Invalid verification link";
         }
         await this.userService.updateStatus(check.id, true);
-        return { statuscode: 201, message: "You have been verified" };
+        return { statuscode: 20, message: "You have been verified" };
     }
     login(req) {
         return this.authService.login(req.user);

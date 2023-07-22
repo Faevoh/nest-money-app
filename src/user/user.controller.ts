@@ -30,7 +30,7 @@ export class UserController {
             return "Invalid verification link"
         }
         await this.userService.updateStatus(check.id, true);
-        return{statuscode: 201, message: "You have been verified"};
+        return{statuscode: 200, message: "You have been verified"};
     }
 
     @UseGuards(LocalAuthGuard)
