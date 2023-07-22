@@ -61,7 +61,7 @@ export declare class UserController {
         statusCode: number;
         message: string;
     }>;
-    resetPassword(resetPasswordDto: ResetPasswordDto, users: User): Promise<{
+    resetPassword(resetToken: string, resetPasswordDto: ResetPasswordDto): Promise<{
         statusCode: number;
         message: string;
     }>;

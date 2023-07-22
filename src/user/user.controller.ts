@@ -110,25 +110,29 @@ export class UserController {
         }
     }
 
-    @Post("/reset-password")
-    async resetPassword(@Body(ValidationPipe) resetPasswordDto: ResetPasswordDto, users: User) {
-        const {password} = resetPasswordDto;
-        const {resetToken} = users
-        const checkUser = await this.userService.findByToken(resetToken);
-        if(!checkUser) { throw new NotFoundException ("User token is invalid or has expired")}
+    @Post("/reset-password/:resetToken")
+    async resetPassword(@Param("resetToken") resetToken: string, @Body(ValidationPipe) resetPasswordDto: ResetPasswordDto) {
+       try{
+       const {password} = resetPasswordDto;
 
-        checkUser.password = password;
-        checkUser.resetToken = null;
-        checkUser.resetTokenExpiry = null;
+       const checkUser = await this.userService.findByToken(resetToken);
+       if(!checkUser) { throw new NotFoundException ("User token is invalid or has expired")}
 
-        const hashed = await bcrypt.hash(password, 10);
+       const hashed = await bcrypt.hash(password, 10);
 
-        await this.userService.update(checkUser.id, {password: hashed})
+       checkUser.password = hashed;
+       checkUser.resetToken = null;
+       checkUser.resetTokenExpiry = null;
 
-        // const data = await this.userService.saveUser(checkUser);
 
-        // console.log(checkUser)
-        // console.log(data)
-        return {statusCode: 200, message: "New Password saved"}
+       await this.userService.update(checkUser.id, {password: checkUser.password, resetToken: null, resetTokenExpiry: null})
+
+       return {statusCode: 201, message: "New Password saved"}
+    }catch(err){
+        if(err instanceof NotFoundException){
+            throw new BadRequestException(err.message)
+        }
+        throw new BadRequestException("Failed to reset Password")
+       }
     }
 }

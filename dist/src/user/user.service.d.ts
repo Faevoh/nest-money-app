@@ -22,7 +22,7 @@ export declare class UserService {
     findByAccountType(accountType: any): Promise<User>;
     findByEmail(email: string): Promise<User>;
     saveUser(user: User): Promise<User>;
-    update(id: number, data: any): Promise<import("typeorm").UpdateResult>;
+    update(id: number, dataToUpdate: Partial<User>): Promise<User>;
     findByToken(resetToken: string): Promise<User>;
     deleteUser(id: number): Promise<{
         success: boolean;

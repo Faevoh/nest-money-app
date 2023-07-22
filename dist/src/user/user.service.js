@@ -88,8 +88,13 @@ let UserService = class UserService {
     async saveUser(user) {
         return this.userRepo.save(user);
     }
-    async update(id, data) {
-        return await this.userRepo.update(id, data);
+    async update(id, dataToUpdate) {
+        const getid = await this.userRepo.findOneBy({ id });
+        if (!getid) {
+            throw new common_1.NotFoundException("user not found");
+        }
+        Object.assign(getid, dataToUpdate);
+        return await this.userRepo.save(getid);
     }
     async findByToken(resetToken) {
         return await this.userRepo.findOneBy({ resetToken });

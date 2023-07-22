@@ -37,7 +37,6 @@ const resetPassword_1 = require("../DTO/resetPassword");
 const bcrypt = require("bcryptjs");
 const generator_service_1 = require("../auth/generator.service");
 const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
-const userEntity_entity_1 = require("../Entities/userEntity.entity");
 let UserController = class UserController {
     constructor(userService, mailService, authService, acctService) {
         this.userService = userService;
@@ -100,19 +99,26 @@ let UserController = class UserController {
             throw new common_1.BadRequestException("Failed to Send Email");
         }
     }
-    async resetPassword(resetPasswordDto, users) {
-        const { password } = resetPasswordDto;
-        const { resetToken } = users;
-        const checkUser = await this.userService.findByToken(resetToken);
-        if (!checkUser) {
-            throw new common_1.NotFoundException("User token is invalid or has expired");
+    async resetPassword(resetToken, resetPasswordDto) {
+        try {
+            const { password } = resetPasswordDto;
+            const checkUser = await this.userService.findByToken(resetToken);
+            if (!checkUser) {
+                throw new common_1.NotFoundException("User token is invalid or has expired");
+            }
+            const hashed = await bcrypt.hash(password, 10);
+            checkUser.password = hashed;
+            checkUser.resetToken = null;
+            checkUser.resetTokenExpiry = null;
+            await this.userService.update(checkUser.id, { password: checkUser.password, resetToken: null, resetTokenExpiry: null });
+            return { statusCode: 201, message: "New Password saved" };
         }
-        checkUser.password = password;
-        checkUser.resetToken = null;
-        checkUser.resetTokenExpiry = null;
-        const hashed = await bcrypt.hash(password, 10);
-        await this.userService.update(checkUser.id, { password: hashed });
-        return { statusCode: 200, message: "New Password saved" };
+        catch (err) {
+            if (err instanceof common_1.NotFoundException) {
+                throw new common_1.BadRequestException(err.message);
+            }
+            throw new common_1.BadRequestException("Failed to reset Password");
+        }
     }
 };
 __decorate([
@@ -176,10 +182,11 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "recoverPassword", null);
 __decorate([
-    (0, common_1.Post)("/reset-password"),
-    __param(0, (0, common_1.Body)(common_1.ValidationPipe)),
+    (0, common_1.Post)("/reset-password/:resetToken"),
+    __param(0, (0, common_1.Param)("resetToken")),
+    __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [resetPassword_1.ResetPasswordDto, userEntity_entity_1.User]),
+    __metadata("design:paramtypes", [String, resetPassword_1.ResetPasswordDto]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "resetPassword", null);
 UserController = __decorate([

@@ -94,8 +94,14 @@ export class UserService {
         return this.userRepo.save(user);
     }
 
-    async update(id: number, data: any) {
-        return await this.userRepo.update(id, data)
+    async update(id: number, dataToUpdate: Partial<User>) {
+        const getid = await this.userRepo.findOneBy({id});
+
+        if(!getid) { throw new NotFoundException("user not found")}
+
+        Object.assign(getid, dataToUpdate);
+
+        return await this.userRepo.save(getid)
     }
 
     async findByToken(resetToken: string) {
