@@ -31,6 +31,7 @@ let AuthService = class AuthService {
     constructor(userService, jwtService) {
         this.userService = userService;
         this.jwtService = jwtService;
+        this.revokedTokens = [];
     }
     async validateUser(email, password) {
         const user = await this.userService.login(email);
@@ -56,18 +57,11 @@ let AuthService = class AuthService {
             access_token: this.jwtService.sign(payload)
         };
     }
-    async validateToken(access_token) {
-        try {
-            const verifyToken = this.jwtService.verifyAsync(access_token, { secret: process.env.SECRET });
-            if (verifyToken) {
-                const getUserId = verifyToken["sub"];
-                const user = this.userService.findById(getUserId);
-                return user;
-            }
-        }
-        catch (err) {
-            throw new common_1.UnauthorizedException("Invalid token");
-        }
+    async revokeToken(access_token) {
+        this.revokedTokens.push(access_token);
+    }
+    checkRevokeToken(access_token) {
+        return this.revokedTokens.includes(access_token);
     }
 };
 AuthService = __decorate([

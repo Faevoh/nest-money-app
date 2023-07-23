@@ -9,6 +9,7 @@ config();
 @Injectable()
 export class AuthService {
     constructor(private userService: UserService, private jwtService: JwtService) {}
+    private revokedTokens: string[] = [];
 
     async validateUser(email: string, password: string) {
         const user = await this.userService.login(email);
@@ -38,17 +39,12 @@ export class AuthService {
         }
     }
 
-    async validateToken(access_token: string){
-       try{
-        const verifyToken = this.jwtService.verifyAsync(access_token,{secret: process.env.SECRET})
-        if(verifyToken){
-            const getUserId = verifyToken["sub"];
-            const user = this.userService.findById(getUserId)
-            return user;
-        }
-       }catch(err){
-        throw new UnauthorizedException("Invalid token")
-       }
+    async revokeToken(access_token: string){
+        this.revokedTokens.push(access_token);
     }
-    
+
+    checkRevokeToken(access_token: string): boolean{
+        return this.revokedTokens.includes(access_token)
+    }
+
 }

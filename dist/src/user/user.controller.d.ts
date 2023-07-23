@@ -65,4 +65,8 @@ export declare class UserController {
         statusCode: number;
         message: string;
     }>;
+    logOut(access_token: string): Promise<{
+        statusCode: number;
+        message: string;
+    }>;
 }

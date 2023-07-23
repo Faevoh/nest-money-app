@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Patch, Post, Query, Request, UnauthorizedException, UseGuards, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Headers, NotFoundException, Param, ParseIntPipe, Patch, Post, Query, Request, UnauthorizedException, UseGuards, ValidationPipe } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from 'src/DTO/createUser';
 import { LocalAuthGuard } from 'src/auth/local.auth.guard';
@@ -91,10 +91,6 @@ export class UserController {
             checkUser.resetToken = resetToken;
             checkUser.resetTokenExpiry = new Date(Date.now() + 3600000)
 
-            // console.log(checkUser)
-            // console.log(resetToken)
-            // console.log(checkUser.resetTokenExpiry)
-
             await this.userService.saveUser(checkUser)
 
             const text = `${resetToken}`
@@ -134,5 +130,12 @@ export class UserController {
         }
         throw new BadRequestException("Failed to reset Password")
        }
+    }
+
+    @Post("/logout")
+    async logOut(@Headers("authorization") access_token: string) {
+        const user_token = access_token.split(" ")[1];
+        await this.authService.revokeToken(user_token);
+        return {statusCode: 201, message: "Logged Out Successfully"};
     }
 }

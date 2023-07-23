@@ -120,6 +120,11 @@ let UserController = class UserController {
             throw new common_1.BadRequestException("Failed to reset Password");
         }
     }
+    async logOut(access_token) {
+        const user_token = access_token.split(" ")[1];
+        await this.authService.revokeToken(user_token);
+        return { statusCode: 201, message: "Logged Out Successfully" };
+    }
 };
 __decorate([
     (0, common_1.Post)("/register"),
@@ -189,6 +194,13 @@ __decorate([
     __metadata("design:paramtypes", [String, resetPassword_1.ResetPasswordDto]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "resetPassword", null);
+__decorate([
+    (0, common_1.Post)("/logout"),
+    __param(0, (0, common_1.Headers)("authorization")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "logOut", null);
 UserController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService, mail_service_1.MailService, auth_service_1.AuthService, generator_service_1.accountGenerator])

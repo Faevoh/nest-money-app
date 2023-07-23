@@ -15,16 +15,21 @@ const passport_1 = require("@nestjs/passport");
 const dotenv_1 = require("dotenv");
 const passport_jwt_1 = require("passport-jwt");
 const user_service_1 = require("../user/user.service");
+const auth_service_1 = require("./auth.service");
 (0, dotenv_1.config)();
 let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy) {
-    constructor(userService) {
+    constructor(userService, authService) {
         super({
             jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
             secretOrKey: process.env.SECRET
         });
         this.userService = userService;
+        this.authService = authService;
     }
     async validate(payload) {
+        if (this.authService.checkRevokeToken(payload.jti)) {
+            throw new common_1.UnauthorizedException("Token has been revoked");
+        }
         if (this.isTokenExpired(payload.exp)) {
             throw new common_1.UnauthorizedException("Token has expired");
         }
@@ -39,7 +44,7 @@ let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(pas
 };
 JwtStrategy = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [user_service_1.UserService])
+    __metadata("design:paramtypes", [user_service_1.UserService, auth_service_1.AuthService])
 ], JwtStrategy);
 exports.JwtStrategy = JwtStrategy;
 //# sourceMappingURL=jwt.strategy.js.map
