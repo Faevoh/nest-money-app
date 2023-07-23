@@ -195,6 +195,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "resetPassword", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Post)("/logout"),
     __param(0, (0, common_1.Headers)("authorization")),
     __metadata("design:type", Function),

@@ -132,6 +132,7 @@ export class UserController {
        }
     }
 
+    @UseGuards(JwtAuthGuard)
     @Post("/logout")
     async logOut(@Headers("authorization") access_token: string) {
         const user_token = access_token.split(" ")[1];
