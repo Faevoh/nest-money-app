@@ -43,7 +43,7 @@ export class AuthService {
         this.revokedTokens.push(access_token);
     }
 
-    checkRevokeToken(access_token: string): boolean{
+    checkRevokeToken(access_token: string): boolean{                      
         return this.revokedTokens.includes(access_token)
     }
 
