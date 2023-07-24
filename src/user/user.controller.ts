@@ -72,7 +72,7 @@ export class UserController {
     // }
 
     @UseGuards(JwtAuthGuard)
-    @Get("/profile/:access_token")
+    @Get("/profile")
     async getUser(@Query("access_token") access_token: string) {
         const tokenDecode = this.jwtService.decode(access_token)
         console.log(tokenDecode);
