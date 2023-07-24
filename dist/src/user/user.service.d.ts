@@ -13,7 +13,10 @@ export declare class UserService {
     private acctService;
     private mailService;
     constructor(userRepo: Repository<User>, walletService: WalletService, jwtService: JwtService, acctService: accountGenerator, mailService: MailService);
-    register(createUserDto: CreateUserDto): Promise<void>;
+    register(createUserDto: CreateUserDto): Promise<{
+        statusCode: number;
+        message: string;
+    }>;
     login(email: string): Promise<User>;
     findById(id: number): Promise<User>;
     findByAccountType(accountType: any): Promise<User>;

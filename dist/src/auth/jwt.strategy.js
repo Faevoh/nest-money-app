@@ -20,13 +20,18 @@ const auth_service_1 = require("./auth.service");
 let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy) {
     constructor(userService, authService) {
         super({
-            jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
+            jwtFromRequest: passport_jwt_1.ExtractJwt.fromUrlQueryParameter("access_token"),
+            ignoreExpiration: false,
             secretOrKey: process.env.SECRET
         });
         this.userService = userService;
         this.authService = authService;
     }
     async validate(payload) {
+        const user = await this.userService.findById(payload.sub);
+        if (!user) {
+            throw new common_1.UnauthorizedException("Invalid token");
+        }
         if (this.authService.checkRevokeToken(payload.jti)) {
             throw new common_1.UnauthorizedException("Token has been revoked");
         }

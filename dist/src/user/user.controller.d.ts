@@ -13,7 +13,10 @@ export declare class UserController {
     private authService;
     private acctService;
     constructor(userService: UserService, mailService: MailService, authService: AuthService, acctService: accountGenerator);
-    registerUser(createUserDto: CreateUserDto): Promise<void>;
+    registerUser(createUserDto: CreateUserDto): Promise<{
+        statusCode: number;
+        message: string;
+    }>;
     emailVerification(verifyToken: string): Promise<"Invalid verification link" | {
         statuscode: number;
         message: string;
@@ -28,7 +31,7 @@ export declare class UserController {
         message: string;
     }>;
     getAll(): Promise<User[]>;
-    getUserProfile(req: any): Promise<{
+    getUserProfile(token: string, req: any): Promise<{
         statusCode: number;
         message: string;
         data: {

@@ -11,12 +11,18 @@ config();
 export class JwtStrategy extends PassportStrategy(Strategy){
     constructor(private userService: UserService, private authService: AuthService) {
         super({
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            jwtFromRequest: ExtractJwt.fromUrlQueryParameter("access_token"),
+            ignoreExpiration: false,
             secretOrKey: process.env.SECRET
         })
     }
     
     async validate(payload) {
+        const user = await this.userService.findById(payload.sub)
+        if(!user){
+            throw new UnauthorizedException("Invalid token")
+        }
+
         if(this.authService.checkRevokeToken(payload.jti)) {
             throw new UnauthorizedException("Token has been revoked")
         }

@@ -58,8 +58,8 @@ export class UserController {
     // }
 
     @UseGuards(JwtAuthGuard)
-    @Get("/profile")
-    async getUserProfile(@Request() req) {
+    @Get("/profile/:access_token")
+    async getUserProfile(@Param("access_token") token: string, @Request() req) {
         if(!req.user){
             throw new UnauthorizedException("Invalid token")
         }
@@ -67,6 +67,7 @@ export class UserController {
         const result = await this.userService.findById(id)
         const{resetToken,resetTokenExpiry, verifyToken, ...others} = result
         return {statusCode: 200, message: `success, data of user ${result.firstName}, id ${id}`, data: others}
+
     }
 
     @Patch("/:id/profile-update")
