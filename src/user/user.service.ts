@@ -67,7 +67,7 @@ export class UserService {
 
             await this.mailService.VerifyMail(text,link,data);
            
-            // return {statusCode: 201, message: "User successfully Created"}
+            return {statusCode: 201, message: "User successfully Created"}
         }catch(err){
             console.log(err.message)
             throw new InternalServerErrorException("Something went wrong, User not Created")

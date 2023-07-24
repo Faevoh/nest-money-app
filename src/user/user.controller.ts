@@ -19,8 +19,7 @@ export class UserController {
 
     @Post("/register")
     async registerUser(@Body(ValidationPipe) createUserDto: CreateUserDto){ 
-        await this.userService.register(createUserDto);
-        return {statusCode: 201, message: "User successfully Created"}
+       return this.userService.register(createUserDto);
     }
 
     @Patch("/verify/:verifyToken")

@@ -45,8 +45,7 @@ let UserController = class UserController {
         this.acctService = acctService;
     }
     async registerUser(createUserDto) {
-        await this.userService.register(createUserDto);
-        return { statusCode: 201, message: "User successfully Created" };
+        return this.userService.register(createUserDto);
     }
     async emailVerification(verifyToken) {
         const check = await this.userService.findByVerifyToken(verifyToken);

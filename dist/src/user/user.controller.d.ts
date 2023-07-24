@@ -13,10 +13,7 @@ export declare class UserController {
     private authService;
     private acctService;
     constructor(userService: UserService, mailService: MailService, authService: AuthService, acctService: accountGenerator);
-    registerUser(createUserDto: CreateUserDto): Promise<{
-        statusCode: number;
-        message: string;
-    }>;
+    registerUser(createUserDto: CreateUserDto): Promise<void>;
     emailVerification(verifyToken: string): Promise<"Invalid verification link" | {
         statuscode: number;
         message: string;
