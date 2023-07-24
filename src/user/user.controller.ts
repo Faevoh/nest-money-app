@@ -152,8 +152,7 @@ export class UserController {
     //     await this.authService.revokeToken(user_token);
     //     return {statusCode: 201, message: "Logged Out Successfully"};
     // }
-
-    @UseGuards(JwtAuthGuard)
+    
     @Post("/logout")
     async logOut(@Query("access_token") access_token: string) {
         const user_token = access_token.split(" ")[1];
