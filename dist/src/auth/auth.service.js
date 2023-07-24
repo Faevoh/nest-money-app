@@ -57,8 +57,8 @@ let AuthService = class AuthService {
             access_token: this.jwtService.sign(payload)
         };
     }
-    async revokeToken(access_token) {
-        this.revokedTokens.push(access_token);
+    async revokeToken(jti) {
+        this.revokedTokens.push(jti);
     }
     checkRevokeToken(access_token) {
         return this.revokedTokens.includes(access_token);

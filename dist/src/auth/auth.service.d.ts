@@ -11,6 +11,6 @@ export declare class AuthService {
         message: string;
         access_token: string;
     }>;
-    revokeToken(access_token: string): Promise<void>;
+    revokeToken(jti: string): Promise<void>;
     checkRevokeToken(access_token: string): boolean;
 }

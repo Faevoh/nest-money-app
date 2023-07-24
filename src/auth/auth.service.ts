@@ -39,8 +39,8 @@ export class AuthService {
         }
     }
 
-    async revokeToken(access_token: string){
-        this.revokedTokens.push(access_token);
+    async revokeToken(jti: string){
+        this.revokedTokens.push(jti);
     }
 
     checkRevokeToken(access_token: string): boolean{                      
