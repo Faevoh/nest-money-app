@@ -58,7 +58,7 @@ let UserService = class UserService {
             delete data.phoneNumber;
             delete data.resetToken;
             delete data.resetTokenExpiry;
-            const verifyLink = `https://moneyapp-oj7v.onrender.com/api/user/verify?email=${encodeURIComponent(data.email)}&verifyToken=${data.verifyToken}`;
+            const verifyLink = `https://moneyapp-oj7v.onrender.com/api/user/verify/${data.verifyToken}`;
             console.log(verifyLink);
             const verify = `https://marco-lyart.vercel.app/#/verify/${data.verifyToken}`;
             const text = ` Welcome to Money App,
