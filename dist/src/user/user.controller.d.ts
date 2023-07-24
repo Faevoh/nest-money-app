@@ -44,7 +44,6 @@ export declare class UserController {
             accountType: boolean;
             accountNumber: string;
             accountName: string;
-            password: string;
             phoneNumber: string;
             verified: boolean;
             createDate: Date;

@@ -70,16 +70,14 @@ export class UserController {
     //     return {statusCode: 200, message: `success, data of user ${result.firstName}, id ${id}`, data: others}
 
     // }
-
-    @UseGuards(JwtAuthGuard)
-    @Get("/profile")
+     @Get("/profile")
     async getUser(@Query("access_token") access_token: string) {
         const tokenDecode = this.jwtService.decode(access_token)
         console.log(tokenDecode);
         const id = tokenDecode.sub;
         console.log(id);
         const result = await this.userService.findById(id);
-        const{resetToken,resetTokenExpiry, verifyToken, ...others} = result
+        const{resetToken,resetTokenExpiry, verifyToken,password, ...others} = result
         return {statusCode: 200, message: `success, data of user ${result.firstName}, id ${id}`, data: others}
 
     }
@@ -147,11 +145,31 @@ export class UserController {
        }
     }
 
+    // @UseGuards(JwtAuthGuard)
+    // @Post("/logout")
+    // async logOut(@Headers("authorization") access_token: string) {
+    //     const user_token = access_token.split(" ")[1];
+    //     await this.authService.revokeToken(user_token);
+    //     return {statusCode: 201, message: "Logged Out Successfully"};
+    // }
+
     @UseGuards(JwtAuthGuard)
     @Post("/logout")
-    async logOut(@Headers("authorization") access_token: string) {
+    async logOut(@Query("access_token") access_token: string) {
         const user_token = access_token.split(" ")[1];
         await this.authService.revokeToken(user_token);
         return {statusCode: 201, message: "Logged Out Successfully"};
     }
+
 }
+// @Get("/profile")
+// async getUser(@Query("access_token") access_token: string) {
+//     const tokenDecode = this.jwtService.decode(access_token)
+//     console.log(tokenDecode);
+//     const id = tokenDecode.sub;
+//     console.log(id);
+//     const result = await this.userService.findById(id);
+//     const{resetToken,resetTokenExpiry, verifyToken,password, ...others} = result
+//     return {statusCode: 200, message: `success, data of user ${result.firstName}, id ${id}`, data: others}
+
+// }

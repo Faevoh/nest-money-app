@@ -23,7 +23,7 @@ export class ComplianceService {
             // if(user.accountType === "business" && (!businessDetails || businessDetails.trim() === "")) {
             //     throw new BadRequestException("This is a Business Account. Business Details must be provided");
             // }   
-            comp.businessDetails = businessDetails
+            // comp.businessDetails = businessDetails
            
             comp.userId = user.id,
             comp.completed = false

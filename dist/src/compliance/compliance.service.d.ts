@@ -22,6 +22,11 @@ export declare class ComplianceService {
         id: number;
         BVN: string;
         NIN: string;
+        businessName?: string;
+        businessAddress?: string;
+        state: string;
+        LGA: string;
+        city: string;
         completed: boolean;
         userId: number;
         user: User;

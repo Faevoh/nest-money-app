@@ -3,7 +3,11 @@ export declare class Compliances {
     id: number;
     BVN: string;
     NIN: string;
-    businessDetails?: string;
+    businessName?: string;
+    businessAddress?: string;
+    state: string;
+    LGA: string;
+    city: string;
     bankCode?: string;
     completed: boolean;
     userId: number;

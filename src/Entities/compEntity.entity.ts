@@ -13,7 +13,19 @@ export class Compliances {
     NIN: string;
 
     @Column({nullable: true})
-    businessDetails ?: string;
+    businessName ?: string;
+
+    @Column({nullable: true})
+    businessAddress ?: string;
+
+    @Column()
+    state: string;
+
+    @Column()
+    LGA: string;
+
+    @Column()
+    city: string;
 
     @Column({unique: true, nullable:true})
     bankCode ?: string;

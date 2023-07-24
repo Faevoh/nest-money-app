@@ -31,7 +31,6 @@ let ComplianceService = class ComplianceService {
             const comp = new compEntity_entity_1.Compliances();
             comp.BVN = BVN;
             comp.NIN = NIN;
-            comp.businessDetails = businessDetails;
             comp.userId = user.id,
                 comp.completed = false;
             const newComp = this.compRepo.create(comp);

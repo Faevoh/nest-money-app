@@ -72,7 +72,7 @@ let UserController = class UserController {
         const id = tokenDecode.sub;
         console.log(id);
         const result = await this.userService.findById(id);
-        const { resetToken, resetTokenExpiry, verifyToken } = result, others = __rest(result, ["resetToken", "resetTokenExpiry", "verifyToken"]);
+        const { resetToken, resetTokenExpiry, verifyToken, password } = result, others = __rest(result, ["resetToken", "resetTokenExpiry", "verifyToken", "password"]);
         return { statusCode: 200, message: `success, data of user ${result.firstName}, id ${id}`, data: others };
     }
     async updateUser(id, updateUserDto) {
@@ -164,7 +164,6 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "getAll", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Get)("/profile"),
     __param(0, (0, common_1.Query)("access_token")),
     __metadata("design:type", Function),
@@ -198,7 +197,7 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Post)("/logout"),
-    __param(0, (0, common_1.Headers)("authorization")),
+    __param(0, (0, common_1.Query)("access_token")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
