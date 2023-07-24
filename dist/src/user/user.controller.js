@@ -37,12 +37,14 @@ const resetPassword_1 = require("../DTO/resetPassword");
 const bcrypt = require("bcryptjs");
 const generator_service_1 = require("../auth/generator.service");
 const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
+const jwt_1 = require("@nestjs/jwt");
 let UserController = class UserController {
-    constructor(userService, mailService, authService, acctService) {
+    constructor(userService, mailService, authService, acctService, jwtService) {
         this.userService = userService;
         this.mailService = mailService;
         this.authService = authService;
         this.acctService = acctService;
+        this.jwtService = jwtService;
     }
     async registerUser(createUserDto) {
         return this.userService.register(createUserDto);
@@ -64,11 +66,11 @@ let UserController = class UserController {
     getAll() {
         return this.userService.allUser();
     }
-    async getUserProfile(token, req) {
-        if (!req.user) {
-            throw new common_1.UnauthorizedException("Invalid token");
-        }
-        const id = req.user.id;
+    async getUser(access_token) {
+        const tokenDecode = this.jwtService.decode(access_token);
+        console.log(tokenDecode);
+        const id = tokenDecode.sub;
+        console.log(id);
         const result = await this.userService.findById(id);
         const { resetToken, resetTokenExpiry, verifyToken } = result, others = __rest(result, ["resetToken", "resetTokenExpiry", "verifyToken"]);
         return { statusCode: 200, message: `success, data of user ${result.firstName}, id ${id}`, data: others };
@@ -164,12 +166,11 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Get)("/profile/:access_token"),
-    __param(0, (0, common_1.Param)("access_token")),
-    __param(1, (0, common_1.Request)()),
+    __param(0, (0, common_1.Query)("access_token")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "getUserProfile", null);
+], UserController.prototype, "getUser", null);
 __decorate([
     (0, common_1.Patch)("/:id/profile-update"),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
@@ -204,7 +205,7 @@ __decorate([
 ], UserController.prototype, "logOut", null);
 UserController = __decorate([
     (0, common_1.Controller)('user'),
-    __metadata("design:paramtypes", [user_service_1.UserService, mail_service_1.MailService, auth_service_1.AuthService, generator_service_1.accountGenerator])
+    __metadata("design:paramtypes", [user_service_1.UserService, mail_service_1.MailService, auth_service_1.AuthService, generator_service_1.accountGenerator, jwt_1.JwtService])
 ], UserController);
 exports.UserController = UserController;
 //# sourceMappingURL=user.controller.js.map

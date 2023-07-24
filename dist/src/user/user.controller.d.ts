@@ -7,12 +7,14 @@ import { MailService } from 'src/mail/mail.service';
 import { ResetPasswordDto } from 'src/DTO/resetPassword';
 import { accountGenerator } from 'src/auth/generator.service';
 import { User } from 'src/Entities/userEntity.entity';
+import { JwtService } from '@nestjs/jwt';
 export declare class UserController {
     private userService;
     private mailService;
     private authService;
     private acctService;
-    constructor(userService: UserService, mailService: MailService, authService: AuthService, acctService: accountGenerator);
+    private jwtService;
+    constructor(userService: UserService, mailService: MailService, authService: AuthService, acctService: accountGenerator, jwtService: JwtService);
     registerUser(createUserDto: CreateUserDto): Promise<{
         statusCode: number;
         message: string;
@@ -31,7 +33,7 @@ export declare class UserController {
         message: string;
     }>;
     getAll(): Promise<User[]>;
-    getUserProfile(token: string, req: any): Promise<{
+    getUser(access_token: string): Promise<{
         statusCode: number;
         message: string;
         data: {

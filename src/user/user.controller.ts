@@ -12,10 +12,11 @@ import * as bcrypt from 'bcryptjs'
 import { accountGenerator } from 'src/auth/generator.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { User } from 'src/Entities/userEntity.entity';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller('user')
 export class UserController {
-    constructor(private userService: UserService, private mailService: MailService, private authService: AuthService, private acctService: accountGenerator){}
+    constructor(private userService: UserService, private mailService: MailService, private authService: AuthService, private acctService: accountGenerator, private jwtService: JwtService){}
 
     @Post("/register")
     async registerUser(@Body(ValidationPipe) createUserDto: CreateUserDto){ 
@@ -57,14 +58,27 @@ export class UserController {
     //     return {statusCode: 200, message: `success, data of ${id}`, data: others}
     // }
 
+    // @UseGuards(JwtAuthGuard)
+    // @Get("/profile/:access_token")
+    // async getUserProfile(@Param("access_token") token: string, @Request() req) {
+    //     if(!req.user){
+    //         throw new UnauthorizedException("Invalid token")
+    //     }
+    //     const id = req.user.id
+    //     const result = await this.userService.findById(id)
+    //     const{resetToken,resetTokenExpiry, verifyToken, ...others} = result
+    //     return {statusCode: 200, message: `success, data of user ${result.firstName}, id ${id}`, data: others}
+
+    // }
+
     @UseGuards(JwtAuthGuard)
     @Get("/profile/:access_token")
-    async getUserProfile(@Param("access_token") token: string, @Request() req) {
-        if(!req.user){
-            throw new UnauthorizedException("Invalid token")
-        }
-        const id = req.user.id
-        const result = await this.userService.findById(id)
+    async getUser(@Query("access_token") access_token: string) {
+        const tokenDecode = this.jwtService.decode(access_token)
+        console.log(tokenDecode);
+        const id = tokenDecode.sub;
+        console.log(id);
+        const result = await this.userService.findById(id);
         const{resetToken,resetTokenExpiry, verifyToken, ...others} = result
         return {statusCode: 200, message: `success, data of user ${result.firstName}, id ${id}`, data: others}
 
