@@ -58,7 +58,7 @@ export class UserController {
     // }
 
     @UseGuards(JwtAuthGuard)
-    @Get("/profile/:access_token")
+    @Get("/:access_token")
     async getUserProfile(@Param("access_token") token: string, @Request() req) {
         if(!req.user){
             throw new UnauthorizedException("Invalid token")

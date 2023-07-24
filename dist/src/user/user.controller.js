@@ -163,7 +163,7 @@ __decorate([
 ], UserController.prototype, "getAll", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
-    (0, common_1.Get)("/profile/:access_token"),
+    (0, common_1.Get)("/:access_token"),
     __param(0, (0, common_1.Param)("access_token")),
     __param(1, (0, common_1.Request)()),
     __metadata("design:type", Function),
