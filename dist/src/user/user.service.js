@@ -59,7 +59,7 @@ let UserService = class UserService {
             delete data.resetToken;
             delete data.resetTokenExpiry;
             const verifyLink = `https://moneyapp-oj7v.onrender.com/api/user/verify/${data.verifyToken}`;
-            console.log(verifyLink);
+            console.log(data.verifyToken);
             const verify = `https://marco-lyart.vercel.app/#/verify/${data.verifyToken}`;
             const text = ` Welcome to Money App,
             Thank you for signing up.
@@ -128,8 +128,8 @@ let UserService = class UserService {
             throw new common_1.NotFoundException("User not found, update not processed");
         }
     }
-    async findByEmailAndVerifyToken(email, verifyToken) {
-        return await this.userRepo.findOneBy({ email, verifyToken });
+    async findByVerifyToken(verifyToken) {
+        return await this.userRepo.findOneBy({ verifyToken });
     }
     async updateStatus(id, verified) {
         return this.userRepo.update(id, { verified });

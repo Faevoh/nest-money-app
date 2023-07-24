@@ -22,9 +22,9 @@ export class UserController {
         return this.userService.register(createUserDto)
     }
 
-    @Get("/verify")
-    async emailVerification(@Query("email") email: string, @Query("verifyToken") verifyToken: string) {
-        const check = await this.userService.findByEmailAndVerifyToken(email, verifyToken);
+    @Patch("/verify/:verifyToken")
+    async emailVerification(@Param("verifyToken") verifyToken: string) {
+        const check = await this.userService.findByVerifyToken(verifyToken);
         // console.log(email , verifyToken)
         if(!check){
             return "Invalid verification link"

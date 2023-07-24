@@ -58,7 +58,7 @@ export class UserService {
             delete data.resetTokenExpiry
 
             const verifyLink = `https://moneyapp-oj7v.onrender.com/api/user/verify/${data.verifyToken}`;
-            console.log(verifyLink)
+            console.log(data.verifyToken)
             const verify = `https://marco-lyart.vercel.app/#/verify/${data.verifyToken}`;
             const text = ` Welcome to Money App,
             Thank you for signing up.
@@ -143,8 +143,8 @@ export class UserService {
         }
     }
 
-    async findByEmailAndVerifyToken(email: string, verifyToken: string) {
-        return await this.userRepo.findOneBy({email, verifyToken});
+    async findByVerifyToken(verifyToken: string) {
+        return await this.userRepo.findOneBy({verifyToken});
     }
     
     async updateStatus(id: number, verified:  boolean) {
