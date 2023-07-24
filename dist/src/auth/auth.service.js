@@ -60,8 +60,8 @@ let AuthService = class AuthService {
     async revokeToken(jti) {
         this.revokedTokens.push(jti);
     }
-    checkRevokeToken(access_token) {
-        return this.revokedTokens.includes(access_token);
+    checkRevokeToken(jti) {
+        return this.revokedTokens.includes(jti);
     }
 };
 AuthService = __decorate([
