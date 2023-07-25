@@ -54,6 +54,9 @@ let ComplianceService = class ComplianceService {
         }
         catch (err) {
             console.log(err);
+            if (err instanceof common_1.BadRequestException) {
+                throw new common_1.BadRequestException(err.message);
+            }
             throw new common_1.InternalServerErrorException("Something occoured, Compliance not Added");
         }
     }
