@@ -46,12 +46,12 @@ let ComplianceService = class ComplianceService {
             comp.completed = false;
             const userData = await this.userService.findById(user.id);
             console.log(userData);
-            const newComp = this.compRepo.create(comp);
-            console.log(newComp.businessAddress);
-            console.log(newComp.businessName);
-            if (userData.accountType === true && (newComp.businessAddress === undefined || newComp.businessAddress === null || newComp.businessName === null || newComp.businessName === undefined)) {
+            console.log(comp.businessAddress);
+            console.log(comp.businessName);
+            if (userData.accountType === true && (comp.businessAddress === undefined || comp.businessAddress === null || comp.businessName === null || comp.businessName === undefined)) {
                 throw new common_1.BadRequestException("businessAddress and businessName cannot be empty");
             }
+            const newComp = this.compRepo.create(comp);
             const result = await this.compRepo.save(newComp);
             return { statusCode: 201, message: "Compliance Added", data: result };
         }
