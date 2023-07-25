@@ -63,10 +63,9 @@ export class UserController {
         // console.log(tokenDecode);
         const id = tokenDecode.sub;
         // console.log(id);
-        const result = await this.userService.findIdWithRelations(id)[0];
-        // const{resetToken,resetTokenExpiry, verifyToken,password, ...others} = result
-        return {statusCode: 200, message: `success, id ${id}`, data: result}
-
+        const [userObject] = await this.userService.findIdWithRelations(id);
+        const{resetToken,resetTokenExpiry, verifyToken,password, ...others} = userObject
+        return {statusCode: 200, message: `success, id ${id}`, data: others}
     }
 
     @Patch("/:id/profile-update")
