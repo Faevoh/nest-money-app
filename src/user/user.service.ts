@@ -82,6 +82,13 @@ export class UserService {
         return await this.userRepo.findOneBy({id})
     }
 
+    async findIdWithRelations(id: number) {
+        return await this.userRepo.find({
+            where:{id},
+            relations: ["compliance", "wallet", "transaction"]
+        })
+    }
+
     async findByAccountType(accountType) {
         return await this.userRepo.findOneBy({accountType})
     }
