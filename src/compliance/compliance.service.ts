@@ -35,8 +35,8 @@ export class ComplianceService {
             comp.userId = user.id;
             comp.completed = false;
             const userData = await this.userService.findById(user.id)
-            // console.log(userData)
-            if(userData.accountType === true && (comp.businessName && comp.businessAddress === null )) {
+            console.log(userData)
+            if(userData.accountType === true) {
                 throw new BadRequestException("businessAddress and business name cannot be empty")
             }
             //if(user.accountType === "business" && (!businessDetails || businessDetails.trim() === "")) {
@@ -51,7 +51,7 @@ export class ComplianceService {
             // console.log(result)
             return {statusCode: 201, message: "Compliance Added", data: result}
         }catch(err) {
-            console.log(err)
+            // console.log(err)
             if(err instanceof BadRequestException){
                 throw new BadRequestException(err.message)
             }

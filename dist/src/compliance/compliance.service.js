@@ -45,6 +45,7 @@ let ComplianceService = class ComplianceService {
             comp.userId = user.id;
             comp.completed = false;
             const userData = await this.userService.findById(user.id);
+            console.log(userData);
             if (userData.accountType === true && (comp.businessName && comp.businessAddress === null)) {
                 throw new common_1.BadRequestException("businessAddress and business name cannot be empty");
             }
@@ -53,7 +54,6 @@ let ComplianceService = class ComplianceService {
             return { statusCode: 201, message: "Compliance Added", data: result };
         }
         catch (err) {
-            console.log(err);
             if (err instanceof common_1.BadRequestException) {
                 throw new common_1.BadRequestException(err.message);
             }
