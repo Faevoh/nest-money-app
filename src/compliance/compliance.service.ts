@@ -49,7 +49,7 @@ export class ComplianceService {
 
             console.log(newComp.businessAddress)
             console.log(newComp.businessName)
-            if(userData.accountType === true && (newComp.businessAddress && newComp.businessName === undefined)) {
+            if(userData.accountType === true && (newComp.businessAddress ===undefined|| newComp.businessAddress === null || newComp.businessName === null || newComp.businessName === undefined)) {
                 throw new BadRequestException("businessAddress and businessName cannot be empty")
             }
             // console.log(result)
