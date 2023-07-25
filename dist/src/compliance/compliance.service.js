@@ -37,13 +37,17 @@ let ComplianceService = class ComplianceService {
             comp.userId = user.id;
             comp.completed = false;
             const userData = await this.userService.findById(user.id);
+            console.log(userData);
             if (userData.accountType === true) {
+                throw new common_1.BadRequestException("businessAddress and business name cannot be empty");
             }
             const newComp = this.compRepo.create(comp);
             const result = await this.compRepo.save(newComp);
+            console.log(result);
             return { statusCode: 201, message: "Compliance Added", data: result };
         }
         catch (err) {
+            console.log(err);
             throw new common_1.InternalServerErrorException("Something occoured, Compliance not Added");
         }
     }
