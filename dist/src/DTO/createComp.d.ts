@@ -4,6 +4,8 @@ export declare class CreateCompDto {
     state: string;
     LGA: string;
     city: string;
+    country: string;
+    address: string;
     businessName?: string;
     businessAddress?: string;
     bankCode?: string;

@@ -22,6 +22,12 @@ export class Compliances {
     state: string;
 
     @Column()
+    country: string;
+
+    @Column()
+    address: string;
+
+    @Column()
     LGA: string;
 
     @Column()

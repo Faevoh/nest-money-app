@@ -33,5 +33,13 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateCompDto.prototype, "city", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateCompDto.prototype, "country", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateCompDto.prototype, "address", void 0);
 exports.CreateCompDto = CreateCompDto;
 //# sourceMappingURL=createComp.js.map

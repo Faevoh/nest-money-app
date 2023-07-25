@@ -24,6 +24,8 @@ export declare class ComplianceService {
         BVN: string;
         NIN: string;
         state: string;
+        country: string;
+        address: string;
         LGA: string;
         city: string;
         completed: boolean;

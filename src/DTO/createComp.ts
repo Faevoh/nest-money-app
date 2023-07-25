@@ -16,6 +16,12 @@ export class CreateCompDto {
     @IsNotEmpty()
     city: string;
 
+    @IsNotEmpty()
+    country: string;
+
+    @IsNotEmpty()
+    address: string;
+
     businessName ?: string;
 
     businessAddress ?: string;

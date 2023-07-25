@@ -6,6 +6,8 @@ export declare class Compliances {
     businessName?: string;
     businessAddress?: string;
     state: string;
+    country: string;
+    address: string;
     LGA: string;
     city: string;
     bankCode?: string;
