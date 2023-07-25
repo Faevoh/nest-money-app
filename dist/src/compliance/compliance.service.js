@@ -27,7 +27,7 @@ let ComplianceService = class ComplianceService {
     }
     async createComp(createCompDto, user) {
         try {
-            const { BVN, NIN, state, LGA, city } = createCompDto;
+            const { BVN, NIN, state, LGA, city, businessAddress, businessName } = createCompDto;
             const checkBVN = await this.compRepo.findOneBy({ BVN });
             if (checkBVN) {
                 throw new common_1.BadRequestException("BVN already exists");
@@ -42,6 +42,8 @@ let ComplianceService = class ComplianceService {
             comp.state = state;
             comp.LGA = LGA;
             comp.city = city;
+            comp.businessAddress = businessAddress;
+            comp.businessName = businessName;
             comp.userId = user.id;
             comp.completed = false;
             const userData = await this.userService.findById(user.id);
