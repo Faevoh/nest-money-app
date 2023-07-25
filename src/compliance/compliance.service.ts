@@ -36,9 +36,6 @@ export class ComplianceService {
             comp.completed = false;
             const userData = await this.userService.findById(user.id)
             console.log(userData)
-            if(userData.accountType === true && (comp.businessAddress && comp.businessName === null)) {
-                throw new BadRequestException("businessAddress and business name cannot be empty")
-            }
             //if(user.accountType === "business" && (!businessDetails || businessDetails.trim() === "")) {
                 //     throw new BadRequestException("This is a Business Account. Business Details must be provided");
                 // }   
@@ -47,6 +44,9 @@ export class ComplianceService {
 
             // console.log(user)
             const newComp = this.compRepo.create(comp)
+            if(userData.accountType === true && (newComp.businessAddress && newComp.businessName === null)) {
+                throw new BadRequestException("businessAddress and businessName cannot be empty")
+            }
             const result = await this.compRepo.save(newComp)
             // console.log(result)
             return {statusCode: 201, message: "Compliance Added", data: result}
