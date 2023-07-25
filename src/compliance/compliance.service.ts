@@ -36,7 +36,7 @@ export class ComplianceService {
             comp.completed = false;
             const userData = await this.userService.findById(user.id)
             console.log(userData)
-            if(userData.accountType === true) {
+            if(userData.accountType === true && (comp.businessAddress && comp.businessName === null)) {
                 throw new BadRequestException("businessAddress and business name cannot be empty")
             }
             //if(user.accountType === "business" && (!businessDetails || businessDetails.trim() === "")) {
