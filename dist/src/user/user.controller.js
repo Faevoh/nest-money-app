@@ -67,7 +67,7 @@ let UserController = class UserController {
             throw new common_1.UnauthorizedException("Token has expired");
         }
         const id = tokenDecode.sub;
-        const result = await this.userService.findIdWithRelations(id);
+        const result = await this.userService.findIdWithRelations(id)[0];
         return { statusCode: 200, message: `success, id ${id}`, data: result };
     }
     async updateUser(id, updateUserDto) {

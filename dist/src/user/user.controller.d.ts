@@ -36,7 +36,7 @@ export declare class UserController {
     getUser(access_token: string, payload: any): Promise<{
         statusCode: number;
         message: string;
-        data: User[];
+        data: any;
     }>;
     updateUser(id: number, updateUserDto: UpdateUserDto): Promise<{
         statusCode: number;
