@@ -44,14 +44,12 @@ export class ComplianceService {
 
             // console.log(user)
             const newComp = this.compRepo.create(comp)
-    
-            const result = await this.compRepo.save(newComp)
-
             console.log(newComp.businessAddress)
             console.log(newComp.businessName)
-            if(userData.accountType === true && (newComp.businessAddress ===undefined|| newComp.businessAddress === null || newComp.businessName === null || newComp.businessName === undefined)) {
+            if(userData.accountType === true && (newComp.businessAddress ===undefined||newComp.businessAddress === null || newComp.businessName === null || newComp.businessName === undefined)) {
                 throw new BadRequestException("businessAddress and businessName cannot be empty")
             }
+            const result = await this.compRepo.save(newComp)
             // console.log(result)
             return {statusCode: 201, message: "Compliance Added", data: result}
         }catch(err) {
