@@ -11,7 +11,7 @@ import { UserService } from 'src/user/user.service';
 export class ComplianceController {
     constructor(private compService: ComplianceService, private jwtService: JwtService, private userService: UserService) {}    
 
-    @Post("/new/:access_token")
+    @Post("/new")
     async addCompliance(@Query("access_token") access_token: string, @Body(ValidationPipe) createCompDto: CreateCompDto) {
         const user = this.jwtService.decode(access_token);
         const id = user.sub;

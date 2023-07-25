@@ -50,7 +50,7 @@ let ComplianceController = class ComplianceController {
     }
 };
 __decorate([
-    (0, common_1.Post)("/new/:access_token"),
+    (0, common_1.Post)("/new"),
     __param(0, (0, common_1.Query)("access_token")),
     __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
     __metadata("design:type", Function),
