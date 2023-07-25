@@ -8,7 +8,6 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 
 @Controller('compliance')
-@UseGuards(JwtAuthGuard)
 export class ComplianceController {
     constructor(private compService: ComplianceService, private jwtService: JwtService, private userService: UserService) {}    
 

@@ -16,7 +16,6 @@ exports.ComplianceController = void 0;
 const common_1 = require("@nestjs/common");
 const compliance_service_1 = require("./compliance.service");
 const createComp_1 = require("../DTO/createComp");
-const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
 const updateComp_1 = require("../DTO/updateComp");
 const jwt_1 = require("@nestjs/jwt");
 const user_service_1 = require("../user/user.service");
@@ -75,7 +74,6 @@ __decorate([
 ], ComplianceController.prototype, "tokenCheck", null);
 ComplianceController = __decorate([
     (0, common_1.Controller)('compliance'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __metadata("design:paramtypes", [compliance_service_1.ComplianceService, jwt_1.JwtService, user_service_1.UserService])
 ], ComplianceController);
 exports.ComplianceController = ComplianceController;
