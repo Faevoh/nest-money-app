@@ -50,29 +50,12 @@ export class UserController {
         return this.userService.allUser()
     }
 
-    // @UseGuards(JwtAuthGuard)
-    // @Get("/:id")
-    // async getOne(@Param("id", ParseIntPipe) id: number ) {
-    //     const result = await this.userService.findById(id)
-    //     const{resetToken,resetTokenExpiry, verifyToken, ...others} = result
-    //     return {statusCode: 200, message: `success, data of ${id}`, data: others}
-    // }
-
-    // @UseGuards(JwtAuthGuard)
-    // @Get("/profile/:access_token")
-    // async getUserProfile(@Param("access_token") token: string, @Request() req) {
-    //     if(!req.user){
-    //         throw new UnauthorizedException("Invalid token")
-    //     }
-    //     const id = req.user.id
-    //     const result = await this.userService.findById(id)
-    //     const{resetToken,resetTokenExpiry, verifyToken, ...others} = result
-    //     return {statusCode: 200, message: `success, data of user ${result.firstName}, id ${id}`, data: others}
-
-    // }
-     @Get("/profile")
-    async getUser(@Query("access_token") access_token: string) {
+    @Get("/profile")
+    async getUser(@Query("access_token") access_token: string, payload) {
         const tokenDecode = this.jwtService.decode(access_token)
+        if(!tokenDecode) {throw new NotFoundException("Invalid Token")}
+        payload = tokenDecode
+        console.log(payload)
         console.log(tokenDecode);
         const id = tokenDecode.sub;
         console.log(id);
@@ -145,14 +128,6 @@ export class UserController {
        }
     }
 
-    // @UseGuards(JwtAuthGuard)
-    // @Post("/logout")
-    // async logOut(@Headers("authorization") access_token: string) {
-    //     const user_token = access_token.split(" ")[1];
-    //     await this.authService.revokeToken(user_token);
-    //     return {statusCode: 201, message: "Logged Out Successfully"};
-    // }
-    
     @Post("/logout")
     async logOut(@Query("access_token") access_token: string) {
         const user_token = access_token.split(" ")[1];
@@ -161,14 +136,3 @@ export class UserController {
     }
 
 }
-// @Get("/profile")
-// async getUser(@Query("access_token") access_token: string) {
-//     const tokenDecode = this.jwtService.decode(access_token)
-//     console.log(tokenDecode);
-//     const id = tokenDecode.sub;
-//     console.log(id);
-//     const result = await this.userService.findById(id);
-//     const{resetToken,resetTokenExpiry, verifyToken,password, ...others} = result
-//     return {statusCode: 200, message: `success, data of user ${result.firstName}, id ${id}`, data: others}
-
-// }

@@ -66,8 +66,13 @@ let UserController = class UserController {
     getAll() {
         return this.userService.allUser();
     }
-    async getUser(access_token) {
+    async getUser(access_token, payload) {
         const tokenDecode = this.jwtService.decode(access_token);
+        if (!tokenDecode) {
+            throw new common_1.NotFoundException("Invalid Token");
+        }
+        payload = tokenDecode;
+        console.log(payload);
         console.log(tokenDecode);
         const id = tokenDecode.sub;
         console.log(id);
@@ -167,7 +172,7 @@ __decorate([
     (0, common_1.Get)("/profile"),
     __param(0, (0, common_1.Query)("access_token")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getUser", null);
 __decorate([

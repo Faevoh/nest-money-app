@@ -33,7 +33,7 @@ export declare class UserController {
         message: string;
     }>;
     getAll(): Promise<User[]>;
-    getUser(access_token: string): Promise<{
+    getUser(access_token: string, payload: any): Promise<{
         statusCode: number;
         message: string;
         data: {
