@@ -26,9 +26,11 @@ let ComplianceController = class ComplianceController {
         this.jwtService = jwtService;
         this.userService = userService;
     }
-    async addCompliance(createCompDto, request) {
-        const user = request.user;
-        return await this.compService.createComp(createCompDto, user);
+    async addCompliance(access_token, createCompDto) {
+        const user = this.jwtService.decode(access_token);
+        const id = user.sub;
+        const getUser = await this.userService.findById(id);
+        return await this.compService.createComp(createCompDto, getUser);
     }
     async updateCompliance(updateCompDto, id) {
         return await this.compService.updateComp(id, updateCompDto);
@@ -49,11 +51,11 @@ let ComplianceController = class ComplianceController {
     }
 };
 __decorate([
-    (0, common_1.Post)("/new"),
-    __param(0, (0, common_1.Body)(common_1.ValidationPipe)),
-    __param(1, (0, common_1.Req)()),
+    (0, common_1.Post)("/new/:access_token"),
+    __param(0, (0, common_1.Query)("access_token")),
+    __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [createComp_1.CreateCompDto, Object]),
+    __metadata("design:paramtypes", [String, createComp_1.CreateCompDto]),
     __metadata("design:returntype", Promise)
 ], ComplianceController.prototype, "addCompliance", null);
 __decorate([

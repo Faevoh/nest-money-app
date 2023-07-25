@@ -1,6 +1,5 @@
 import { ComplianceService } from './compliance.service';
 import { CreateCompDto } from 'src/DTO/createComp';
-import { RequestWithUser } from 'src/auth/userRequest';
 import { UpdateCompDto } from 'src/DTO/updateComp';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
@@ -9,7 +8,7 @@ export declare class ComplianceController {
     private jwtService;
     private userService;
     constructor(compService: ComplianceService, jwtService: JwtService, userService: UserService);
-    addCompliance(createCompDto: CreateCompDto, request: RequestWithUser): Promise<{
+    addCompliance(access_token: string, createCompDto: CreateCompDto): Promise<{
         statusCode: number;
         message: string;
         data: import("../Entities/compEntity.entity").Compliances;

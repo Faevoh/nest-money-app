@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, Param, ParseIntPipe, Patch, Post, Req, UnauthorizedException, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Param, ParseIntPipe, Patch, Post, Query, Req, UnauthorizedException, UseGuards, ValidationPipe } from '@nestjs/common';
 import { ComplianceService } from './compliance.service';
 import {  CreateCompDto } from 'src/DTO/createComp';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
@@ -12,10 +12,12 @@ import { UserService } from 'src/user/user.service';
 export class ComplianceController {
     constructor(private compService: ComplianceService, private jwtService: JwtService, private userService: UserService) {}    
 
-    @Post("/new")
-    async addCompliance(@Body(ValidationPipe) createCompDto: CreateCompDto, @Req() request: RequestWithUser) {
-        const user = request.user;
-        return await this.compService.createComp(createCompDto,user);
+    @Post("/new/:access_token")
+    async addCompliance(@Query("access_token") access_token: string, @Body(ValidationPipe) createCompDto: CreateCompDto) {
+        const user = this.jwtService.decode(access_token);
+        const id = user.sub;
+        const getUser = await this.userService.findById(id)
+        return await this.compService.createComp(createCompDto, getUser);
     }
 
     @Patch("/:id/compliance-update")
