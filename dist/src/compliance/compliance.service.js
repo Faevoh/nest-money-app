@@ -47,12 +47,12 @@ let ComplianceService = class ComplianceService {
             const userData = await this.userService.findById(user.id);
             console.log(userData);
             const newComp = this.compRepo.create(comp);
+            const result = await this.compRepo.save(newComp);
             console.log(newComp.businessAddress);
             console.log(newComp.businessName);
             if (userData.accountType === true && (newComp.businessAddress && newComp.businessName === undefined || null)) {
                 throw new common_1.BadRequestException("businessAddress and businessName cannot be empty");
             }
-            const result = await this.compRepo.save(newComp);
             return { statusCode: 201, message: "Compliance Added", data: result };
         }
         catch (err) {
