@@ -14,19 +14,25 @@ export class ComplianceService {
 
     async createComp (createCompDto: CreateCompDto, user: User) {
         try{
-            const {BVN, NIN, businessDetails} =createCompDto
+            const {BVN, NIN, state, LGA, city} =createCompDto;
 
             const comp = new Compliances()
-            comp.BVN = BVN
-            comp.NIN = NIN
-            
-            // if(user.accountType === "business" && (!businessDetails || businessDetails.trim() === "")) {
-            //     throw new BadRequestException("This is a Business Account. Business Details must be provided");
-            // }   
-            // comp.businessDetails = businessDetails
-           
-            comp.userId = user.id,
-            comp.completed = false
+            comp.BVN = BVN;
+            comp.NIN = NIN;
+            comp.state = state;
+            comp.LGA = LGA;
+            comp.city = city;
+            comp.userId = user.id;
+            comp.completed = false;
+            const userData = await this.userService.findById(user.id)
+            if(userData.accountType === true) {
+                
+            }
+            //if(user.accountType === "business" && (!businessDetails || businessDetails.trim() === "")) {
+                //     throw new BadRequestException("This is a Business Account. Business Details must be provided");
+                // }   
+                // comp.businessDetails = businessDetails
+               
 
             // console.log(user)
             const newComp = this.compRepo.create(comp)

@@ -12,7 +12,6 @@ import { UserService } from 'src/user/user.service';
 export class ComplianceController {
     constructor(private compService: ComplianceService, private jwtService: JwtService, private userService: UserService) {}    
 
-    @UseGuards(JwtAuthGuard)
     @Post("/new")
     async addCompliance(@Body(ValidationPipe) createCompDto: CreateCompDto, @Req() request: RequestWithUser) {
         const user = request.user;

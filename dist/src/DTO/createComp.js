@@ -21,5 +21,17 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateCompDto.prototype, "NIN", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateCompDto.prototype, "state", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateCompDto.prototype, "LGA", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateCompDto.prototype, "city", void 0);
 exports.CreateCompDto = CreateCompDto;
 //# sourceMappingURL=createComp.js.map

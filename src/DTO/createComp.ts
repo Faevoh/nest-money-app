@@ -7,8 +7,18 @@ export class CreateCompDto {
     @IsNotEmpty()
     NIN: string;
 
-    // @IsNotEmpty({ groups: ["business"] })
-    businessDetails ?: string;
+    @IsNotEmpty()
+    state: string;
+
+    @IsNotEmpty()
+    LGA: string;
+
+    @IsNotEmpty()
+    city: string;
+
+    businessName ?: string;
+
+    businessAddress ?: string;
 
     bankCode ?: string;
 }

@@ -49,7 +49,6 @@ let ComplianceController = class ComplianceController {
     }
 };
 __decorate([
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Post)("/new"),
     __param(0, (0, common_1.Body)(common_1.ValidationPipe)),
     __param(1, (0, common_1.Req)()),

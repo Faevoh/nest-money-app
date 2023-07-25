@@ -27,12 +27,18 @@ let ComplianceService = class ComplianceService {
     }
     async createComp(createCompDto, user) {
         try {
-            const { BVN, NIN, businessDetails } = createCompDto;
+            const { BVN, NIN, state, LGA, city } = createCompDto;
             const comp = new compEntity_entity_1.Compliances();
             comp.BVN = BVN;
             comp.NIN = NIN;
-            comp.userId = user.id,
-                comp.completed = false;
+            comp.state = state;
+            comp.LGA = LGA;
+            comp.city = city;
+            comp.userId = user.id;
+            comp.completed = false;
+            const userData = await this.userService.findById(user.id);
+            if (userData.accountType === true) {
+            }
             const newComp = this.compRepo.create(comp);
             const result = await this.compRepo.save(newComp);
             return { statusCode: 201, message: "Compliance Added", data: result };
