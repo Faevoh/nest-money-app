@@ -28,6 +28,14 @@ let ComplianceService = class ComplianceService {
     async createComp(createCompDto, user) {
         try {
             const { BVN, NIN, state, LGA, city } = createCompDto;
+            const checkBVN = await this.compRepo.findOneBy({ BVN });
+            if (checkBVN) {
+                throw new common_1.BadRequestException("BVN already exists");
+            }
+            const checkNIN = await this.compRepo.findOneBy({ NIN });
+            if (checkNIN) {
+                throw new common_1.BadRequestException("NIN already exists");
+            }
             const comp = new compEntity_entity_1.Compliances();
             comp.BVN = BVN;
             comp.NIN = NIN;

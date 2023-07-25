@@ -13,8 +13,18 @@ export class ComplianceService {
     constructor(@InjectRepository(Compliances) private compRepo: Repository<Compliances>, private authService: AuthService, private userService: UserService) {}
 
     async createComp (createCompDto: CreateCompDto, user: User) {
-        try{
+        try{ 
             const {BVN, NIN, state, LGA, city} =createCompDto;
+
+            const checkBVN = await this.compRepo.findOneBy({BVN})
+            if(checkBVN){
+                throw new BadRequestException("BVN already exists")
+            }
+
+            const checkNIN = await this.compRepo.findOneBy({NIN})
+            if(checkNIN){ 
+                throw new BadRequestException("NIN already exists")
+            }
 
             const comp = new Compliances()
             comp.BVN = BVN;
@@ -61,6 +71,10 @@ export class ComplianceService {
             throw new NotFoundException("Update not processed ")
         }
     }
+
+    // async findByBVN(BVN: string) {
+    //     return await this.compRepo.findOneBy({BVN})
+    // }
 
     async findByBankCode(bankCode: string) {
         return await this.compRepo.findOneBy({bankCode})
