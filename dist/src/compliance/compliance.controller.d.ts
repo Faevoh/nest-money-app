@@ -15,13 +15,12 @@ export declare class ComplianceController {
     }>;
     updateCompliance(updateCompDto: UpdateCompDto, id: number): Promise<{
         accountName?: string;
-        businessDetails?: string;
+        businessAddress?: string;
+        businessName?: string;
         bankCode?: string;
         id: number;
         BVN: string;
         NIN: string;
-        businessName?: string;
-        businessAddress?: string;
         state: string;
         LGA: string;
         city: string;

@@ -1,5 +1,6 @@
 export declare class UpdateCompDto {
     accountName?: string;
-    businessDetails?: string;
+    businessAddress?: string;
+    businessName?: string;
     bankCode?: string;
 }
