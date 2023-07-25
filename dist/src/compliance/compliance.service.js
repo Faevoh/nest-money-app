@@ -47,6 +47,8 @@ let ComplianceService = class ComplianceService {
             const userData = await this.userService.findById(user.id);
             console.log(userData);
             const newComp = this.compRepo.create(comp);
+            console.log(newComp.businessAddress);
+            console.log(newComp.businessName);
             if (userData.accountType === true && (newComp.businessAddress && newComp.businessName === null)) {
                 throw new common_1.BadRequestException("businessAddress and businessName cannot be empty");
             }

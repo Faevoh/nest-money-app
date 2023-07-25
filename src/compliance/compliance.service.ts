@@ -44,6 +44,8 @@ export class ComplianceService {
 
             // console.log(user)
             const newComp = this.compRepo.create(comp)
+            console.log(newComp.businessAddress)
+            console.log(newComp.businessName)
             if(userData.accountType === true && (newComp.businessAddress && newComp.businessName === null)) {
                 throw new BadRequestException("businessAddress and businessName cannot be empty")
             }
