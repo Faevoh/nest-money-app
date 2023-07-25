@@ -59,9 +59,9 @@ export class UserController {
         console.log(tokenDecode);
         const id = tokenDecode.sub;
         console.log(id);
-        const result = await this.userService.findById(id);
-        const{resetToken,resetTokenExpiry, verifyToken,password, ...others} = result
-        return {statusCode: 200, message: `success, data of user ${result.firstName}, id ${id}`, data: others}
+        const result = await this.userService.findIdWithRelations(id);
+        // const{resetToken,resetTokenExpiry, verifyToken,password, ...others} = result
+        return {statusCode: 200, message: `success, id ${id}`, data: result}
 
     }
 

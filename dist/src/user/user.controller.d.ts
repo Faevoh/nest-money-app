@@ -36,22 +36,7 @@ export declare class UserController {
     getUser(access_token: string, payload: any): Promise<{
         statusCode: number;
         message: string;
-        data: {
-            id: number;
-            firstName: string;
-            lastName: string;
-            email: string;
-            accountType: boolean;
-            accountNumber: string;
-            accountName: string;
-            phoneNumber: string;
-            verified: boolean;
-            createDate: Date;
-            updateDate: Date;
-            compliance: import("../Entities/compEntity.entity").Compliances;
-            wallet: import("../Entities/walletEntity.entity").Wallet;
-            transaction: import("../Entities/transactionEntity.entity").Transactions;
-        };
+        data: User[];
     }>;
     updateUser(id: number, updateUserDto: UpdateUserDto): Promise<{
         statusCode: number;
