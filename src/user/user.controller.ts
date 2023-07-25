@@ -52,13 +52,17 @@ export class UserController {
 
     @Get("/profile")
     async getUser(@Query("access_token") access_token: string, payload) {
-        const tokenDecode = this.jwtService.decode(access_token)
-        if(!tokenDecode) {throw new NotFoundException("Invalid Token")}
+        const tokenDecode = this.jwtService.decode(access_token);
+        if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
         payload = tokenDecode
-        console.log(payload)
-        console.log(tokenDecode);
+        // console.log(payload)
+        const timeInSeconds = Math.floor(Date.now() / 1000); 
+        if (payload.exp && payload.exp < timeInSeconds) {
+        throw new UnauthorizedException("Token has expired");
+        }
+        // console.log(tokenDecode);
         const id = tokenDecode.sub;
-        console.log(id);
+        // console.log(id);
         const result = await this.userService.findIdWithRelations(id);
         // const{resetToken,resetTokenExpiry, verifyToken,password, ...others} = result
         return {statusCode: 200, message: `success, id ${id}`, data: result}

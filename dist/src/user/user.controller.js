@@ -60,11 +60,13 @@ let UserController = class UserController {
         if (!tokenDecode) {
             throw new common_1.NotFoundException("Invalid Token");
         }
+        ;
         payload = tokenDecode;
-        console.log(payload);
-        console.log(tokenDecode);
+        const timeInSeconds = Math.floor(Date.now() / 1000);
+        if (payload.exp && payload.exp < timeInSeconds) {
+            throw new common_1.UnauthorizedException("Token has expired");
+        }
         const id = tokenDecode.sub;
-        console.log(id);
         const result = await this.userService.findIdWithRelations(id);
         return { statusCode: 200, message: `success, id ${id}`, data: result };
     }
