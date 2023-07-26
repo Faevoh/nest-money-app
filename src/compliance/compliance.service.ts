@@ -3,15 +3,25 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateCompDto } from 'src/DTO/createComp';
 import { UpdateCompDto } from 'src/DTO/updateComp';
 import { Compliances } from 'src/Entities/compEntity.entity';
+import * as cloudinary from 'cloudinary';
 import { User } from 'src/Entities/userEntity.entity';
 import { AuthService } from 'src/auth/auth.service';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
+import { config } from 'dotenv';
+
+config()
 
 @Injectable()
 export class ComplianceService {
-    constructor(@InjectRepository(Compliances) private compRepo: Repository<Compliances>, private authService: AuthService, private userService: UserService) {}
-
+    constructor(@InjectRepository(Compliances) private compRepo: Repository<Compliances>, private authService: AuthService, private userService: UserService) {
+        cloudinary.v2.config({
+            cloud_name: process.env.CLOUD_NAME,
+            api_key: process.env.API_KEY,
+            api_secret: process.env.API_SECRET,
+          });
+    }
+       
     async createComp (createCompDto: CreateCompDto, user: User) {
         try{ 
             const {BVN, NIN, state, LGA, city, businessAddress, businessName, country, address} =createCompDto;
@@ -42,13 +52,6 @@ export class ComplianceService {
             // console.log(userData)
             // console.log(comp.businessAddress)
             // console.log(comp.businessName)
-
-            if (createCompDto.imageUrl && createCompDto.publicId) {
-                comp.imageUrl = createCompDto.imageUrl;
-                comp.publicId = createCompDto.publicId;
-            }
-            console.log("1" + comp.imageUrl)
-            console.log("2" + comp.publicId)
 
             if(userData.accountType === true && (comp.businessAddress ===undefined||comp.businessAddress === null || comp.businessName === null || comp.businessName === undefined)) {
                 throw new UnauthorizedException("businessAddress and businessName cannot be empty")

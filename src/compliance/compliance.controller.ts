@@ -1,9 +1,9 @@
-import { BadRequestException, Body, Controller, Get, Headers, Param, ParseIntPipe, Patch, Post, Query, UnauthorizedException, UploadedFile, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Headers, InternalServerErrorException, Param, ParseIntPipe, Patch, Post, Query, UnauthorizedException, UploadedFile, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { ComplianceService } from './compliance.service';
 import {  CreateCompDto } from 'src/DTO/createComp';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { RequestWithUser } from 'src/auth/userRequest';
-import { v2 as cloudinary } from 'cloudinary';
+import * as cloudinary from 'cloudinary';
 import { UpdateCompDto } from 'src/DTO/updateComp';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
@@ -14,19 +14,17 @@ export class ComplianceController {
     constructor(private compService: ComplianceService, private jwtService: JwtService, private userService: UserService) {}    
 
     @Post("/new")
-    @UseInterceptors(FileInterceptor("image"))
-    async addCompliance(@Query("access_token") access_token: string, @Body(ValidationPipe) createCompDto: CreateCompDto, @UploadedFile() file: Express.Multer.File) {
-        if (file) {
-        const uploadedImage = await cloudinary.uploader.upload(file.path);
-        createCompDto.imageUrl = uploadedImage.secure_url;
-        createCompDto.publicId = uploadedImage.public_id;
-        console.log(uploadedImage)
-        console.log(uploadedImage.secure_url)
-        console.log(uploadedImage.public_id)
-        }else {
-            throw new BadRequestException('Image file is required');
-          }
-        console.log(createCompDto)
+    @UseInterceptors(FileInterceptor('image'))
+    async addCompliance(@Query("access_token") access_token: string, @Body(ValidationPipe) createCompDto: CreateCompDto, @UploadedFile() file: Express.Multer.File){
+        const result = await cloudinary.v2.uploader.upload(file.path, {
+            folder: 'NIN_images', 
+            allowed_formats: ['jpg', 'jpeg', 'png'],
+        })
+        createCompDto.imageUrl = result.secure_url;
+        createCompDto.publicId = result.public_id;
+        console.log(createCompDto.imageUrl)
+        console.log(createCompDto.publicId)
+
         const user = this.jwtService.decode(access_token);
         const id = user.sub;
         const getUser = await this.userService.findById(id);
@@ -54,3 +52,4 @@ export class ComplianceController {
         }
     }
 }
+  

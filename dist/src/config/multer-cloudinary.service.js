@@ -13,14 +13,17 @@ exports.MulterCloudinaryService = void 0;
 const common_1 = require("@nestjs/common");
 const cloudinary_1 = require("cloudinary");
 const config_1 = require("@nestjs/config");
-const multer_1 = require("multer");
 let MulterCloudinaryService = class MulterCloudinaryService {
     constructor(configService) {
         this.configService = configService;
     }
     storage() {
         return {
-            storage: (0, multer_1.diskStorage)({}),
+            const: cloudinaryOptions = {
+                cloudName: this.configService.get(process.env.CLOUD_NAME),
+                apiKey: this.configService.get(process.env.API_KEY),
+                apiSecret: this.configService.get(process.env.API_SECRET),
+            }
         };
     }
     fileFilter(req, file, callback) {
