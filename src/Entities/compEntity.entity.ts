@@ -33,10 +33,10 @@ export class Compliances {
     @Column()
     city: string;
 
-    @Column({nullable: true})
+    @Column()
     imageUrl: string;
 
-    @Column({nullable: true})
+    @Column()
     publicId: string;
 
     @Column({unique: true, nullable:true})
