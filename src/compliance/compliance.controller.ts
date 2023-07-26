@@ -3,6 +3,7 @@ import { ComplianceService } from './compliance.service';
 import {  CreateCompDto } from 'src/DTO/createComp';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { RequestWithUser } from 'src/auth/userRequest';
+import { request } from 'express';
 import * as cloudinary from 'cloudinary';
 import { UpdateCompDto } from 'src/DTO/updateComp';
 import { JwtService } from '@nestjs/jwt';
@@ -15,7 +16,12 @@ export class ComplianceController {
 
     @Post("/new")
     @UseInterceptors(FileInterceptor('image'))
-    async addCompliance(@Query("access_token") access_token: string, @Body(ValidationPipe) createCompDto: CreateCompDto, @UploadedFile() file: Express.Multer.File){
+    async addCompliance(@Query("access_token") access_token: string, @UploadedFile() file: Express.Multer.File){
+        const createCompDto: CreateCompDto = {
+            ...JSON.parse(request.body.compData),
+            imageUrl: '',
+            publicId: '',
+          };
         console.log("what is it?")
         if (file) {
             const uploadedImage = await cloudinary.v2.uploader.upload(file.path);

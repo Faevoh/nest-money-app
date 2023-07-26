@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ComplianceController = void 0;
 const common_1 = require("@nestjs/common");
 const compliance_service_1 = require("./compliance.service");
-const createComp_1 = require("../DTO/createComp");
+const express_1 = require("express");
 const cloudinary = require("cloudinary");
 const updateComp_1 = require("../DTO/updateComp");
 const jwt_1 = require("@nestjs/jwt");
@@ -27,7 +27,8 @@ let ComplianceController = class ComplianceController {
         this.jwtService = jwtService;
         this.userService = userService;
     }
-    async addCompliance(access_token, createCompDto, file) {
+    async addCompliance(access_token, file) {
+        const createCompDto = Object.assign(Object.assign({}, JSON.parse(express_1.request.body.compData)), { imageUrl: '', publicId: '' });
         console.log("what is it?");
         if (file) {
             const uploadedImage = await cloudinary.v2.uploader.upload(file.path);
@@ -64,10 +65,9 @@ __decorate([
     (0, common_1.Post)("/new"),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('image')),
     __param(0, (0, common_1.Query)("access_token")),
-    __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
-    __param(2, (0, common_1.UploadedFile)()),
+    __param(1, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, createComp_1.CreateCompDto, Object]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], ComplianceController.prototype, "addCompliance", null);
 __decorate([

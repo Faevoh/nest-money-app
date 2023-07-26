@@ -1,6 +1,5 @@
 /// <reference types="multer" />
 import { ComplianceService } from './compliance.service';
-import { CreateCompDto } from 'src/DTO/createComp';
 import { UpdateCompDto } from 'src/DTO/updateComp';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
@@ -9,7 +8,7 @@ export declare class ComplianceController {
     private jwtService;
     private userService;
     constructor(compService: ComplianceService, jwtService: JwtService, userService: UserService);
-    addCompliance(access_token: string, createCompDto: CreateCompDto, file: Express.Multer.File): Promise<{
+    addCompliance(access_token: string, file: Express.Multer.File): Promise<{
         statusCode: number;
         message: string;
         data: import("../Entities/compEntity.entity").Compliances;
