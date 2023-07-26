@@ -1,3 +1,4 @@
+/// <reference types="multer" />
 import { ComplianceService } from './compliance.service';
 import { CreateCompDto } from 'src/DTO/createComp';
 import { UpdateCompDto } from 'src/DTO/updateComp';
@@ -8,7 +9,7 @@ export declare class ComplianceController {
     private jwtService;
     private userService;
     constructor(compService: ComplianceService, jwtService: JwtService, userService: UserService);
-    addCompliance(access_token: string, createCompDto: CreateCompDto): Promise<{
+    addCompliance(access_token: string, createCompDto: CreateCompDto, file: Express.Multer.File): Promise<{
         statusCode: number;
         message: string;
         data: import("../Entities/compEntity.entity").Compliances;
@@ -26,6 +27,8 @@ export declare class ComplianceController {
         address: string;
         LGA: string;
         city: string;
+        imageUrl: string;
+        publicId: string;
         completed: boolean;
         userId: number;
         user: import("../Entities/userEntity.entity").User;

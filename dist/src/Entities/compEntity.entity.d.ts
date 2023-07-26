@@ -10,6 +10,8 @@ export declare class Compliances {
     address: string;
     LGA: string;
     city: string;
+    imageUrl: string;
+    publicId: string;
     bankCode?: string;
     completed: boolean;
     userId: number;

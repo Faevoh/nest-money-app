@@ -1,18 +1,26 @@
-import { Body, Controller, Get, Headers, Param, ParseIntPipe, Patch, Post, Query, Req, UnauthorizedException, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Param, ParseIntPipe, Patch, Post, Query, UnauthorizedException, UploadedFile, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { ComplianceService } from './compliance.service';
 import {  CreateCompDto } from 'src/DTO/createComp';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { RequestWithUser } from 'src/auth/userRequest';
+import { v2 as cloudinary } from 'cloudinary';
 import { UpdateCompDto } from 'src/DTO/updateComp';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('compliance')
 export class ComplianceController {
     constructor(private compService: ComplianceService, private jwtService: JwtService, private userService: UserService) {}    
 
     @Post("/new")
-    async addCompliance(@Query("access_token") access_token: string, @Body(ValidationPipe) createCompDto: CreateCompDto) {
+    @UseInterceptors(FileInterceptor("image"))
+    async addCompliance(@Query("access_token") access_token: string, @Body(ValidationPipe) createCompDto: CreateCompDto, @UploadedFile() file: Express.Multer.File) {
+        if (file) {
+        const uploadedImage = await cloudinary.uploader.upload(file.path);
+        createCompDto.imageUrl = uploadedImage.secure_url;
+        createCompDto.publicId = uploadedImage.public_id;
+        }
         const user = this.jwtService.decode(access_token);
         const id = user.sub;
         const getUser = await this.userService.findById(id)

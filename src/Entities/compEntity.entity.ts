@@ -33,6 +33,12 @@ export class Compliances {
     @Column()
     city: string;
 
+    @Column()
+    imageUrl: string;
+
+    @Column()
+    publicId: string;
+
     @Column({unique: true, nullable:true})
     bankCode ?: string;
 

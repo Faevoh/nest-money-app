@@ -55,6 +55,14 @@ __decorate([
     __metadata("design:type", String)
 ], Compliances.prototype, "city", void 0);
 __decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Compliances.prototype, "imageUrl", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Compliances.prototype, "publicId", void 0);
+__decorate([
     (0, typeorm_1.Column)({ unique: true, nullable: true }),
     __metadata("design:type", String)
 ], Compliances.prototype, "bankCode", void 0);

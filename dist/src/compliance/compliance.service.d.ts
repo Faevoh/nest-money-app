@@ -28,6 +28,8 @@ export declare class ComplianceService {
         address: string;
         LGA: string;
         city: string;
+        imageUrl: string;
+        publicId: string;
         completed: boolean;
         userId: number;
         user: User;
