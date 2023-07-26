@@ -19,7 +19,7 @@ export class Compliances {
     businessAddress ?: string;
 
     @Column()
-    state: string
+    state: string;
 
     @Column()
     country: string;
