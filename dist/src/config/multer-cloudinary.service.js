@@ -12,26 +12,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MulterCloudinaryService = void 0;
 const common_1 = require("@nestjs/common");
 const cloudinary_1 = require("cloudinary");
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const config_1 = require("@nestjs/config");
+const multer_1 = require("multer");
 let MulterCloudinaryService = class MulterCloudinaryService {
     constructor(configService) {
         this.configService = configService;
     }
     storage() {
-        const cloudinaryOptions = {
-            cloudName: this.configService.get(process.env.CLOUD_NAME),
-            apiKey: this.configService.get(process.env.API_KEY),
-            apiSecret: this.configService.get(process.env.API_SECRET),
-        };
         return {
-            storage: new CloudinaryStorage({
-                cloudinary: cloudinary_1.v2,
-                params: {
-                    folder: 'NIN_images',
-                    allowedFormats: ['jpg', 'jpeg', 'png'],
-                },
-            }),
+            storage: (0, multer_1.diskStorage)({}),
         };
     }
     fileFilter(req, file, callback) {
@@ -39,6 +28,18 @@ let MulterCloudinaryService = class MulterCloudinaryService {
             return callback(new Error('Only image files are allowed!'), false);
         }
         callback(null, true);
+    }
+    async uploadToCloudinary(file) {
+        try {
+            const uploadedImage = await cloudinary_1.v2.uploader.upload(file.path);
+            return {
+                imageUrl: uploadedImage.secure_url,
+                publicId: uploadedImage.public_id,
+            };
+        }
+        catch (error) {
+            throw new Error('Error uploading image to Cloudinary');
+        }
     }
 };
 MulterCloudinaryService = __decorate([

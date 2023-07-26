@@ -1,3 +1,4 @@
+/// <reference types="multer" />
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 import { ConfigService } from '@nestjs/config';
 export declare class MulterCloudinaryService {
@@ -5,4 +6,5 @@ export declare class MulterCloudinaryService {
     constructor(configService: ConfigService);
     storage(): MulterOptions['storage'];
     fileFilter(req: any, file: any, callback: any): any;
+    uploadToCloudinary(file: Express.Multer.File): Promise<any>;
 }
