@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateCompDto } from 'src/DTO/createComp';
 import { UpdateCompDto } from 'src/DTO/updateComp';
@@ -43,7 +43,7 @@ export class ComplianceService {
             console.log(comp.businessAddress)
             console.log(comp.businessName)
             if(userData.accountType === true && (comp.businessAddress ===undefined||comp.businessAddress === null || comp.businessName === null || comp.businessName === undefined)) {
-                throw new BadRequestException("businessAddress and businessName cannot be empty")
+                throw new UnauthorizedException("businessAddress and businessName cannot be empty")
             }
             const newComp = this.compRepo.create(comp)
             
@@ -52,6 +52,9 @@ export class ComplianceService {
             return {statusCode: 201, message: "Compliance Added", data: result}
         }catch(err) {
             if(err instanceof BadRequestException){
+                throw new BadRequestException(err.message)
+            }
+            if(err instanceof UnauthorizedException){
                 throw new BadRequestException(err.message)
             }
             throw new InternalServerErrorException("Something occoured, Compliance not Added")

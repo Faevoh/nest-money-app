@@ -53,7 +53,7 @@ let ComplianceService = class ComplianceService {
             console.log(comp.businessAddress);
             console.log(comp.businessName);
             if (userData.accountType === true && (comp.businessAddress === undefined || comp.businessAddress === null || comp.businessName === null || comp.businessName === undefined)) {
-                throw new common_1.BadRequestException("businessAddress and businessName cannot be empty");
+                throw new common_1.UnauthorizedException("businessAddress and businessName cannot be empty");
             }
             const newComp = this.compRepo.create(comp);
             const result = await this.compRepo.save(newComp);
@@ -61,6 +61,9 @@ let ComplianceService = class ComplianceService {
         }
         catch (err) {
             if (err instanceof common_1.BadRequestException) {
+                throw new common_1.BadRequestException(err.message);
+            }
+            if (err instanceof common_1.UnauthorizedException) {
                 throw new common_1.BadRequestException(err.message);
             }
             throw new common_1.InternalServerErrorException("Something occoured, Compliance not Added");

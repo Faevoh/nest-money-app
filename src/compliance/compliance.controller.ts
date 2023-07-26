@@ -48,3 +48,14 @@ export class ComplianceController {
         }
     }
 }
+// {
+//     "BVN": 32121690082,
+//     "NIN": 33667100019,
+//     "state": "Lagos",
+//     "LGA": "Ajeromi-Ifelodun",
+//     "city": "Ikeja",
+//     "country": "Nigeria",
+//     "address": "10,Street road",
+//     "businessAddress": "03,Industry road",
+//     "businessName": "Business One"
+// }
