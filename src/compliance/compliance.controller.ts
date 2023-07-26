@@ -23,7 +23,7 @@ export class ComplianceController {
         }
         const user = this.jwtService.decode(access_token);
         const id = user.sub;
-        const getUser = await this.userService.findById(id)
+        const getUser = await this.userService.findById(id);
         return await this.compService.createComp(createCompDto, getUser);
     }
 
