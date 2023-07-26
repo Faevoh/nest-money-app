@@ -47,6 +47,8 @@ export class ComplianceService {
                 comp.imageUrl = createCompDto.imageUrl;
                 comp.publicId = createCompDto.publicId;
             }
+            console.log("1" + comp.imageUrl)
+            console.log("2" + comp.publicId)
 
             if(userData.accountType === true && (comp.businessAddress ===undefined||comp.businessAddress === null || comp.businessName === null || comp.businessName === undefined)) {
                 throw new UnauthorizedException("businessAddress and businessName cannot be empty")
