@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, Param, ParseIntPipe, Patch, Post, Query, UnauthorizedException, UploadedFile, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Headers, Param, ParseIntPipe, Patch, Post, Query, UnauthorizedException, UploadedFile, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { ComplianceService } from './compliance.service';
 import {  CreateCompDto } from 'src/DTO/createComp';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
@@ -23,7 +23,9 @@ export class ComplianceController {
         console.log(uploadedImage)
         console.log(uploadedImage.secure_url)
         console.log(uploadedImage.public_id)
-        }
+        }else {
+            throw new BadRequestException('Image file is required');
+          }
         console.log(createCompDto)
         const user = this.jwtService.decode(access_token);
         const id = user.sub;

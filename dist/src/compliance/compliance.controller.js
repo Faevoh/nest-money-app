@@ -36,6 +36,9 @@ let ComplianceController = class ComplianceController {
             console.log(uploadedImage.secure_url);
             console.log(uploadedImage.public_id);
         }
+        else {
+            throw new common_1.BadRequestException('Image file is required');
+        }
         console.log(createCompDto);
         const user = this.jwtService.decode(access_token);
         const id = user.sub;
