@@ -32,7 +32,11 @@ let ComplianceController = class ComplianceController {
             const uploadedImage = await cloudinary_1.v2.uploader.upload(file.path);
             createCompDto.imageUrl = uploadedImage.secure_url;
             createCompDto.publicId = uploadedImage.public_id;
+            console.log(uploadedImage);
+            console.log(uploadedImage.secure_url);
+            console.log(uploadedImage.public_id);
         }
+        console.log(createCompDto);
         const user = this.jwtService.decode(access_token);
         const id = user.sub;
         const getUser = await this.userService.findById(id);

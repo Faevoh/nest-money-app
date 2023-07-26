@@ -20,7 +20,11 @@ export class ComplianceController {
         const uploadedImage = await cloudinary.uploader.upload(file.path);
         createCompDto.imageUrl = uploadedImage.secure_url;
         createCompDto.publicId = uploadedImage.public_id;
+        console.log(uploadedImage)
+        console.log(uploadedImage.secure_url)
+        console.log(uploadedImage.public_id)
         }
+        console.log(createCompDto)
         const user = this.jwtService.decode(access_token);
         const id = user.sub;
         const getUser = await this.userService.findById(id);
@@ -48,14 +52,3 @@ export class ComplianceController {
         }
     }
 }
-// {
-//     "BVN": 32121690082,
-//     "NIN": 33667100019,
-//     "state": "Lagos",
-//     "LGA": "Ajeromi-Ifelodun",
-//     "city": "Ikeja",
-//     "country": "Nigeria",
-//     "address": "10,Street road",
-//     "businessAddress": "03,Industry road",
-//     "businessName": "Business One"
-// }
