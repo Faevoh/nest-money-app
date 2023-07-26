@@ -18,7 +18,7 @@ export class ComplianceController {
     @UseInterceptors(FileInterceptor('image'))
     async addCompliance(@Query("access_token") access_token: string, @UploadedFile() file: Express.Multer.File){
         const createCompDto: CreateCompDto = {
-            ...JSON.parse(request.body.compData),
+            ...JSON.parse(request.body.createCompDto),
             imageUrl: '',
             publicId: '',
           };
