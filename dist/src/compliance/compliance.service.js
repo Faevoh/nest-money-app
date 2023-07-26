@@ -57,6 +57,13 @@ let ComplianceService = class ComplianceService {
             comp.userId = user.id;
             comp.completed = false;
             const userData = await this.userService.findById(user.id);
+            if (createCompDto.imageUrl && createCompDto.publicId) {
+                comp.imageUrl = createCompDto.imageUrl;
+                comp.publicId = createCompDto.publicId;
+            }
+            console.log(comp.imageUrl);
+            console.log(comp.publicId);
+            console.log("whtf");
             if (userData.accountType === true && (comp.businessAddress === undefined || comp.businessAddress === null || comp.businessName === null || comp.businessName === undefined)) {
                 throw new common_1.UnauthorizedException("businessAddress and businessName cannot be empty");
             }

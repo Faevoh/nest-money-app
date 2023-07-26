@@ -16,14 +16,14 @@ export class ComplianceController {
     @Post("/new")
     @UseInterceptors(FileInterceptor('image'))
     async addCompliance(@Query("access_token") access_token: string, @Body(ValidationPipe) createCompDto: CreateCompDto, @UploadedFile() file: Express.Multer.File){
-        const result = await cloudinary.v2.uploader.upload(file.path, {
-            folder: 'NIN_images', 
-            allowed_formats: ['jpg', 'jpeg', 'png'],
-        })
-        createCompDto.imageUrl = result.secure_url;
-        createCompDto.publicId = result.public_id;
+        if (file) {
+            const uploadedImage = await cloudinary.v2.uploader.upload(file.path);
+            createCompDto.imageUrl = uploadedImage.secure_url;
+            createCompDto.publicId = uploadedImage.public_id;
+        }
         console.log(createCompDto.imageUrl)
         console.log(createCompDto.publicId)
+        console.log("heyyyyoo please")
 
         const user = this.jwtService.decode(access_token);
         const id = user.sub;

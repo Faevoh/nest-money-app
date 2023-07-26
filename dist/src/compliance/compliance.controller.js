@@ -28,14 +28,14 @@ let ComplianceController = class ComplianceController {
         this.userService = userService;
     }
     async addCompliance(access_token, createCompDto, file) {
-        const result = await cloudinary.v2.uploader.upload(file.path, {
-            folder: 'NIN_images',
-            allowed_formats: ['jpg', 'jpeg', 'png'],
-        });
-        createCompDto.imageUrl = result.secure_url;
-        createCompDto.publicId = result.public_id;
+        if (file) {
+            const uploadedImage = await cloudinary.v2.uploader.upload(file.path);
+            createCompDto.imageUrl = uploadedImage.secure_url;
+            createCompDto.publicId = uploadedImage.public_id;
+        }
         console.log(createCompDto.imageUrl);
         console.log(createCompDto.publicId);
+        console.log("heyyyyoo please");
         const user = this.jwtService.decode(access_token);
         const id = user.sub;
         const getUser = await this.userService.findById(id);

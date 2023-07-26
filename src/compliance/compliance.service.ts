@@ -53,6 +53,14 @@ export class ComplianceService {
             // console.log(comp.businessAddress)
             // console.log(comp.businessName)
 
+            if (createCompDto.imageUrl && createCompDto.publicId) {
+                comp.imageUrl = createCompDto.imageUrl;
+                comp.publicId = createCompDto.publicId;
+            }
+            console.log(comp.imageUrl)
+            console.log(comp.publicId)
+            console.log("whtf")
+
             if(userData.accountType === true && (comp.businessAddress ===undefined||comp.businessAddress === null || comp.businessName === null || comp.businessName === undefined)) {
                 throw new UnauthorizedException("businessAddress and businessName cannot be empty")
             }
