@@ -16,6 +16,7 @@ export class ComplianceController {
     @Post("/new")
     @UseInterceptors(FileInterceptor('image'))
     async addCompliance(@Query("access_token") access_token: string, @Body(ValidationPipe) createCompDto: CreateCompDto, @UploadedFile() file: Express.Multer.File){
+        console.log("what is it?")
         if (file) {
             const uploadedImage = await cloudinary.v2.uploader.upload(file.path);
             createCompDto.imageUrl = uploadedImage.secure_url;

@@ -24,6 +24,7 @@ export class ComplianceService {
        
     async createComp (createCompDto: CreateCompDto, user: User) {
         try{ 
+            console.log("Ogini")
             const {BVN, NIN, state, LGA, city, businessAddress, businessName, country, address} =createCompDto;
 
             const checkBVN = await this.compRepo.findOneBy({BVN})

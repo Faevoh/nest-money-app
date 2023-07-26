@@ -28,6 +28,7 @@ let ComplianceController = class ComplianceController {
         this.userService = userService;
     }
     async addCompliance(access_token, createCompDto, file) {
+        console.log("what is it?");
         if (file) {
             const uploadedImage = await cloudinary.v2.uploader.upload(file.path);
             createCompDto.imageUrl = uploadedImage.secure_url;
