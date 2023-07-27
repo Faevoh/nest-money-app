@@ -20,7 +20,6 @@ let CloudinaryService = class CloudinaryService {
                 api_key: "989516128674283",
                 api_secret: "aLYAw_Cs2Jy2CsfheRGHtiU4CFM",
             });
-            console.log(process.env.CLOUD_NAME);
             const upload = cloudinary_1.v2.uploader.upload_stream((error, result) => {
                 if (error)
                     return reject(error);
