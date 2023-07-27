@@ -26,6 +26,7 @@ export class ComplianceController {
         const user = await this.jwtService.decode(access_token);
         const id = user.sub;
         const getUser = await this.userService.findById(id);
+        console.log(getUser)
         return await this.compService.createComp(createCompDto, getUser);
        }catch(err){
         throw new InternalServerErrorException(err.message, "wetin d sup?")
