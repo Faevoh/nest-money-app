@@ -21,12 +21,14 @@ const jwt_1 = require("@nestjs/jwt");
 const user_service_1 = require("../user/user.service");
 const platform_express_1 = require("@nestjs/platform-express");
 const cloudinary_service_1 = require("../cloudinary/cloudinary.service");
+const compEntity_entity_1 = require("../Entities/compEntity.entity");
 let ComplianceController = class ComplianceController {
-    constructor(compService, jwtService, userService, cloudinaryService) {
+    constructor(compService, jwtService, userService, cloudinaryService, comRepo) {
         this.compService = compService;
         this.jwtService = jwtService;
         this.userService = userService;
         this.cloudinaryService = cloudinaryService;
+        this.comRepo = comRepo;
     }
     async addCompliance(access_token, createCompDto, file) {
         console.log("what is it now?");
@@ -36,9 +38,9 @@ let ComplianceController = class ComplianceController {
             console.log(file);
             if (file) {
                 const uploadedImage = await this.cloudinaryService.uploadImage(file);
-                createCompDto.imageUrl = uploadedImage.secure_url;
+                this.comRepo.imageUrl = uploadedImage.secure_url;
+                console.log(uploadedImage.imageUrl);
             }
-            console.log(createCompDto.imageUrl);
             console.log("heyyyyoo please");
             const user = this.jwtService.decode(access_token);
             const id = user.sub;
@@ -95,7 +97,7 @@ __decorate([
 ], ComplianceController.prototype, "tokenCheck", null);
 ComplianceController = __decorate([
     (0, common_1.Controller)('compliance'),
-    __metadata("design:paramtypes", [compliance_service_1.ComplianceService, jwt_1.JwtService, user_service_1.UserService, cloudinary_service_1.CloudinaryService])
+    __metadata("design:paramtypes", [compliance_service_1.ComplianceService, jwt_1.JwtService, user_service_1.UserService, cloudinary_service_1.CloudinaryService, compEntity_entity_1.Compliances])
 ], ComplianceController);
 exports.ComplianceController = ComplianceController;
 //# sourceMappingURL=compliance.controller.js.map

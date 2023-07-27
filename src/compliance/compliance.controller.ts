@@ -7,14 +7,15 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { Compliances } from 'src/Entities/compEntity.entity';
 
 @Controller('compliance')
 export class ComplianceController {
-    constructor(private compService: ComplianceService, private jwtService: JwtService, private userService: UserService, private cloudinaryService: CloudinaryService) {}    
+    constructor(private compService: ComplianceService, private jwtService: JwtService, private userService: UserService, private cloudinaryService: CloudinaryService, private comRepo: Compliances) {}    
 
     @Post("/new")
     @UseInterceptors(FileInterceptor('image'))
-    async addCompliance(@Query("access_token") access_token: string,@Body(ValidationPipe) createCompDto: CreateCompDto, @UploadedFile() file: Express.Multer.File){
+    async addCompliance(@Query("access_token") access_token: string,@Body(ValidationPipe) createCompDto: CreateCompDto, @UploadedFile() file: Express.Multer.File, ){
         console.log("what is it now?")
         console.log("2" + file)
         try{
@@ -22,9 +23,9 @@ export class ComplianceController {
         console.log(file)
         if (file) {
             const uploadedImage = await this.cloudinaryService.uploadImage(file);
-            createCompDto.imageUrl = uploadedImage.secure_url;
+            this.comRepo.imageUrl = uploadedImage.secure_url;
+            console.log(uploadedImage.imageUrl)
         }
-        console.log(createCompDto.imageUrl)
         console.log("heyyyyoo please")
 
         const user = this.jwtService.decode(access_token);

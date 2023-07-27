@@ -45,9 +45,6 @@ export class ComplianceService {
             // console.log(userData)
             // console.log(comp.businessAddress)
             // console.log(comp.businessName)
-
-            comp.imageUrl = createCompDto.imageUrl
-            console.log(comp.imageUrl)
             console.log("whtf")
 
             if(userData.accountType === true && (comp.businessAddress ===undefined||comp.businessAddress === null || comp.businessName === null || comp.businessName === undefined)) {
