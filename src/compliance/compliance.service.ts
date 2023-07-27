@@ -8,24 +8,16 @@ import { User } from 'src/Entities/userEntity.entity';
 import { AuthService } from 'src/auth/auth.service';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
-import { config } from 'dotenv';
-
-config()
 
 @Injectable()
 export class ComplianceService {
-    constructor(@InjectRepository(Compliances) private compRepo: Repository<Compliances>, private authService: AuthService, private userService: UserService) {
-        cloudinary.v2.config({
-            cloud_name: process.env.CLOUD_NAME,
-            api_key: process.env.API_KEY,
-            api_secret: process.env.API_SECRET,
-          });
-    }
+    constructor(@InjectRepository(Compliances) private compRepo: Repository<Compliances>, private authService: AuthService, private userService: UserService) {}
        
     async createComp (createCompDto: CreateCompDto, user: User) {
+        console.log("Ogini 02")
         try{ 
             console.log("Ogini")
-            const {BVN, NIN, state, LGA, city, businessAddress, businessName, country, address, imageUrl, publicId} =createCompDto;
+            const {BVN, NIN, state, LGA, city, businessAddress, businessName, country, address} =createCompDto;
 
             const checkBVN = await this.compRepo.findOneBy({BVN})
             if(checkBVN){
@@ -54,12 +46,8 @@ export class ComplianceService {
             // console.log(comp.businessAddress)
             // console.log(comp.businessName)
 
-            if (createCompDto.imageUrl && createCompDto.publicId) {
-                comp.imageUrl = createCompDto.imageUrl;
-                comp.publicId = createCompDto.publicId;
-            }
+            comp.imageUrl = createCompDto.imageUrl
             console.log(comp.imageUrl)
-            console.log(comp.publicId)
             console.log("whtf")
 
             if(userData.accountType === true && (comp.businessAddress ===undefined||comp.businessAddress === null || comp.businessName === null || comp.businessName === undefined)) {

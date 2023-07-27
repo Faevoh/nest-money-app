@@ -21,6 +21,9 @@ const wallet_module_1 = require("./wallet/wallet.module");
 const transaction_module_1 = require("./transaction/transaction.module");
 const mail_config_1 = require("./config/mail.config");
 const host_data_source_1 = require("../db/host-data-source");
+const cloudinary_module_1 = require("./cloudinary/cloudinary.module");
+const serve_static_1 = require("@nestjs/serve-static");
+const path_1 = require("path");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -36,7 +39,9 @@ AppModule = __decorate([
                     mail_config_1.default,
                 ],
                 expandVariables: true,
-            }), wallet_module_1.WalletModule, transaction_module_1.TransactionModule],
+            }), serve_static_1.ServeStaticModule.forRoot({
+                rootPath: (0, path_1.join)(__dirname, '..'),
+            }), wallet_module_1.WalletModule, transaction_module_1.TransactionModule, cloudinary_module_1.CloudinaryModule],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService]
     })

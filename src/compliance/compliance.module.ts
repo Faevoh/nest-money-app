@@ -13,6 +13,7 @@ import { accountGenerator } from 'src/auth/generator.service';
 import { MailService } from 'src/mail/mail.service';
 import { AuthModule } from 'src/auth/auth.module';
 import { AuthService } from 'src/auth/auth.service';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Compliances, User, Wallet]),JwtModule.register({
@@ -23,7 +24,8 @@ import { AuthService } from 'src/auth/auth.service';
     }
   }), UserModule, AuthModule],
   controllers: [ComplianceController],
-  providers: [ComplianceService, UserService, WalletService, accountGenerator, MailService, AuthService],
+  providers: [ComplianceService, UserService, WalletService, accountGenerator, MailService, AuthService, CloudinaryService
+  ],
   exports: [ComplianceService]
 })
 export class ComplianceModule {}

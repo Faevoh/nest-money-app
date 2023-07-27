@@ -45,9 +45,5 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateCompDto.prototype, "imageUrl", void 0);
-__decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], CreateCompDto.prototype, "publicId", void 0);
 exports.CreateCompDto = CreateCompDto;
 //# sourceMappingURL=createComp.js.map

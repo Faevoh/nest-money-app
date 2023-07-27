@@ -29,7 +29,6 @@ export declare class ComplianceService {
         LGA: string;
         city: string;
         imageUrl: string;
-        publicId: string;
         completed: boolean;
         userId: number;
         user: User;

@@ -6,10 +6,11 @@ import { UpdateCompDto } from 'src/DTO/updateComp';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Controller('compliance')
 export class ComplianceController {
-    constructor(private compService: ComplianceService, private jwtService: JwtService, private userService: UserService) {}    
+    constructor(private compService: ComplianceService, private jwtService: JwtService, private userService: UserService, private cloudinaryService: CloudinaryService) {}    
 
     @Post("/new")
     @UseInterceptors(FileInterceptor('image'))
@@ -20,12 +21,10 @@ export class ComplianceController {
         console.log("what is it?")
         console.log(file)
         if (file) {
-            const uploadedImage = await cloudinary.v2.uploader.upload(file.path);
+            const uploadedImage = await this.cloudinaryService.uploadImage(file);
             createCompDto.imageUrl = uploadedImage.secure_url;
-            createCompDto.publicId = uploadedImage.public_id;
         }
         console.log(createCompDto.imageUrl)
-        console.log(createCompDto.publicId)
         console.log("heyyyyoo please")
 
         const user = this.jwtService.decode(access_token);
@@ -33,7 +32,7 @@ export class ComplianceController {
         const getUser = await this.userService.findById(id);
         return await this.compService.createComp(createCompDto, getUser);
        }catch(err){
-
+        throw new Error(err.message)
        }
     }
 

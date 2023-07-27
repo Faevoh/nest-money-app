@@ -36,9 +36,6 @@ export class Compliances {
     @Column()
     imageUrl: string;
 
-    @Column()
-    publicId: string;
-
     @Column({unique: true, nullable:true})
     bankCode ?: string;
 

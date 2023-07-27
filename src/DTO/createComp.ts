@@ -25,9 +25,6 @@ export class CreateCompDto {
     @IsNotEmpty()
     imageUrl: string;
 
-    @IsNotEmpty()
-    publicId: string;
-
     businessName ?: string;
 
     businessAddress ?: string;

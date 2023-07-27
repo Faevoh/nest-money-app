@@ -16,27 +16,20 @@ exports.ComplianceService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const compEntity_entity_1 = require("../Entities/compEntity.entity");
-const cloudinary = require("cloudinary");
 const auth_service_1 = require("../auth/auth.service");
 const user_service_1 = require("../user/user.service");
 const typeorm_2 = require("typeorm");
-const dotenv_1 = require("dotenv");
-(0, dotenv_1.config)();
 let ComplianceService = class ComplianceService {
     constructor(compRepo, authService, userService) {
         this.compRepo = compRepo;
         this.authService = authService;
         this.userService = userService;
-        cloudinary.v2.config({
-            cloud_name: process.env.CLOUD_NAME,
-            api_key: process.env.API_KEY,
-            api_secret: process.env.API_SECRET,
-        });
     }
     async createComp(createCompDto, user) {
+        console.log("Ogini 02");
         try {
             console.log("Ogini");
-            const { BVN, NIN, state, LGA, city, businessAddress, businessName, country, address, imageUrl, publicId } = createCompDto;
+            const { BVN, NIN, state, LGA, city, businessAddress, businessName, country, address } = createCompDto;
             const checkBVN = await this.compRepo.findOneBy({ BVN });
             if (checkBVN) {
                 throw new common_1.BadRequestException("BVN already exists");
@@ -58,12 +51,8 @@ let ComplianceService = class ComplianceService {
             comp.userId = user.id;
             comp.completed = false;
             const userData = await this.userService.findById(user.id);
-            if (createCompDto.imageUrl && createCompDto.publicId) {
-                comp.imageUrl = createCompDto.imageUrl;
-                comp.publicId = createCompDto.publicId;
-            }
+            comp.imageUrl = createCompDto.imageUrl;
             console.log(comp.imageUrl);
-            console.log(comp.publicId);
             console.log("whtf");
             if (userData.accountType === true && (comp.businessAddress === undefined || comp.businessAddress === null || comp.businessName === null || comp.businessName === undefined)) {
                 throw new common_1.UnauthorizedException("businessAddress and businessName cannot be empty");

@@ -12,6 +12,9 @@ import { WalletModule } from './wallet/wallet.module';
 import { TransactionModule } from './transaction/transaction.module';
 import mailConfig from './config/mail.config';
 import { hostDataSourceOptions } from 'db/host-data-source';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [ ConfigModule.forRoot({
@@ -24,7 +27,10 @@ import { hostDataSourceOptions } from 'db/host-data-source';
     load: [
       mailConfig,
     ],
-    expandVariables: true,}), WalletModule, TransactionModule],
+    expandVariables: true,
+  }), ServeStaticModule.forRoot({
+    rootPath: join(__dirname, '..'),
+  }), WalletModule, TransactionModule, CloudinaryModule],
   controllers: [AppController],
   providers: [AppService]
 })

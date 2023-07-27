@@ -22,6 +22,7 @@ const generator_service_1 = require("../auth/generator.service");
 const mail_service_1 = require("../mail/mail.service");
 const auth_module_1 = require("../auth/auth.module");
 const auth_service_1 = require("../auth/auth.service");
+const cloudinary_service_1 = require("../cloudinary/cloudinary.service");
 let ComplianceModule = class ComplianceModule {
 };
 ComplianceModule = __decorate([
@@ -34,7 +35,8 @@ ComplianceModule = __decorate([
                 }
             }), user_module_1.UserModule, auth_module_1.AuthModule],
         controllers: [compliance_controller_1.ComplianceController],
-        providers: [compliance_service_1.ComplianceService, user_service_1.UserService, wallet_service_1.WalletService, generator_service_1.accountGenerator, mail_service_1.MailService, auth_service_1.AuthService],
+        providers: [compliance_service_1.ComplianceService, user_service_1.UserService, wallet_service_1.WalletService, generator_service_1.accountGenerator, mail_service_1.MailService, auth_service_1.AuthService, cloudinary_service_1.CloudinaryService
+        ],
         exports: [compliance_service_1.ComplianceService]
     })
 ], ComplianceModule);

@@ -4,11 +4,13 @@ import { CreateCompDto } from 'src/DTO/createComp';
 import { UpdateCompDto } from 'src/DTO/updateComp';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 export declare class ComplianceController {
     private compService;
     private jwtService;
     private userService;
-    constructor(compService: ComplianceService, jwtService: JwtService, userService: UserService);
+    private cloudinaryService;
+    constructor(compService: ComplianceService, jwtService: JwtService, userService: UserService, cloudinaryService: CloudinaryService);
     addCompliance(access_token: string, createCompDto: CreateCompDto, file: Express.Multer.File): Promise<{
         statusCode: number;
         message: string;
@@ -28,7 +30,6 @@ export declare class ComplianceController {
         LGA: string;
         city: string;
         imageUrl: string;
-        publicId: string;
         completed: boolean;
         userId: number;
         user: import("../Entities/userEntity.entity").User;
