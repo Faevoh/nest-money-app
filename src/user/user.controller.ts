@@ -106,13 +106,13 @@ export class UserController {
         }
     }
 
-    @Post("/reset-password/:resetToken")
+    @Patch("/reset-password/:resetToken")
     async resetPassword(@Param("resetToken") resetToken: string, @Body(ValidationPipe) resetPasswordDto: ResetPasswordDto) {
        try{
        const {password} = resetPasswordDto;
 
        const checkUser = await this.userService.findByToken(resetToken);
-       if(!checkUser) { throw new NotFoundException ("User token is invalid or has expired")}
+       if(!checkUser) { throw new NotFoundException ("User token is invalid")}
 
        const hashed = await bcrypt.hash(password, 10);
 
@@ -133,7 +133,30 @@ export class UserController {
     }
 
     @Patch("/change-password/:token")
-    async changePassword(@Param("token") token: string, @Body(ValidationPipe) changePasswordDto: ChangePasswordDto) {}
+    async changePassword(@Param("token") token: string, @Body(ValidationPipe) changePasswordDto: ChangePasswordDto) {
+        try{
+            const user = await this.userService.findByChangePasswordToken(token);
+            if(!user) {
+                throw new NotFoundException("user token is invalid");
+            }
+
+            const {oldPassword, newPassword} = changePasswordDto;
+            const checkOldPassword = await bcrypt.compare(oldPassword, user.password);
+            if(!checkOldPassword) {
+                throw new UnauthorizedException("password doesn't match. Please check properly")
+            }
+
+            const hashedPassword = await bcrypt.hash(newPassword, 10)
+            user.password = hashedPassword;
+
+            await this.userService.update(user.id, {password: user.password});
+
+            return {statusCode: 200, message: "Password has been changed"}
+
+        }catch(err){
+            throw new BadRequestException("Failed to change Password")
+        }
+    }
 
     @Post("/logout")
     async logOut(@Query("access_token") access_token: string) {

@@ -68,7 +68,10 @@ export declare class UserController {
         statusCode: number;
         message: string;
     }>;
-    changePassword(token: string, changePasswordDto: ChangePasswordDto): Promise<void>;
+    changePassword(token: string, changePasswordDto: ChangePasswordDto): Promise<{
+        statusCode: number;
+        message: string;
+    }>;
     logOut(access_token: string): Promise<{
         statusCode: number;
         message: string;

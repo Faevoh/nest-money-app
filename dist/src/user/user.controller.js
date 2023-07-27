@@ -114,7 +114,7 @@ let UserController = class UserController {
             const { password } = resetPasswordDto;
             const checkUser = await this.userService.findByToken(resetToken);
             if (!checkUser) {
-                throw new common_1.NotFoundException("User token is invalid or has expired");
+                throw new common_1.NotFoundException("User token is invalid");
             }
             const hashed = await bcrypt.hash(password, 10);
             checkUser.password = hashed;
@@ -130,7 +130,26 @@ let UserController = class UserController {
             throw new common_1.BadRequestException("Failed to reset Password");
         }
     }
-    async changePassword(token, changePasswordDto) { }
+    async changePassword(token, changePasswordDto) {
+        try {
+            const user = await this.userService.findByChangePasswordToken(token);
+            if (!user) {
+                throw new common_1.NotFoundException("user token is invalid");
+            }
+            const { oldPassword, newPassword } = changePasswordDto;
+            const checkOldPassword = await bcrypt.compare(oldPassword, user.password);
+            if (!checkOldPassword) {
+                throw new common_1.UnauthorizedException("password doesn't match. Please check properly");
+            }
+            const hashedPassword = await bcrypt.hash(newPassword, 10);
+            user.password = hashedPassword;
+            await this.userService.update(user.id, { password: user.password });
+            return { statusCode: 200, message: "Password has been changed" };
+        }
+        catch (err) {
+            throw new common_1.BadRequestException("Failed to change Password");
+        }
+    }
     async logOut(access_token) {
         const user_token = access_token.split(" ")[1];
         await this.authService.revokeToken(user_token);
@@ -196,7 +215,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "recoverPassword", null);
 __decorate([
-    (0, common_1.Post)("/reset-password/:resetToken"),
+    (0, common_1.Patch)("/reset-password/:resetToken"),
     __param(0, (0, common_1.Param)("resetToken")),
     __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
     __metadata("design:type", Function),
