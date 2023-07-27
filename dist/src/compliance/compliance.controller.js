@@ -29,26 +29,19 @@ let ComplianceController = class ComplianceController {
         this.cloudinaryService = cloudinaryService;
     }
     async addCompliance(access_token, createCompDto, file) {
-        console.log("what is it now?");
-        console.log("2" + file);
         try {
-            console.log("what is it?");
-            console.log(file);
             if (file) {
                 const uploadedImage = await this.cloudinaryService.uploadImage(file);
                 createCompDto.imageUrl = uploadedImage.secure_url;
                 console.log(createCompDto.imageUrl);
             }
-            console.log("heyyyyoo please");
             const user = await this.jwtService.decode(access_token);
             const id = user.sub;
             const getUser = await this.userService.findById(id);
             return await this.compService.createComp(createCompDto, getUser);
         }
         catch (err) {
-            console.log("error");
-            console.log(err.message);
-            throw new Error(err.message);
+            throw new common_1.InternalServerErrorException(err.message, "wetin d sup?");
         }
     }
     async updateCompliance(updateCompDto, id) {
