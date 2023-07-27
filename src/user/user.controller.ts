@@ -106,7 +106,7 @@ export class UserController {
         }
     }
 
-    @Patch("/reset-password/:resetToken")
+    @Post("/reset-password/:resetToken")
     async resetPassword(@Param("resetToken") resetToken: string, @Body(ValidationPipe) resetPasswordDto: ResetPasswordDto) {
        try{
        const {password} = resetPasswordDto;
