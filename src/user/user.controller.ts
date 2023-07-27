@@ -65,6 +65,7 @@ export class UserController {
         // console.log(id);
         const [userObject] = await this.userService.findIdWithRelations(id);
         const{resetToken,resetTokenExpiry, verifyToken,password, ...others} = userObject
+        console.log("profiling")
         return {statusCode: 200, message: `success, id ${id}`, data: others}
     }
 
