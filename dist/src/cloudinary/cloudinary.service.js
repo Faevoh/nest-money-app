@@ -24,8 +24,6 @@ let CloudinaryService = class CloudinaryService {
                 if (error)
                     return reject(error);
                 resolve(result);
-                console.log("cloudinary result");
-                console.log(result);
             });
             toStream(fileName.buffer).pipe(upload);
         });
