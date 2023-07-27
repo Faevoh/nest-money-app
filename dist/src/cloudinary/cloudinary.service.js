@@ -10,6 +10,8 @@ exports.CloudinaryService = void 0;
 const common_1 = require("@nestjs/common");
 const cloudinary_1 = require("cloudinary");
 const toStream = require("buffer-to-stream");
+const dotenv_1 = require("dotenv");
+(0, dotenv_1.config)();
 let CloudinaryService = class CloudinaryService {
     async uploadImage(fileName) {
         return new Promise((resolve, reject) => {
@@ -22,7 +24,7 @@ let CloudinaryService = class CloudinaryService {
                 if (error)
                     return reject(error);
                 resolve(result);
-                console.log("result");
+                console.log("cloudinary result");
                 console.log(result);
             });
             toStream(fileName.buffer).pipe(upload);

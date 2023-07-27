@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { UploadApiErrorResponse, UploadApiResponse, v2 } from 'cloudinary';
 import toStream = require('buffer-to-stream');
+import { config } from 'dotenv';
+
+config();
 
 @Injectable()
 export class CloudinaryService {
@@ -16,7 +19,7 @@ export class CloudinaryService {
           const upload = v2.uploader.upload_stream((error, result) => {
             if (error) return reject(error);
             resolve(result);
-            console.log("result")
+            console.log("cloudinary result")
             console.log(result)
           });
           toStream(fileName.buffer).pipe(upload);
