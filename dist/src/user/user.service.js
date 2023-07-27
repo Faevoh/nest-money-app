@@ -56,7 +56,6 @@ let UserService = class UserService {
             this.userRepo.create(data);
             await this.userRepo.save(data);
             await this.walletService.newWallet(data);
-            delete data.verifyToken;
             delete data.token;
             delete data.phoneNumber;
             delete data.resetToken;

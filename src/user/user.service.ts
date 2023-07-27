@@ -53,7 +53,6 @@ export class UserService {
             // const jwtPayload = {sub: createdUser.id, email: user.email};
             // const jwtToken = await this.jwtService.sign(jwtPayload)
             // console.log(jwtToken)
-            delete data.verifyToken
             delete data.token
             delete data.phoneNumber
             delete data.resetToken 
