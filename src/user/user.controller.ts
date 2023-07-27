@@ -154,6 +154,12 @@ export class UserController {
             return {statusCode: 200, message: "Password has been changed"}
 
         }catch(err){
+            if(err instanceof NotFoundException){
+                throw new NotFoundException(err.message)
+            }
+            if(err instanceof UnauthorizedException){
+                throw new UnauthorizedException(err.message)
+            }
             throw new BadRequestException("Failed to change Password")
         }
     }

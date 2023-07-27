@@ -147,6 +147,12 @@ let UserController = class UserController {
             return { statusCode: 200, message: "Password has been changed" };
         }
         catch (err) {
+            if (err instanceof common_1.NotFoundException) {
+                throw new common_1.NotFoundException(err.message);
+            }
+            if (err instanceof common_1.UnauthorizedException) {
+                throw new common_1.UnauthorizedException(err.message);
+            }
             throw new common_1.BadRequestException("Failed to change Password");
         }
     }
