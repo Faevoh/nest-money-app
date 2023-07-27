@@ -80,7 +80,7 @@ let UserController = class UserController {
         const id = tokenDecode.sub;
         const [userObject] = await this.userService.findIdWithRelations(id);
         const { resetToken, resetTokenExpiry, verifyToken, password } = userObject, others = __rest(userObject, ["resetToken", "resetTokenExpiry", "verifyToken", "password"]);
-        console.log;
+        console.log("profiling");
         return { statusCode: 200, message: `success, id ${id}`, data: others };
     }
     async updateUser(id, updateUserDto) {
