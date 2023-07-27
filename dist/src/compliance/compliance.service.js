@@ -52,16 +52,9 @@ let ComplianceService = class ComplianceService {
             if (userData.accountType === true && (comp.businessAddress === undefined || comp.businessAddress === null || comp.businessName === null || comp.businessName === undefined)) {
                 throw new common_1.UnauthorizedException("businessAddress and businessName cannot be empty");
             }
-            console.log("this");
             const newComp = this.compRepo.create(comp);
             newComp.imageUrl = createCompDto.imageUrl;
-            console.log(newComp.imageUrl);
-            console.log("hey");
-            console.log(newComp);
-            console.log("holla");
             const result = await this.compRepo.save(newComp);
-            console.log("øla");
-            console.log(result);
             return { statusCode: 201, message: "Compliance Added", data: result };
         }
         catch (err) {
@@ -71,7 +64,7 @@ let ComplianceService = class ComplianceService {
             if (err instanceof common_1.UnauthorizedException) {
                 throw new common_1.BadRequestException(err.message);
             }
-            throw new common_1.InternalServerErrorException("Something occoured, Compliance not Added");
+            throw new common_1.InternalServerErrorException("something occured. Compliance not updated...try again later");
         }
     }
     async updateComp(id, updateCompDto) {
