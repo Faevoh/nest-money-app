@@ -59,7 +59,6 @@ let UserService = class UserService {
             delete data.resetToken;
             delete data.resetTokenExpiry;
             const verifyLink = `https://moneyapp-oj7v.onrender.com/api/user/verify/${data.verifyToken}`;
-            console.log(data.verifyToken);
             const verify = `https://marco-lyart.vercel.app/#/verify/${data.verifyToken}`;
             const text = ` Welcome to Money App,
             Thank you for signing up.
@@ -69,7 +68,6 @@ let UserService = class UserService {
             return { statusCode: 201, message: "User successfully Created" };
         }
         catch (err) {
-            console.log(err.message);
             throw new common_1.InternalServerErrorException("Something went wrong, User not Created");
         }
     }
