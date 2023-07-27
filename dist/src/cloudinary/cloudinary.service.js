@@ -16,9 +16,9 @@ let CloudinaryService = class CloudinaryService {
     async uploadImage(fileName) {
         return new Promise((resolve, reject) => {
             cloudinary_1.v2.config({
-                cloud_name: process.env.CLOUD_NAME,
-                api_key: process.env.API_KEY,
-                api_secret: process.env.API_SECRET,
+                cloud_name: "dwt2lavnm",
+                api_key: "989516128674283",
+                api_secret: "aLYAw_Cs2Jy2CsfheRGHtiU4CFM",
             });
             console.log(process.env.CLOUD_NAME);
             const upload = cloudinary_1.v2.uploader.upload_stream((error, result) => {

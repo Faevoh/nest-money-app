@@ -12,9 +12,9 @@ export class CloudinaryService {
       ): Promise<UploadApiResponse | UploadApiErrorResponse> {
         return new Promise((resolve, reject) => {
           v2.config({
-            cloud_name: process.env.CLOUD_NAME,
-            api_key: process.env.API_KEY,
-            api_secret: process.env.API_SECRET,
+            cloud_name: "dwt2lavnm",
+            api_key: "989516128674283",
+            api_secret: "aLYAw_Cs2Jy2CsfheRGHtiU4CFM",
           });
           console.log(process.env.CLOUD_NAME)
           const upload = v2.uploader.upload_stream((error, result) => {
