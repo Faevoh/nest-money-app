@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ComplianceController = void 0;
 const common_1 = require("@nestjs/common");
 const compliance_service_1 = require("./compliance.service");
-const express_1 = require("express");
+const createComp_1 = require("../DTO/createComp");
 const cloudinary = require("cloudinary");
 const updateComp_1 = require("../DTO/updateComp");
 const jwt_1 = require("@nestjs/jwt");
@@ -27,21 +27,27 @@ let ComplianceController = class ComplianceController {
         this.jwtService = jwtService;
         this.userService = userService;
     }
-    async addCompliance(access_token, file) {
-        const createCompDto = Object.assign(Object.assign({}, JSON.parse(express_1.request.body.createCompDto)), { imageUrl: '', publicId: '' });
-        console.log("what is it?");
-        if (file) {
-            const uploadedImage = await cloudinary.v2.uploader.upload(file.path);
-            createCompDto.imageUrl = uploadedImage.secure_url;
-            createCompDto.publicId = uploadedImage.public_id;
+    async addCompliance(access_token, createCompDto, file) {
+        console.log("what is it now?");
+        console.log("2" + file);
+        try {
+            console.log("what is it?");
+            console.log(file);
+            if (file) {
+                const uploadedImage = await cloudinary.v2.uploader.upload(file.path);
+                createCompDto.imageUrl = uploadedImage.secure_url;
+                createCompDto.publicId = uploadedImage.public_id;
+            }
+            console.log(createCompDto.imageUrl);
+            console.log(createCompDto.publicId);
+            console.log("heyyyyoo please");
+            const user = this.jwtService.decode(access_token);
+            const id = user.sub;
+            const getUser = await this.userService.findById(id);
+            return await this.compService.createComp(createCompDto, getUser);
         }
-        console.log(createCompDto.imageUrl);
-        console.log(createCompDto.publicId);
-        console.log("heyyyyoo please");
-        const user = this.jwtService.decode(access_token);
-        const id = user.sub;
-        const getUser = await this.userService.findById(id);
-        return await this.compService.createComp(createCompDto, getUser);
+        catch (err) {
+        }
     }
     async updateCompliance(updateCompDto, id) {
         return await this.compService.updateComp(id, updateCompDto);
@@ -65,9 +71,10 @@ __decorate([
     (0, common_1.Post)("/new"),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('image')),
     __param(0, (0, common_1.Query)("access_token")),
-    __param(1, (0, common_1.UploadedFile)()),
+    __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
+    __param(2, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String, createComp_1.CreateCompDto, Object]),
     __metadata("design:returntype", Promise)
 ], ComplianceController.prototype, "addCompliance", null);
 __decorate([

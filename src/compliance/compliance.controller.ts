@@ -1,9 +1,6 @@
 import { BadRequestException, Body, Controller, Get, Headers, InternalServerErrorException, Param, ParseIntPipe, Patch, Post, Query, UnauthorizedException, UploadedFile, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { ComplianceService } from './compliance.service';
 import {  CreateCompDto } from 'src/DTO/createComp';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { RequestWithUser } from 'src/auth/userRequest';
-import { request } from 'express';
 import * as cloudinary from 'cloudinary';
 import { UpdateCompDto } from 'src/DTO/updateComp';
 import { JwtService } from '@nestjs/jwt';
@@ -17,7 +14,11 @@ export class ComplianceController {
     @Post("/new")
     @UseInterceptors(FileInterceptor('image'))
     async addCompliance(@Query("access_token") access_token: string,@Body(ValidationPipe) createCompDto: CreateCompDto, @UploadedFile() file: Express.Multer.File){
+        console.log("what is it now?")
+        console.log("2" + file)
+        try{
         console.log("what is it?")
+        console.log(file)
         if (file) {
             const uploadedImage = await cloudinary.v2.uploader.upload(file.path);
             createCompDto.imageUrl = uploadedImage.secure_url;
@@ -31,6 +32,9 @@ export class ComplianceController {
         const id = user.sub;
         const getUser = await this.userService.findById(id);
         return await this.compService.createComp(createCompDto, getUser);
+       }catch(err){
+
+       }
     }
 
     @Patch("/:id/compliance-update")
