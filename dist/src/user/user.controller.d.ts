@@ -8,6 +8,7 @@ import { ResetPasswordDto } from 'src/DTO/resetPassword';
 import { accountGenerator } from 'src/auth/generator.service';
 import { User } from 'src/Entities/userEntity.entity';
 import { JwtService } from '@nestjs/jwt';
+import { ChangePasswordDto } from 'src/DTO/changePassword';
 export declare class UserController {
     private userService;
     private mailService;
@@ -67,6 +68,7 @@ export declare class UserController {
         statusCode: number;
         message: string;
     }>;
+    changePassword(token: string, changePasswordDto: ChangePasswordDto): Promise<void>;
     logOut(access_token: string): Promise<{
         statusCode: number;
         message: string;

@@ -13,6 +13,7 @@ import { accountGenerator } from 'src/auth/generator.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { User } from 'src/Entities/userEntity.entity';
 import { JwtService } from '@nestjs/jwt';
+import { ChangePasswordDto } from 'src/DTO/changePassword';
 
 @Controller('user')
 export class UserController {
@@ -130,6 +131,9 @@ export class UserController {
         throw new BadRequestException("Failed to reset Password")
        }
     }
+
+    @Patch("/change-password/:token")
+    async changePassword(@Param("token") token: string, @Body(ValidationPipe) changePasswordDto: ChangePasswordDto) {}
 
     @Post("/logout")
     async logOut(@Query("access_token") access_token: string) {

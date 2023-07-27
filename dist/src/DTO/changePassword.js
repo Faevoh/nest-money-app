@@ -9,17 +9,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ResetPasswordDto = void 0;
+exports.ChangePasswordDto = void 0;
 const class_validator_1 = require("class-validator");
-class ResetPasswordDto {
+class ChangePasswordDto {
 }
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
-], ResetPasswordDto.prototype, "oldPassword", void 0);
+], ChangePasswordDto.prototype, "oldPassword", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
-], ResetPasswordDto.prototype, "newPassword", void 0);
-exports.ResetPasswordDto = ResetPasswordDto;
+], ChangePasswordDto.prototype, "newPassword", void 0);
+exports.ChangePasswordDto = ChangePasswordDto;
 //# sourceMappingURL=changePassword.js.map

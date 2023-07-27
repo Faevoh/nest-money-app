@@ -38,6 +38,7 @@ const bcrypt = require("bcryptjs");
 const generator_service_1 = require("../auth/generator.service");
 const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
 const jwt_1 = require("@nestjs/jwt");
+const changePassword_1 = require("../DTO/changePassword");
 let UserController = class UserController {
     constructor(userService, mailService, authService, acctService, jwtService) {
         this.userService = userService;
@@ -129,6 +130,7 @@ let UserController = class UserController {
             throw new common_1.BadRequestException("Failed to reset Password");
         }
     }
+    async changePassword(token, changePasswordDto) { }
     async logOut(access_token) {
         const user_token = access_token.split(" ")[1];
         await this.authService.revokeToken(user_token);
@@ -201,6 +203,14 @@ __decorate([
     __metadata("design:paramtypes", [String, resetPassword_1.ResetPasswordDto]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "resetPassword", null);
+__decorate([
+    (0, common_1.Patch)("/change-password/:token"),
+    __param(0, (0, common_1.Param)("token")),
+    __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, changePassword_1.ChangePasswordDto]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "changePassword", null);
 __decorate([
     (0, common_1.Post)("/logout"),
     __param(0, (0, common_1.Query)("access_token")),
