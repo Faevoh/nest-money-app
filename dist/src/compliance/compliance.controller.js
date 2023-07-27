@@ -32,7 +32,6 @@ let ComplianceController = class ComplianceController {
         if (file) {
             const uploadedImage = await this.cloudinaryService.uploadImage(file);
             createCompDto.imageUrl = uploadedImage.secure_url;
-            console.log(createCompDto.imageUrl);
         }
         const user = await this.jwtService.decode(access_token);
         if (!user) {
@@ -47,7 +46,6 @@ let ComplianceController = class ComplianceController {
         const id = user.sub;
         const getUser = await this.userService.findById(id);
         const data = await this.compService.createComp(createCompDto, getUser);
-        console.log(data);
         return data;
     }
     async updateCompliance(updateCompDto, id) {
