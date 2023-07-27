@@ -16,7 +16,6 @@ export class ComplianceController {
     @Post("/new")
     @UseInterceptors(FileInterceptor('image'))
     async addCompliance(@Query("access_token") access_token: string,@Body(ValidationPipe) createCompDto: CreateCompDto, @UploadedFile() file: Express.Multer.File, ){
-        try{
         if (file) {
             const uploadedImage = await this.cloudinaryService.uploadImage(file);
             createCompDto.imageUrl = uploadedImage.secure_url;
@@ -26,11 +25,9 @@ export class ComplianceController {
         const user = await this.jwtService.decode(access_token);
         const id = user.sub;
         const getUser = await this.userService.findById(id);
-        console.log(getUser)
-        return await this.compService.createComp(createCompDto, getUser);
-       }catch(err){
-        throw new InternalServerErrorException(err.message, "wetin d sup?")
-       }
+        const data = await this.compService.createComp(createCompDto, getUser);
+        console.log(data);
+        return data;
     }
 
     @Patch("/:id/compliance-update")
