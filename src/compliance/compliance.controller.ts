@@ -11,7 +11,7 @@ import { Compliances } from 'src/Entities/compEntity.entity';
 
 @Controller('compliance')
 export class ComplianceController {
-    constructor(private compService: ComplianceService, private jwtService: JwtService, private userService: UserService, private cloudinaryService: CloudinaryService, private comRepo: Compliances) {}    
+    constructor(private compService: ComplianceService, private jwtService: JwtService, private userService: UserService, private cloudinaryService: CloudinaryService) {}    
 
     @Post("/new")
     @UseInterceptors(FileInterceptor('image'))
@@ -23,9 +23,9 @@ export class ComplianceController {
         console.log(file)
         if (file) {
             const uploadedImage = await this.cloudinaryService.uploadImage(file);
-            this.comRepo.imageUrl = uploadedImage.secure_url;
-            console.log(uploadedImage.imageUrl)
+            createCompDto.imageUrl = uploadedImage.secure_url;
         }
+        console.log(createCompDto.imageUrl)
         console.log("heyyyyoo please")
 
         const user = this.jwtService.decode(access_token);

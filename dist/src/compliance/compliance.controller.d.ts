@@ -11,8 +11,7 @@ export declare class ComplianceController {
     private jwtService;
     private userService;
     private cloudinaryService;
-    private comRepo;
-    constructor(compService: ComplianceService, jwtService: JwtService, userService: UserService, cloudinaryService: CloudinaryService, comRepo: Compliances);
+    constructor(compService: ComplianceService, jwtService: JwtService, userService: UserService, cloudinaryService: CloudinaryService);
     addCompliance(access_token: string, createCompDto: CreateCompDto, file: Express.Multer.File): Promise<{
         statusCode: number;
         message: string;

@@ -6,6 +6,7 @@ export declare class CreateCompDto {
     city: string;
     country: string;
     address: string;
+    imageUrl?: string;
     businessName?: string;
     businessAddress?: string;
     bankCode?: string;
