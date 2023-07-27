@@ -15,7 +15,7 @@ export declare class User {
     verifyToken: string;
     createDate: Date;
     updateDate: Date;
-    changePasswordToken: string;
+    token: string;
     resetToken: string;
     resetTokenExpiry: Date;
     compliance: Compliances;

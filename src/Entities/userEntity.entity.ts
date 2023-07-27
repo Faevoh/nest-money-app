@@ -48,7 +48,7 @@ export class User {
     updateDate: Date;
 
     @Column()
-    changePasswordToken: string;
+    token: string;
 
     @Column({ nullable: true })
     resetToken: string;
