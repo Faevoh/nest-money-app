@@ -44,9 +44,13 @@ export class ComplianceService {
             if(userData.accountType === true && (comp.businessAddress ===undefined||comp.businessAddress === null || comp.businessName === null || comp.businessName === undefined)) {
                 throw new UnauthorizedException("businessAddress and businessName cannot be empty")
             }
+            console.log("this")
             const newComp = this.compRepo.create(comp)
-            
+            console.log("hey")
+            console.log(newComp)
+            console.log("holla")
             const result = await this.compRepo.save(newComp)
+            console.log("øla")
             console.log(result)
             return {statusCode: 201, message: "Compliance Added", data: result}
         }catch(err) {
