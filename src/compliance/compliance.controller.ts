@@ -23,16 +23,18 @@ export class ComplianceController {
         console.log(file)
         if (file) {
             const uploadedImage = await this.cloudinaryService.uploadImage(file);
-            createCompDto.imageUrl = uploadedImage.secure_url;
+            const now = uploadedImage.secure_url;
+            console.log(now)
         }
-        console.log(createCompDto.imageUrl)
+        // console.log(createCompDto.imageUrl)
         console.log("heyyyyoo please")
 
-        const user = this.jwtService.decode(access_token);
+        const user = await this.jwtService.decode(access_token);
         const id = user.sub;
         const getUser = await this.userService.findById(id);
         return await this.compService.createComp(createCompDto, getUser);
        }catch(err){
+        console.log("error")
         console.log(err.message)
         throw new Error(err.message)
        }
