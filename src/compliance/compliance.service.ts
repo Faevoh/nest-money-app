@@ -47,7 +47,7 @@ export class ComplianceService {
             const newComp = this.compRepo.create(comp)
             
             const result = await this.compRepo.save(newComp)
-            // console.log(result)
+            console.log(result)
             return {statusCode: 201, message: "Compliance Added", data: result}
         }catch(err) {
             if(err instanceof BadRequestException){
