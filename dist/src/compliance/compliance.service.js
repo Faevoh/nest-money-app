@@ -26,9 +26,7 @@ let ComplianceService = class ComplianceService {
         this.userService = userService;
     }
     async createComp(createCompDto, user) {
-        console.log("Ogini 02");
         try {
-            console.log("Ogini");
             const { BVN, NIN, state, LGA, city, businessAddress, businessName, country, address } = createCompDto;
             const checkBVN = await this.compRepo.findOneBy({ BVN });
             if (checkBVN) {
@@ -51,7 +49,6 @@ let ComplianceService = class ComplianceService {
             comp.userId = user.id;
             comp.completed = false;
             const userData = await this.userService.findById(user.id);
-            console.log("whtf");
             if (userData.accountType === true && (comp.businessAddress === undefined || comp.businessAddress === null || comp.businessName === null || comp.businessName === undefined)) {
                 throw new common_1.UnauthorizedException("businessAddress and businessName cannot be empty");
             }

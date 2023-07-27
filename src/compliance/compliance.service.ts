@@ -14,9 +14,7 @@ export class ComplianceService {
     constructor(@InjectRepository(Compliances) private compRepo: Repository<Compliances>, private authService: AuthService, private userService: UserService) {}
        
     async createComp (createCompDto: CreateCompDto, user: User) {
-        console.log("Ogini 02")
         try{ 
-            console.log("Ogini")
             const {BVN, NIN, state, LGA, city, businessAddress, businessName, country, address} =createCompDto;
 
             const checkBVN = await this.compRepo.findOneBy({BVN})
@@ -42,10 +40,6 @@ export class ComplianceService {
             comp.userId = user.id;
             comp.completed = false;
             const userData = await this.userService.findById(user.id)
-            // console.log(userData)
-            // console.log(comp.businessAddress)
-            // console.log(comp.businessName)
-            console.log("whtf")
 
             if(userData.accountType === true && (comp.businessAddress ===undefined||comp.businessAddress === null || comp.businessName === null || comp.businessName === undefined)) {
                 throw new UnauthorizedException("businessAddress and businessName cannot be empty")
