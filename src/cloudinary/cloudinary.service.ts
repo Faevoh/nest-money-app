@@ -16,6 +16,7 @@ export class CloudinaryService {
             api_key: process.env.API_KEY,
             api_secret: process.env.API_SECRET,
           });
+          console.log(process.env.CLOUD_NAME)
           const upload = v2.uploader.upload_stream((error, result) => {
             if (error) return reject(error);
             resolve(result);
