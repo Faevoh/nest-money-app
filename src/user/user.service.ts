@@ -39,6 +39,7 @@ export class UserService {
             data.accountNumber = this.acctService.accountnumberGenerator();
             data.verified = false;
             data.verifyToken = uuidv4();
+            data.token = uuidv4()
             data.createDate = new Date();
             data.updateDate = new Date();
             this.userRepo.create(data)
@@ -52,7 +53,8 @@ export class UserService {
             // const jwtPayload = {sub: createdUser.id, email: user.email};
             // const jwtToken = await this.jwtService.sign(jwtPayload)
             // console.log(jwtToken)
-
+            delete data.verifyToken
+            delete data.token
             delete data.phoneNumber
             delete data.resetToken 
             delete data.resetTokenExpiry
@@ -113,6 +115,10 @@ export class UserService {
 
     async findByToken(resetToken: string) {
         return await this.userRepo.findOneBy({resetToken})
+    }
+
+    async findByChangePasswordToken(token: string) {
+        return await this.userRepo.findOneBy({token})
     }
 
     async deleteUser(id: number) {

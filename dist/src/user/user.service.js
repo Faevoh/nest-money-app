@@ -50,11 +50,14 @@ let UserService = class UserService {
             data.accountNumber = this.acctService.accountnumberGenerator();
             data.verified = false;
             data.verifyToken = (0, uuid_1.v4)();
+            data.token = (0, uuid_1.v4)();
             data.createDate = new Date();
             data.updateDate = new Date();
             this.userRepo.create(data);
             await this.userRepo.save(data);
             await this.walletService.newWallet(data);
+            delete data.verifyToken;
+            delete data.token;
             delete data.phoneNumber;
             delete data.resetToken;
             delete data.resetTokenExpiry;
@@ -102,6 +105,9 @@ let UserService = class UserService {
     }
     async findByToken(resetToken) {
         return await this.userRepo.findOneBy({ resetToken });
+    }
+    async findByChangePasswordToken(token) {
+        return await this.userRepo.findOneBy({ token });
     }
     async deleteUser(id) {
         const deleteuser = await this.findById(id);

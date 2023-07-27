@@ -25,6 +25,7 @@ export declare class UserService {
     saveUser(user: User): Promise<User>;
     update(id: number, dataToUpdate: Partial<User>): Promise<User>;
     findByToken(resetToken: string): Promise<User>;
+    findByChangePasswordToken(token: string): Promise<User>;
     deleteUser(id: number): Promise<{
         success: boolean;
         message: string;
