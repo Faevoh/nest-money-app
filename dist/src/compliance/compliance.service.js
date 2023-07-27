@@ -54,6 +54,8 @@ let ComplianceService = class ComplianceService {
             }
             console.log("this");
             const newComp = this.compRepo.create(comp);
+            newComp.imageUrl = createCompDto.imageUrl;
+            console.log(newComp.imageUrl);
             console.log("hey");
             console.log(newComp);
             console.log("holla");
