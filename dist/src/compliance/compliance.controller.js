@@ -46,6 +46,7 @@ let ComplianceController = class ComplianceController {
             return await this.compService.createComp(createCompDto, getUser);
         }
         catch (err) {
+            console.log(err.message);
             throw new Error(err.message);
         }
     }

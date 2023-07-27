@@ -32,6 +32,7 @@ export class ComplianceController {
         const getUser = await this.userService.findById(id);
         return await this.compService.createComp(createCompDto, getUser);
        }catch(err){
+        console.log(err.message)
         throw new Error(err.message)
        }
     }
