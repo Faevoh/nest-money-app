@@ -28,13 +28,22 @@ let ComplianceController = class ComplianceController {
         this.userService = userService;
         this.cloudinaryService = cloudinaryService;
     }
-    async addCompliance(access_token, createCompDto, file) {
+    async addCompliance(access_token, createCompDto, file, payload) {
         if (file) {
             const uploadedImage = await this.cloudinaryService.uploadImage(file);
             createCompDto.imageUrl = uploadedImage.secure_url;
             console.log(createCompDto.imageUrl);
         }
         const user = await this.jwtService.decode(access_token);
+        if (!user) {
+            throw new common_1.NotFoundException("Invalid Token");
+        }
+        ;
+        payload = user;
+        const timeInSeconds = Math.floor(Date.now() / 1000);
+        if (payload.exp && payload.exp < timeInSeconds) {
+            throw new common_1.UnauthorizedException("Token has expired");
+        }
         const id = user.sub;
         const getUser = await this.userService.findById(id);
         const data = await this.compService.createComp(createCompDto, getUser);
@@ -66,7 +75,7 @@ __decorate([
     __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
     __param(2, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, createComp_1.CreateCompDto, Object]),
+    __metadata("design:paramtypes", [String, createComp_1.CreateCompDto, Object, Object]),
     __metadata("design:returntype", Promise)
 ], ComplianceController.prototype, "addCompliance", null);
 __decorate([

@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Headers, InternalServerErrorException, Param, ParseIntPipe, Patch, Post, Query, UnauthorizedException, UploadedFile, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Headers, InternalServerErrorException, NotFoundException, Param, ParseIntPipe, Patch, Post, Query, UnauthorizedException, UploadedFile, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { ComplianceService } from './compliance.service';
 import {  CreateCompDto } from 'src/DTO/createComp';
 import * as cloudinary from 'cloudinary';
@@ -15,7 +15,7 @@ export class ComplianceController {
 
     @Post("/new")
     @UseInterceptors(FileInterceptor('image'))
-    async addCompliance(@Query("access_token") access_token: string,@Body(ValidationPipe) createCompDto: CreateCompDto, @UploadedFile() file: Express.Multer.File, ){
+    async addCompliance(@Query("access_token") access_token: string,@Body(ValidationPipe) createCompDto: CreateCompDto, @UploadedFile() file: Express.Multer.File,payload ){
         if (file) {
             const uploadedImage = await this.cloudinaryService.uploadImage(file);
             createCompDto.imageUrl = uploadedImage.secure_url;
@@ -23,6 +23,13 @@ export class ComplianceController {
         }
 
         const user = await this.jwtService.decode(access_token);
+        if(!user) {throw new NotFoundException("Invalid Token")};
+        payload = user
+        // console.log(payload)
+        const timeInSeconds = Math.floor(Date.now() / 1000); 
+        if (payload.exp && payload.exp < timeInSeconds) {
+        throw new UnauthorizedException("Token has expired");
+        }
         const id = user.sub;
         const getUser = await this.userService.findById(id);
         const data = await this.compService.createComp(createCompDto, getUser);
