@@ -23,8 +23,8 @@ export class ComplianceController {
         console.log(file)
         if (file) {
             const uploadedImage = await this.cloudinaryService.uploadImage(file);
-            const now = uploadedImage.secure_url;
-            console.log(now)
+            createCompDto.imageUrl = uploadedImage.secure_url;
+            console.log(createCompDto.imageUrl)
         }
         // console.log(createCompDto.imageUrl)
         console.log("heyyyyoo please")
