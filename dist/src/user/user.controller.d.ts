@@ -48,6 +48,7 @@ export declare class UserController {
             verified: boolean;
             createDate: Date;
             updateDate: Date;
+            changePasswordToken: string;
             compliance: import("../Entities/compEntity.entity").Compliances;
             wallet: import("../Entities/walletEntity.entity").Wallet;
             transaction: import("../Entities/transactionEntity.entity").Transactions;
