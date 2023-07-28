@@ -53,6 +53,7 @@ let UserService = class UserService {
             data.token = (0, uuid_1.v4)();
             data.createDate = new Date();
             data.updateDate = new Date();
+            await this.userRepo.create(data);
             const accountTypeEntity = await this.accountTypeRepo.findOneBy({
                 type: accountType.type,
             });
@@ -60,7 +61,6 @@ let UserService = class UserService {
                 throw new common_1.BadRequestException("Invalid Account Type");
             }
             data.accountType = accountTypeEntity;
-            await this.userRepo.create(data);
             await this.userRepo.save(data);
             await this.walletService.newWallet(data);
             delete data.token;
