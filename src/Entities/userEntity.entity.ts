@@ -17,9 +17,8 @@ export class User {
     @Column({unique: true})
     email: string;
  
-    @Column({ type: 'varchar', length: 200, default: '{"type":"personal","status":false}' }) // Store as JSON string
-  private _accountType: string; // Store the serialized accountType in a private property
-
+    @Column({ type: 'varchar', length: 200, default: {"type":"personal","status":false} })
+    private _accountType: string; 
     // Define a public getter and setter for accountType
     get accountType(): AccountType {
       return JSON.parse(this._accountType);
