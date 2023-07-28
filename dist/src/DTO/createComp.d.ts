@@ -9,5 +9,4 @@ export declare class CreateCompDto {
     imageUrl?: string;
     businessName?: string;
     businessAddress?: string;
-    bankCode?: string;
 }

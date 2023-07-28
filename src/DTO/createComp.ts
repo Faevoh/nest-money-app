@@ -27,6 +27,4 @@ export class CreateCompDto {
     businessName ?: string;
 
     businessAddress ?: string;
-
-    bankCode ?: string;
 }
