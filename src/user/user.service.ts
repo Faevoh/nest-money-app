@@ -35,6 +35,7 @@ export class UserService {
             data.email = email;
             data.password = hashed;
             data.accountName = `${data.lastName} ${data.firstName}`;
+            data.accountType = accountType;
             data.verified = false;
             data.verifyToken = uuidv4();
             data.token = uuidv4()
@@ -42,7 +43,7 @@ export class UserService {
             data.updateDate = new Date();
             const newData = await this.userRepo.create(data)
             console.log(newData)
-            newData.accountType = accountType
+            // newData.accountType = accountType
             console.log(newData.accountType)
             console.log(newData.accountType.status)
             await this.userRepo.save(data)

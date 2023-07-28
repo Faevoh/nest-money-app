@@ -46,6 +46,7 @@ let UserService = class UserService {
             data.email = email;
             data.password = hashed;
             data.accountName = `${data.lastName} ${data.firstName}`;
+            data.accountType = accountType;
             data.verified = false;
             data.verifyToken = (0, uuid_1.v4)();
             data.token = (0, uuid_1.v4)();
@@ -53,7 +54,6 @@ let UserService = class UserService {
             data.updateDate = new Date();
             const newData = await this.userRepo.create(data);
             console.log(newData);
-            newData.accountType = accountType;
             console.log(newData.accountType);
             console.log(newData.accountType.status);
             await this.userRepo.save(data);
