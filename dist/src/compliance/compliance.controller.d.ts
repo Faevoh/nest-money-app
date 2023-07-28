@@ -31,7 +31,6 @@ export declare class ComplianceController {
         LGA: string;
         city: string;
         imageUrl: string;
-        completed: boolean;
         userId: number;
         user: import("../Entities/userEntity.entity").User;
     } & Compliances>;

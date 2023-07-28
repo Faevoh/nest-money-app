@@ -11,8 +11,6 @@ export declare class Compliances {
     LGA: string;
     city: string;
     imageUrl: string;
-    bankCode?: string;
-    completed: boolean;
     userId: number;
     user: User;
 }

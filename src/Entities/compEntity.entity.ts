@@ -36,12 +36,6 @@ export class Compliances {
     @Column()
     imageUrl: string;
 
-    @Column({unique: true, nullable:true})
-    bankCode ?: string;
-
-    @Column({default: false})
-    completed: boolean;
-
     @Column()
     userId: number;
 
