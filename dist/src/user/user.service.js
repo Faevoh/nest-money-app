@@ -52,6 +52,7 @@ let UserService = class UserService {
             data.createDate = new Date();
             data.updateDate = new Date();
             const newData = await this.userRepo.create(data);
+            console.log(newData);
             newData.accountType = accountType;
             console.log(newData.accountType);
             console.log(newData.accountType.status);
