@@ -142,7 +142,7 @@ export class UserController {
        }
     }
 
-    @Patch("/change-password/:access_token")
+    @Patch("/change-password")
     async changePassword(@Query("access_token") access_token: string, payload, @Body(ValidationPipe) changePasswordDto: ChangePasswordDto) {
         try{
             const tokenDecode = this.jwtService.decode(access_token);

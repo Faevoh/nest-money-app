@@ -276,7 +276,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "resetPassword", null);
 __decorate([
-    (0, common_1.Patch)("/change-password/:access_token"),
+    (0, common_1.Patch)("/change-password"),
     __param(0, (0, common_1.Query)("access_token")),
     __param(2, (0, common_1.Body)(common_1.ValidationPipe)),
     __metadata("design:type", Function),
