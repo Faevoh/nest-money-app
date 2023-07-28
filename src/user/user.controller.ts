@@ -54,20 +54,26 @@ export class UserController {
 
     @Get("/profile")
     async getUser(@Query("access_token") access_token: string, payload) {
-        const tokenDecode = this.jwtService.decode(access_token);
-        if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
-        payload = tokenDecode
-        // console.log(payload)
-        const timeInSeconds = Math.floor(Date.now() / 1000); 
-        if (payload.exp && payload.exp < timeInSeconds) {
-        throw new UnauthorizedException("Token has expired");
+       try{
+            const tokenDecode = this.jwtService.decode(access_token);
+            if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
+            payload = tokenDecode
+            // console.log(payload)
+            const timeInSeconds = Math.floor(Date.now() / 1000); 
+            if (payload.exp && payload.exp < timeInSeconds) {
+            throw new UnauthorizedException("Token has expired");
+            }
+            // console.log(tokenDecode);
+            const id = tokenDecode.sub;
+            // console.log(id);
+            const [userObject] = await this.userService.findIdWithRelations(id);
+            const{resetToken,resetTokenExpiry, verifyToken,password, ...others} = userObject
+            return {statusCode: 200, message: `success, id ${id}`, data: others}
+       }catch(err){
+        if(err instanceof UnauthorizedException){
+            throw new UnauthorizedException(err.message)
         }
-        // console.log(tokenDecode);
-        const id = tokenDecode.sub;
-        // console.log(id);
-        const [userObject] = await this.userService.findIdWithRelations(id);
-        const{resetToken,resetTokenExpiry, verifyToken,password, ...others} = userObject
-        return {statusCode: 200, message: `success, id ${id}`, data: others}
+       }
     }
 
     @Patch("/:id/profile-update")
@@ -162,6 +168,35 @@ export class UserController {
                 throw new UnauthorizedException(err.message)
             }
             throw new BadRequestException("Failed to change Password")
+        }
+    }
+
+    @Post("/confirm-password")
+    async confirmPassword(@Query("access_token") access_token: string, @Body() body: {password: string},payload ) {
+        try{
+            const userToken = this.jwtService.decode(access_token)
+
+            if(!userToken) {throw new NotFoundException("Invalid Token")};
+            payload = userToken
+            const timeInSeconds = Math.floor(Date.now() / 1000); 
+            if (payload.exp && payload.exp < timeInSeconds) {
+            throw new UnauthorizedException("Token has expired")}
+
+            const userid = userToken.sub
+            const user = await this.userService.findById(userid) 
+
+            const { password } = body;
+            const checkPassword = await bcrypt.compare(password, user.password)
+
+            if(!checkPassword){
+                throw new UnauthorizedException("Password is Incorrect")
+            }else{
+                return {statusCode: 201, message: "Password is correct"}
+            }
+        }catch(err){
+            if(err instanceof UnauthorizedException){
+                throw new UnauthorizedException(err.message)
+            }
         }
     }
 

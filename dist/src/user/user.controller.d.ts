@@ -38,7 +38,7 @@ export declare class UserController {
             firstName: string;
             lastName: string;
             email: string;
-            accountType: "Personal" | "Business";
+            accountType: "Business" | "Personal";
             status: boolean;
             accountName: string;
             phoneNumber: string;
@@ -67,6 +67,12 @@ export declare class UserController {
         message: string;
     }>;
     changePassword(token: string, changePasswordDto: ChangePasswordDto): Promise<{
+        statusCode: number;
+        message: string;
+    }>;
+    confirmPassword(access_token: string, body: {
+        password: string;
+    }, payload: any): Promise<{
         statusCode: number;
         message: string;
     }>;

@@ -72,20 +72,27 @@ let UserController = class UserController {
         return this.userService.allUser();
     }
     async getUser(access_token, payload) {
-        const tokenDecode = this.jwtService.decode(access_token);
-        if (!tokenDecode) {
-            throw new common_1.NotFoundException("Invalid Token");
+        try {
+            const tokenDecode = this.jwtService.decode(access_token);
+            if (!tokenDecode) {
+                throw new common_1.NotFoundException("Invalid Token");
+            }
+            ;
+            payload = tokenDecode;
+            const timeInSeconds = Math.floor(Date.now() / 1000);
+            if (payload.exp && payload.exp < timeInSeconds) {
+                throw new common_1.UnauthorizedException("Token has expired");
+            }
+            const id = tokenDecode.sub;
+            const [userObject] = await this.userService.findIdWithRelations(id);
+            const { resetToken, resetTokenExpiry, verifyToken, password } = userObject, others = __rest(userObject, ["resetToken", "resetTokenExpiry", "verifyToken", "password"]);
+            return { statusCode: 200, message: `success, id ${id}`, data: others };
         }
-        ;
-        payload = tokenDecode;
-        const timeInSeconds = Math.floor(Date.now() / 1000);
-        if (payload.exp && payload.exp < timeInSeconds) {
-            throw new common_1.UnauthorizedException("Token has expired");
+        catch (err) {
+            if (err instanceof common_1.UnauthorizedException) {
+                throw new common_1.UnauthorizedException(err.message);
+            }
         }
-        const id = tokenDecode.sub;
-        const [userObject] = await this.userService.findIdWithRelations(id);
-        const { resetToken, resetTokenExpiry, verifyToken, password } = userObject, others = __rest(userObject, ["resetToken", "resetTokenExpiry", "verifyToken", "password"]);
-        return { statusCode: 200, message: `success, id ${id}`, data: others };
     }
     async updateUser(id, updateUserDto) {
         const updatedUser = await this.userService.updateUser(id, updateUserDto);
@@ -158,6 +165,35 @@ let UserController = class UserController {
                 throw new common_1.UnauthorizedException(err.message);
             }
             throw new common_1.BadRequestException("Failed to change Password");
+        }
+    }
+    async confirmPassword(access_token, body, payload) {
+        try {
+            const userToken = this.jwtService.decode(access_token);
+            if (!userToken) {
+                throw new common_1.NotFoundException("Invalid Token");
+            }
+            ;
+            payload = userToken;
+            const timeInSeconds = Math.floor(Date.now() / 1000);
+            if (payload.exp && payload.exp < timeInSeconds) {
+                throw new common_1.UnauthorizedException("Token has expired");
+            }
+            const userid = userToken.sub;
+            const user = await this.userService.findById(userid);
+            const { password } = body;
+            const checkPassword = await bcrypt.compare(password, user.password);
+            if (!checkPassword) {
+                throw new common_1.UnauthorizedException("Password is Incorrect");
+            }
+            else {
+                return { statusCode: 201, message: "Password is correct" };
+            }
+        }
+        catch (err) {
+            if (err instanceof common_1.UnauthorizedException) {
+                throw new common_1.UnauthorizedException(err.message);
+            }
         }
     }
     async logOut(access_token) {
@@ -233,6 +269,14 @@ __decorate([
     __metadata("design:paramtypes", [String, changePassword_1.ChangePasswordDto]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "changePassword", null);
+__decorate([
+    (0, common_1.Post)("/confirm-password"),
+    __param(0, (0, common_1.Query)("access_token")),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object, Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "confirmPassword", null);
 __decorate([
     (0, common_1.Post)("/logout"),
     __param(0, (0, common_1.Query)("access_token")),
