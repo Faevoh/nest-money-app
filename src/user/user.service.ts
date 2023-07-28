@@ -44,10 +44,11 @@ export class UserService {
             data.updateDate = new Date();
 
             const accountTypeEntity = await this.accountTypeRepo.findOneBy({
-                type: accountType === "business" ? "business" : "personal",
+                type: accountType === 'business' ? 'business' : 'personal',
             });
 
             if (!accountTypeEntity) {
+                console.error(`Invalid Account Type: ${accountType}`);
                 throw new BadRequestException("Invalid Account Type");
             }
             data.accountType = accountTypeEntity;
