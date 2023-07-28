@@ -17,6 +17,9 @@ export class Wallet {
     accountBalance: number;
 
     @Column()
+    accountNumber: number;
+
+    @Column()
     userId: number;
 
     @ManyToOne( () => User, (user) => user.wallet)
