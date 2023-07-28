@@ -60,8 +60,10 @@ let UserService = class UserService {
                 throw new common_1.BadRequestException("Invalid Account Type");
             }
             data.accountType = accountTypeEntity;
+            console.log(data.accountType);
             await this.userRepo.save(data);
             await this.walletService.newWallet(data);
+            console.log(data);
             delete data.token;
             delete data.phoneNumber;
             delete data.sex;
