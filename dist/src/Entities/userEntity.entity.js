@@ -33,7 +33,7 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ default: "personal" }),
+    (0, typeorm_1.Column)({ default: "Personal" }),
     __metadata("design:type", String)
 ], User.prototype, "accountType", void 0);
 __decorate([

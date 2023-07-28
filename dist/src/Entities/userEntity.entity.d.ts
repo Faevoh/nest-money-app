@@ -6,7 +6,7 @@ export declare class User {
     firstName: string;
     lastName: string;
     email: string;
-    accountType: "business" | "personal";
+    accountType: "Business" | "Personal";
     status: boolean;
     accountName: string;
     password: string;

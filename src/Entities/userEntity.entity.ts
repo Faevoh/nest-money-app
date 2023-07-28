@@ -18,8 +18,8 @@ export class User {
   @Column({unique: true})
   email: string;
 
-  @Column({default: "personal"})
-  accountType: "business" | "personal";
+  @Column({default: "Personal"})
+  accountType: "Business" | "Personal";
 
   @Column({default: false})
   status: boolean;

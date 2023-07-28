@@ -38,7 +38,7 @@ export declare class UserController {
             firstName: string;
             lastName: string;
             email: string;
-            accountType: "business" | "personal";
+            accountType: "Personal" | "Business";
             status: boolean;
             accountName: string;
             phoneNumber: string;

@@ -54,7 +54,7 @@ let UserService = class UserService {
             data.token = (0, uuid_1.v4)();
             data.createDate = new Date();
             data.updateDate = new Date();
-            if (data.accountType === 'business') {
+            if (data.accountType === 'Business') {
                 data.status = true;
             }
             await this.userRepo.save(data);

@@ -36,7 +36,7 @@ export class UserService {
             data.lastName = lastName;
             data.email = email;
             data.password = hashed;
-            data.accountType =  accountType as "business" | "personal";
+            data.accountType =  accountType as "Business" | "Personal";
             data.accountName = `${data.lastName} ${data.firstName}`;
             data.verified = false;
             data.verifyToken = uuidv4();
@@ -44,7 +44,7 @@ export class UserService {
             data.createDate = new Date();
             data.updateDate = new Date();
 
-            if(data.accountType === 'business'){
+            if(data.accountType === 'Business'){
                 data.status = true;
             } 
 
