@@ -45,7 +45,7 @@ let UserService = class UserService {
             data.lastName = lastName;
             data.email = email;
             data.password = hashed;
-            data.accountType = JSON.stringify(accountType);
+            data.accountType = accountType;
             data.accountName = `${data.lastName} ${data.firstName}`;
             data.verified = false;
             data.verifyToken = (0, uuid_1.v4)();
@@ -55,6 +55,8 @@ let UserService = class UserService {
             this.userRepo.create(data);
             await this.userRepo.save(data);
             await this.walletService.newWallet(data);
+            console.log(data.accountType.status);
+            console.log(data);
             delete data.token;
             delete data.phoneNumber;
             delete data.sex;

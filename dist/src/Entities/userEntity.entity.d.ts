@@ -6,7 +6,9 @@ export declare class User {
     firstName: string;
     lastName: string;
     email: string;
-    accountType: string;
+    private _accountType;
+    get accountType(): AccountType;
+    set accountType(value: AccountType);
     accountName: string;
     password: string;
     phoneNumber: string;

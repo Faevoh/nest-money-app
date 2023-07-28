@@ -34,7 +34,7 @@ export class UserService {
             data.lastName = lastName;
             data.email = email;
             data.password = hashed;
-            data.accountType = JSON.stringify(accountType);
+            data.accountType = accountType;
             data.accountName = `${data.lastName} ${data.firstName}`;
             data.verified = false;
             data.verifyToken = uuidv4();
@@ -44,7 +44,8 @@ export class UserService {
             this.userRepo.create(data)
             await this.userRepo.save(data)
             await this.walletService.newWallet(data)
-            // console.log(data)
+            console.log(data.accountType.status)
+            console.log(data)
             // const createdUser = await this.userRepo.save(user)
             // console.log("user" ,user)
             

@@ -15,6 +15,12 @@ const compEntity_entity_1 = require("./compEntity.entity");
 const walletEntity_entity_1 = require("./walletEntity.entity");
 const transactionEntity_entity_1 = require("./transactionEntity.entity");
 let User = class User {
+    get accountType() {
+        return JSON.parse(this._accountType);
+    }
+    set accountType(value) {
+        this._accountType = JSON.stringify(value);
+    }
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
@@ -33,9 +39,9 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar', length: 200, default: JSON.stringify({ type: 'personal', status: false }) }),
+    (0, typeorm_1.Column)({ type: 'varchar', length: 200, default: '{"type":"personal","status":false}' }),
     __metadata("design:type", String)
-], User.prototype, "accountType", void 0);
+], User.prototype, "_accountType", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
