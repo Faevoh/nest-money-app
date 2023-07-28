@@ -16,6 +16,6 @@ export class AccountType {
   status: boolean;
 
   setStatusFromType() {
-  this.status = this.type === 'business';
+  this.status = this.type === this.type;
   }
 }

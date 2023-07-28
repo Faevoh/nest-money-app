@@ -13,7 +13,7 @@ exports.AccountType = void 0;
 const typeorm_1 = require("typeorm");
 let AccountType = class AccountType {
     setStatusFromType() {
-        this.status = this.type === 'business';
+        this.status = this.type === this.type;
     }
 };
 __decorate([
