@@ -23,7 +23,7 @@ export declare class User {
     wallet: Wallet;
     transaction: Transactions;
 }
-export declare class AccountType {
+export type AccountType = {
     type: 'business' | 'personal';
     status: boolean;
-}
+};

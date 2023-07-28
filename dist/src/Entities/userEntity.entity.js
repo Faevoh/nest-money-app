@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AccountType = exports.User = void 0;
+exports.User = void 0;
 const typeorm_1 = require("typeorm");
 const compEntity_entity_1 = require("./compEntity.entity");
 const walletEntity_entity_1 = require("./walletEntity.entity");
@@ -33,8 +33,8 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.Column)(type => AccountType),
-    __metadata("design:type", AccountType)
+    (0, typeorm_1.Column)('json', { default: { type: 'personal', status: false } }),
+    __metadata("design:type", Object)
 ], User.prototype, "accountType", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
@@ -102,19 +102,4 @@ User = __decorate([
     (0, typeorm_1.Entity)("users")
 ], User);
 exports.User = User;
-class AccountType {
-}
-__decorate([
-    (0, typeorm_1.Column)({
-        type: 'enum',
-        enum: ['business', 'personal'],
-        default: 'personal',
-    }),
-    __metadata("design:type", String)
-], AccountType.prototype, "type", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ default: false }),
-    __metadata("design:type", Boolean)
-], AccountType.prototype, "status", void 0);
-exports.AccountType = AccountType;
 //# sourceMappingURL=userEntity.entity.js.map

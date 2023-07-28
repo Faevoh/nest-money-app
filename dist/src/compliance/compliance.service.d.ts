@@ -32,6 +32,5 @@ export declare class ComplianceService {
         userId: number;
         user: User;
     } & Compliances>;
-    findByBankCode(bankCode: string): Promise<Compliances>;
     findByUserId(userId: number): Promise<Compliances>;
 }

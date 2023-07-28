@@ -55,9 +55,9 @@ export class TransactionController {
 
         const maindata = await this.transactionService.debit(transaction, user, wallet, comp)
 
-        if(compData.bankCode === transaction.transactionPin){
-            await maindata
-        }
+        // if(compData.bankCode === transaction.transactionPin){
+        //     await maindata
+        // }
 
         return {statusCode: 201, message: "success, Withdrawal Made", data: maindata}
         // console.log(userData)

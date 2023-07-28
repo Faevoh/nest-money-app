@@ -38,12 +38,11 @@ export class ComplianceService {
             comp.businessAddress = businessAddress;
             comp.businessName = businessName;
             comp.userId = user.id;
-            comp.completed = false;
 
             const userData = await this.userService.findById(user.id);
-            if(userData.accountType === true && (comp.businessAddress ===undefined||comp.businessAddress === null || comp.businessName === null || comp.businessName === undefined)) {
-                throw new UnauthorizedException("businessAddress and businessName cannot be empty")
-            }
+            // if(userData.accountType === true && (comp.businessAddress ===undefined||comp.businessAddress === null || comp.businessName === null || comp.businessName === undefined)) {
+            //     throw new UnauthorizedException("businessAddress and businessName cannot be empty")
+            // }
             const newComp = this.compRepo.create(comp)
             newComp.imageUrl = createCompDto.imageUrl;
             const result = await this.compRepo.save(newComp)
@@ -78,10 +77,6 @@ export class ComplianceService {
     // async findByBVN(BVN: string) {
     //     return await this.compRepo.findOneBy({BVN})
     // }
-
-    async findByBankCode(bankCode: string) {
-        return await this.compRepo.findOneBy({bankCode})
-    }
 
     async findByUserId(userId: number) {
         return await this.compRepo.findOneBy({userId})

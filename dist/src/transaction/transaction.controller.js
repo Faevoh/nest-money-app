@@ -50,9 +50,6 @@ let TransactionController = class TransactionController {
         await this.walletService.saveWallet(walletdata);
         const compData = await this.compService.findByUserId(id);
         const maindata = await this.transactionService.debit(transaction, user, wallet, comp);
-        if (compData.bankCode === transaction.transactionPin) {
-            await maindata;
-        }
         return { statusCode: 201, message: "success, Withdrawal Made", data: maindata };
     }
     async DashBoard(userId) {

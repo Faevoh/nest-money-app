@@ -17,7 +17,7 @@ export class User {
     @Column({unique: true})
     email: string;
  
-    @Column(type => AccountType)
+    @Column('json', { default: { type: 'personal', status: false } }) 
     accountType: AccountType;
 
     @Column()
@@ -68,14 +68,7 @@ export class User {
     transaction: Transactions;
 }
 
-export class AccountType {
-    @Column({
-      type: 'enum',
-      enum: ['business', 'personal'],
-      default: 'personal',
-    })
-    type: 'business' | 'personal';
-  
-    @Column({ default: false })
-    status: boolean;
-  }
+export type AccountType = { 
+  type: 'business' | 'personal'; 
+  status: boolean 
+};
