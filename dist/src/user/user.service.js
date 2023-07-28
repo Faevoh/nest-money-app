@@ -53,6 +53,7 @@ let UserService = class UserService {
             data.createDate = new Date();
             data.updateDate = new Date();
             this.userRepo.create(data);
+            console.log(data.accountType);
             console.log(data.accountType.status);
             await this.userRepo.save(data);
             await this.walletService.newWallet(data);
