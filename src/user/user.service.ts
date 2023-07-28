@@ -34,7 +34,7 @@ export class UserService {
             data.lastName = lastName;
             data.email = email;
             data.password = hashed;
-            data.accountType = JSON.stringify(accountType);;
+            data.accountType = JSON.stringify(accountType);
             data.accountName = `${data.lastName} ${data.firstName}`;
             data.verified = false;
             data.verifyToken = uuidv4();
