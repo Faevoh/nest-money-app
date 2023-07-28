@@ -51,12 +51,19 @@ let UserController = class UserController {
         return this.userService.register(createUserDto);
     }
     async emailVerification(verifyToken) {
-        const check = await this.userService.findByVerifyToken(verifyToken);
-        if (!check) {
-            return "Invalid verification link";
+        try {
+            const check = await this.userService.findByVerifyToken(verifyToken);
+            if (!check) {
+                throw new common_1.UnauthorizedException("Invalid verification link");
+            }
+            await this.userService.updateStatus(check.id, true);
+            return { statuscode: 200, message: "You have been verified" };
         }
-        await this.userService.updateStatus(check.id, true);
-        return { statuscode: 200, message: "You have been verified" };
+        catch (err) {
+            if (err instanceof common_1.UnauthorizedException) {
+                throw new common_1.UnauthorizedException(err.message);
+            }
+        }
     }
     login(req) {
         return this.authService.login(req.user);

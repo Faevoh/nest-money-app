@@ -26,13 +26,19 @@ export class UserController {
 
     @Patch("/verify/:verifyToken")
     async emailVerification(@Param("verifyToken") verifyToken: string) {
-        const check = await this.userService.findByVerifyToken(verifyToken);
-        // console.log(email , verifyToken)
-        if(!check){
-            return "Invalid verification link"
+        try{
+            const check = await this.userService.findByVerifyToken(verifyToken);
+            // console.log(email , verifyToken)
+            if(!check){
+                throw new UnauthorizedException ("Invalid verification link")
+            }
+            await this.userService.updateStatus(check.id, true);
+            return{statuscode: 200, message: "You have been verified"};
+        }catch(err){
+            if(err instanceof UnauthorizedException) {
+                throw new UnauthorizedException(err.message)
+            }
         }
-        await this.userService.updateStatus(check.id, true);
-        return{statuscode: 200, message: "You have been verified"};
     }
 
     @UseGuards(LocalAuthGuard)
