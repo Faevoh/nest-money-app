@@ -81,6 +81,7 @@ let UserService = class UserService {
             return { statusCode: 201, message: "User successfully Created" };
         }
         catch (err) {
+            console.log(err.message);
             if (err instanceof common_1.BadRequestException) {
                 throw new common_1.BadRequestException(err.message);
             }

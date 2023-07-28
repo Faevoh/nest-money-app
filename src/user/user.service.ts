@@ -83,6 +83,7 @@ export class UserService {
            
             return {statusCode: 201, message: "User successfully Created"}
         }catch(err){
+            console.log(err.message)
             if(err instanceof BadRequestException){ throw new BadRequestException(err.message)}
             throw new InternalServerErrorException("Something went wrong, User not Created")
         }
