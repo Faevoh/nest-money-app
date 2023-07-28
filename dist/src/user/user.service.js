@@ -53,7 +53,6 @@ let UserService = class UserService {
             data.token = (0, uuid_1.v4)();
             data.createDate = new Date();
             data.updateDate = new Date();
-            await this.userRepo.create(data);
             const accountTypeEntity = await this.accountTypeRepo.findOneBy({
                 type: accountType.type,
             });
@@ -79,6 +78,9 @@ let UserService = class UserService {
             return { statusCode: 201, message: "User successfully Created" };
         }
         catch (err) {
+            if (err instanceof common_1.BadRequestException) {
+                throw new common_1.BadRequestException(err.message);
+            }
             throw new common_1.InternalServerErrorException("Something went wrong, User not Created");
         }
     }

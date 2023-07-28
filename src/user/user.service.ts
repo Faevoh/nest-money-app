@@ -43,8 +43,6 @@ export class UserService {
             data.createDate = new Date();
             data.updateDate = new Date();
 
-            await this.userRepo.create(data)
-
             const accountTypeEntity = await this.accountTypeRepo.findOneBy({
                 type: accountType.type,
             });
@@ -83,7 +81,7 @@ export class UserService {
            
             return {statusCode: 201, message: "User successfully Created"}
         }catch(err){
-            // console.log(err.message)
+            if(err instanceof BadRequestException){ throw new BadRequestException(err.message)}
             throw new InternalServerErrorException("Something went wrong, User not Created")
         }
     }
