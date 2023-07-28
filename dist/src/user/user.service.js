@@ -47,7 +47,6 @@ let UserService = class UserService {
             data.password = hashed;
             data.accountType = accountType;
             data.accountName = `${data.lastName} ${data.firstName}`;
-            data.accountNumber = this.acctService.accountnumberGenerator();
             data.verified = false;
             data.verifyToken = (0, uuid_1.v4)();
             data.token = (0, uuid_1.v4)();
@@ -56,8 +55,11 @@ let UserService = class UserService {
             this.userRepo.create(data);
             await this.userRepo.save(data);
             await this.walletService.newWallet(data);
+            console.log(data);
             delete data.token;
             delete data.phoneNumber;
+            delete data.sex;
+            delete data.imageurl;
             delete data.resetToken;
             delete data.resetTokenExpiry;
             const verifyLink = `https://moneyapp-oj7v.onrender.com/api/user/verify/${data.verifyToken}`;

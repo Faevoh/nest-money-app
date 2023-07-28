@@ -36,17 +36,15 @@ export class UserService {
             data.password = hashed;
             data.accountType = accountType;
             data.accountName = `${data.lastName} ${data.firstName}`;
-            data.accountNumber = this.acctService.accountnumberGenerator();
             data.verified = false;
             data.verifyToken = uuidv4();
             data.token = uuidv4()
             data.createDate = new Date();
             data.updateDate = new Date();
             this.userRepo.create(data)
-            // console.log("heyy" + data.accountNumber)
             await this.userRepo.save(data)
             await this.walletService.newWallet(data)
-            // console.log(data)
+            console.log(data)
             // const createdUser = await this.userRepo.save(user)
             // console.log("user" ,user)
             
@@ -55,6 +53,8 @@ export class UserService {
             // console.log(jwtToken)
             delete data.token
             delete data.phoneNumber
+            delete data.sex
+            delete data.imageurl
             delete data.resetToken 
             delete data.resetTokenExpiry
 
