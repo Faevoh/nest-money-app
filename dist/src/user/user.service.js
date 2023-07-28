@@ -54,7 +54,7 @@ let UserService = class UserService {
             data.createDate = new Date();
             data.updateDate = new Date();
             const accountTypeEntity = await this.accountTypeRepo.findOneBy({
-                type: accountType.type,
+                type: accountType === "business" ? "business" : "personal",
             });
             if (!accountTypeEntity) {
                 throw new common_1.BadRequestException("Invalid Account Type");

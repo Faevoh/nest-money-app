@@ -44,7 +44,7 @@ export class UserService {
             data.updateDate = new Date();
 
             const accountTypeEntity = await this.accountTypeRepo.findOneBy({
-                type: accountType.type,
+                type: accountType === "business" ? "business" : "personal",
             });
 
             if (!accountTypeEntity) {

@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateUserDto = void 0;
 const class_validator_1 = require("class-validator");
-const accountEntity_entity_1 = require("../Entities/accountEntity.entity");
 class CreateUserDto {
 }
 __decorate([
@@ -38,7 +37,7 @@ __decorate([
 ], CreateUserDto.prototype, "password", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", accountEntity_entity_1.AccountType)
+    __metadata("design:type", String)
 ], CreateUserDto.prototype, "accountType", void 0);
 exports.CreateUserDto = CreateUserDto;
 //# sourceMappingURL=createUser.js.map
