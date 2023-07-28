@@ -40,12 +40,7 @@ export class UserController {
     login(@Request() req) {
         return this.authService.login(req.user);
     }
-
-    @Delete("delete/:id")
-    removeUser(@Param("id" ,ParseIntPipe) id: number ) {
-        return this.userService.deleteUser(id)
-    }
-
+    
     @Get()
     getAll() {
         return this.userService.allUser()

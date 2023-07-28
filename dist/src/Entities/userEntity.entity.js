@@ -16,6 +16,9 @@ const walletEntity_entity_1 = require("./walletEntity.entity");
 const transactionEntity_entity_1 = require("./transactionEntity.entity");
 const accountEntity_entity_1 = require("./accountEntity.entity");
 let User = class User {
+    get status() {
+        return this.accountType.type === 'business';
+    }
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),

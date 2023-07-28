@@ -29,10 +29,6 @@ export declare class UserController {
         message: string;
         access_token: string;
     }>;
-    removeUser(id: number): Promise<{
-        success: boolean;
-        message: string;
-    }>;
     getAll(): Promise<User[]>;
     getUser(access_token: string, payload: any): Promise<{
         statusCode: number;

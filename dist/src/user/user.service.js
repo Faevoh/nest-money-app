@@ -45,19 +45,18 @@ let UserService = class UserService {
             data.lastName = lastName;
             data.email = email;
             data.password = hashed;
-            data.accountType = accountType;
             data.accountName = `${data.lastName} ${data.firstName}`;
             data.verified = false;
             data.verifyToken = (0, uuid_1.v4)();
             data.token = (0, uuid_1.v4)();
             data.createDate = new Date();
             data.updateDate = new Date();
-            this.userRepo.create(data);
-            console.log(data.accountType);
-            console.log(data.accountType.status);
+            const newData = await this.userRepo.create(data);
+            newData.accountType = accountType;
+            console.log(newData.accountType);
+            console.log(newData.accountType.status);
             await this.userRepo.save(data);
             await this.walletService.newWallet(data);
-            console.log(data);
             delete data.token;
             delete data.phoneNumber;
             delete data.sex;
@@ -111,16 +110,6 @@ let UserService = class UserService {
     }
     async findByChangePasswordToken(token) {
         return await this.userRepo.findOneBy({ token });
-    }
-    async deleteUser(id) {
-        const deleteuser = await this.findById(id);
-        const result = await this.userRepo.delete(deleteuser);
-        if (result.affected === 0) {
-            throw new common_1.NotFoundException("User was not Deleted");
-        }
-        else {
-            return { success: true, message: "Sucessfully deleted" };
-        }
     }
     async allUser() {
         return await this.userRepo.find({

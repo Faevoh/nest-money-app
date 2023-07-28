@@ -23,4 +23,5 @@ export declare class User {
     compliance: Compliances;
     wallet: Wallet;
     transaction: Transactions;
+    get status(): boolean;
 }

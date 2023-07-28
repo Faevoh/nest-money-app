@@ -61,9 +61,6 @@ let UserController = class UserController {
     login(req) {
         return this.authService.login(req.user);
     }
-    removeUser(id) {
-        return this.userService.deleteUser(id);
-    }
     getAll() {
         return this.userService.allUser();
     }
@@ -184,13 +181,6 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "login", null);
-__decorate([
-    (0, common_1.Delete)("delete/:id"),
-    __param(0, (0, common_1.Param)("id", common_1.ParseIntPipe)),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", void 0)
-], UserController.prototype, "removeUser", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),

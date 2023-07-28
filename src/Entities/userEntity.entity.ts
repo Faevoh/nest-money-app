@@ -68,4 +68,8 @@ export class User {
 
     @OneToMany( () => Transactions, (transaction) => transaction.user)
     transaction: Transactions;
+
+    get status(): boolean {
+      return this.accountType.type === 'business';
+    }
 }
