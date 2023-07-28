@@ -48,6 +48,9 @@ let ComplianceService = class ComplianceService {
             comp.businessName = businessName;
             comp.userId = user.id;
             const userData = await this.userService.findById(user.id);
+            if (userData.status === true && (comp.businessAddress === undefined || comp.businessAddress === null || comp.businessName === null || comp.businessName === undefined)) {
+                throw new common_1.UnauthorizedException("businessAddress and businessName cannot be empty");
+            }
             const newComp = this.compRepo.create(comp);
             newComp.imageUrl = createCompDto.imageUrl;
             const result = await this.compRepo.save(newComp);
