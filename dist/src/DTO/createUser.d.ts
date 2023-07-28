@@ -1,4 +1,4 @@
-import { AccountType } from "src/Entities/userEntity.entity";
+import { AccountType } from "src/Entities/accountEntity.entity";
 export declare class CreateUserDto {
     firstName: string;
     lastName: string;

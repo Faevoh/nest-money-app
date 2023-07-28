@@ -14,13 +14,8 @@ const typeorm_1 = require("typeorm");
 const compEntity_entity_1 = require("./compEntity.entity");
 const walletEntity_entity_1 = require("./walletEntity.entity");
 const transactionEntity_entity_1 = require("./transactionEntity.entity");
+const accountEntity_entity_1 = require("./accountEntity.entity");
 let User = class User {
-    get accountType() {
-        return JSON.parse(this._accountType);
-    }
-    set accountType(value) {
-        this._accountType = JSON.stringify(value);
-    }
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
@@ -39,9 +34,10 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar', length: 200, default: { "type": "personal", "status": false } }),
-    __metadata("design:type", String)
-], User.prototype, "_accountType", void 0);
+    (0, typeorm_1.OneToOne)(type => accountEntity_entity_1.AccountType, { cascade: true, eager: true }),
+    (0, typeorm_1.JoinColumn)(),
+    __metadata("design:type", accountEntity_entity_1.AccountType)
+], User.prototype, "accountType", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)

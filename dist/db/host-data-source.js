@@ -8,6 +8,7 @@ const compEntity_entity_1 = require("../src/Entities/compEntity.entity");
 const airtimeEntity_entity_1 = require("../src/Entities/airtimeEntity.entity");
 const walletEntity_entity_1 = require("../src/Entities/walletEntity.entity");
 const transactionEntity_entity_1 = require("../src/Entities/transactionEntity.entity");
+const accountEntity_entity_1 = require("../src/Entities/accountEntity.entity");
 (0, dotenv_1.config)();
 exports.hostDataSourceOptions = {
     type: "mysql",
@@ -16,7 +17,7 @@ exports.hostDataSourceOptions = {
     username: process.env.MYSQLUSER,
     password: process.env.MYSQLPASSWORD,
     database: process.env.MYSQLDATABASE,
-    entities: [userEntity_entity_1.User, compEntity_entity_1.Compliances, airtimeEntity_entity_1.Airtime, walletEntity_entity_1.Wallet, transactionEntity_entity_1.Transactions],
+    entities: [userEntity_entity_1.User, compEntity_entity_1.Compliances, airtimeEntity_entity_1.Airtime, walletEntity_entity_1.Wallet, transactionEntity_entity_1.Transactions, accountEntity_entity_1.AccountType],
     synchronize: true,
     migrations: ["dist/db/migrations/*.js"],
     url: process.env.MYSQL_URL

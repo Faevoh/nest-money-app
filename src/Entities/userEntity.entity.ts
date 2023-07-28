@@ -2,6 +2,7 @@ import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, Prim
 import { Compliances } from "./compEntity.entity";
 import { Wallet } from "./walletEntity.entity";
 import { Transactions } from "./transactionEntity.entity";
+import { AccountType } from "./accountEntity.entity";
 
 @Entity("users")
 export class User {
@@ -17,16 +18,9 @@ export class User {
     @Column({unique: true})
     email: string;
  
-    @Column({ type: 'varchar', length: 200, default: {"type":"personal","status":false} })
-    private _accountType: string; 
-    // Define a public getter and setter for accountType
-    get accountType(): AccountType {
-      return JSON.parse(this._accountType);
-    }
-
-    set accountType(value: AccountType) {
-      this._accountType = JSON.stringify(value);
-    }
+    @OneToOne(type => AccountType, { cascade: true, eager: true })
+    @JoinColumn()
+    accountType: AccountType;
 
     @Column()
     accountName: string;
@@ -75,8 +69,3 @@ export class User {
     @OneToMany( () => Transactions, (transaction) => transaction.user)
     transaction: Transactions;
 }
-
-export type AccountType = { 
-  type: 'business' | 'personal'; 
-  status: boolean 
-};

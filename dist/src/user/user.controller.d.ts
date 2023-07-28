@@ -42,6 +42,7 @@ export declare class UserController {
             firstName: string;
             lastName: string;
             email: string;
+            accountType: import("../Entities/accountEntity.entity").AccountType;
             accountName: string;
             phoneNumber: string;
             sex: string;
