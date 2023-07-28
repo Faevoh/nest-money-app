@@ -1,9 +1,11 @@
 import { User } from 'src/Entities/userEntity.entity';
 import { Wallet } from 'src/Entities/walletEntity.entity';
+import { accountGenerator } from 'src/auth/generator.service';
 import { Repository } from 'typeorm';
 export declare class WalletService {
     private walletRepo;
-    constructor(walletRepo: Repository<Wallet>);
+    private acctService;
+    constructor(walletRepo: Repository<Wallet>, acctService: accountGenerator);
     newWallet(user: User): Promise<Wallet>;
     getWallet(): Promise<Wallet[]>;
     findByUserId(userId: number): Promise<Wallet>;

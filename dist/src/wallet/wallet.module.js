@@ -12,13 +12,14 @@ const wallet_controller_1 = require("./wallet.controller");
 const wallet_service_1 = require("./wallet.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const walletEntity_entity_1 = require("../Entities/walletEntity.entity");
+const generator_service_1 = require("../auth/generator.service");
 let WalletModule = class WalletModule {
 };
 WalletModule = __decorate([
     (0, common_1.Module)({
         imports: [typeorm_1.TypeOrmModule.forFeature([walletEntity_entity_1.Wallet])],
         controllers: [wallet_controller_1.WalletController],
-        providers: [wallet_service_1.WalletService],
+        providers: [wallet_service_1.WalletService, generator_service_1.accountGenerator],
         exports: [wallet_service_1.WalletService]
     })
 ], WalletModule);

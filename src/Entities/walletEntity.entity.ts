@@ -17,7 +17,7 @@ export class Wallet {
     accountBalance: number;
 
     @Column()
-    accountNumber: number;
+    accountNumber: string;
 
     @Column()
     userId: number;

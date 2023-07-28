@@ -31,6 +31,10 @@ __decorate([
 ], Wallet.prototype, "accountBalance", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Wallet.prototype, "accountNumber", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Wallet.prototype, "userId", void 0);
 __decorate([

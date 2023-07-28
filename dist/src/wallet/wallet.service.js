@@ -16,13 +16,16 @@ exports.WalletService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const walletEntity_entity_1 = require("../Entities/walletEntity.entity");
+const generator_service_1 = require("../auth/generator.service");
 const typeorm_2 = require("typeorm");
 let WalletService = class WalletService {
-    constructor(walletRepo) {
+    constructor(walletRepo, acctService) {
         this.walletRepo = walletRepo;
+        this.acctService = acctService;
     }
     async newWallet(user) {
         const wallet = this.walletRepo.create();
+        wallet.accountNumber = this.acctService.accountnumberGenerator();
         wallet.accountBalance = 0;
         wallet.user = user;
         wallet.userId = user.id;
@@ -47,7 +50,7 @@ let WalletService = class WalletService {
 WalletService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(walletEntity_entity_1.Wallet)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __metadata("design:paramtypes", [typeorm_2.Repository, generator_service_1.accountGenerator])
 ], WalletService);
 exports.WalletService = WalletService;
 //# sourceMappingURL=wallet.service.js.map
