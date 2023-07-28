@@ -42,10 +42,11 @@ export declare class UserController {
             firstName: string;
             lastName: string;
             email: string;
-            accountType: boolean;
-            accountNumber: string;
+            accountType: import("src/Entities/userEntity.entity").AccountType;
             accountName: string;
             phoneNumber: string;
+            sex: string;
+            imageurl: string;
             verified: boolean;
             createDate: Date;
             updateDate: Date;

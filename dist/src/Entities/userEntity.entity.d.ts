@@ -6,11 +6,12 @@ export declare class User {
     firstName: string;
     lastName: string;
     email: string;
-    accountType: boolean;
-    accountNumber: string;
+    accountType: AccountType;
     accountName: string;
     password: string;
     phoneNumber: string;
+    sex: string;
+    imageurl: string;
     verified: boolean;
     verifyToken: string;
     createDate: Date;
@@ -21,4 +22,8 @@ export declare class User {
     compliance: Compliances;
     wallet: Wallet;
     transaction: Transactions;
+}
+export declare class AccountType {
+    type: 'business' | 'personal';
+    status: boolean;
 }

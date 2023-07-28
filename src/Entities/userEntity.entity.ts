@@ -17,12 +17,8 @@ export class User {
     @Column({unique: true})
     email: string;
  
-    //if accountType is false then accountType = personal; if accountType is true then accountType = business
-    @Column({default: false}) 
-    accountType: boolean;
-
-    @Column({nullable: true})
-    accountNumber: string;
+    @Column(type => AccountType)
+    accountType: AccountType;
 
     @Column()
     accountName: string;
@@ -32,6 +28,12 @@ export class User {
 
     @Column({nullable: true})
     phoneNumber: string;
+
+    @Column({nullable: true})
+    sex: string;
+    
+    @Column({nullable: true})
+    imageurl: string;
 
     @Column({default: false})
     verified: boolean;
@@ -65,3 +67,15 @@ export class User {
     @OneToMany( () => Transactions, (transaction) => transaction.user)
     transaction: Transactions;
 }
+
+export class AccountType {
+    @Column({
+      type: 'enum',
+      enum: ['business', 'personal'],
+      default: 'personal',
+    })
+    type: 'business' | 'personal';
+  
+    @Column({ default: false })
+    status: boolean;
+  }
