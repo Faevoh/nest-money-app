@@ -6,70 +6,69 @@ import { AccountType } from "./accountEntity.entity";
 
 @Entity("users")
 export class User {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    firstName: string;
+  @Column()
+  firstName: string;
 
-    @Column()
-    lastName: string;
+  @Column()
+  lastName: string;
 
-    @Column({unique: true})
-    email: string;
- 
-    @OneToOne(type => AccountType, { cascade: true})
-    @JoinColumn()
-    accountType: AccountType;
+  @Column({unique: true})
+  email: string;
 
-    @Column()
-    accountName: string;
+  @Column({default: "personal"})
+  accountType: "business" | "personal";
 
-    @Column()
-    password: string;
+  @Column({default: false})
+  status: boolean;
 
-    @Column({nullable: true})
-    phoneNumber: string;
+  @Column()
+  accountName: string;
 
-    @Column({nullable: true})
-    sex: string;
-    
-    @Column({nullable: true})
-    imageurl ?: string;
+  @Column()
+  password: string;
 
-    @Column({default: false})
-    verified: boolean;
+  @Column({nullable: true})
+  phoneNumber: string;
 
-    @Column()
-    verifyToken: string;
+  @Column({nullable: true})
+  sex: string;
+  
+  @Column({nullable: true})
+  imageurl ?: string;
 
-    @Column()
-    @CreateDateColumn()
-    createDate: Date;
+  @Column({default: false})
+  verified: boolean;
 
-    @Column()
-    @UpdateDateColumn()
-    updateDate: Date;
+  @Column()
+  verifyToken: string;
 
-    @Column()
-    token: string;
+  @Column()
+  @CreateDateColumn()
+  createDate: Date;
 
-    @Column({ nullable: true })
-    resetToken: string;
+  @Column()
+  @UpdateDateColumn()
+  updateDate: Date;
 
-    @Column({ nullable: true })
-    resetTokenExpiry: Date;
+  @Column()
+  token: string;
 
-    @OneToOne( () => Compliances, (compliance) => compliance.user, {onDelete: "CASCADE"})
-    compliance: Compliances;
+  @Column({ nullable: true })
+  resetToken: string;
 
-    @OneToMany( () => Wallet, (wallet) => wallet.user)
-    wallet: Wallet;
+  @Column({ nullable: true })
+  resetTokenExpiry: Date;
 
-    @OneToMany( () => Transactions, (transaction) => transaction.user)
-    transaction: Transactions;
+  @OneToOne( () => Compliances, (compliance) => compliance.user, {onDelete: "CASCADE"})
+  compliance: Compliances;
 
-    get status(): boolean {
-      return this.accountType.type === 'business';
-    }
+  @OneToMany( () => Wallet, (wallet) => wallet.user)
+  wallet: Wallet;
+
+  @OneToMany( () => Transactions, (transaction) => transaction.user)
+  transaction: Transactions;
+
 }

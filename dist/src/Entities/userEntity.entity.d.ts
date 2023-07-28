@@ -1,13 +1,13 @@
 import { Compliances } from "./compEntity.entity";
 import { Wallet } from "./walletEntity.entity";
 import { Transactions } from "./transactionEntity.entity";
-import { AccountType } from "./accountEntity.entity";
 export declare class User {
     id: number;
     firstName: string;
     lastName: string;
     email: string;
-    accountType: AccountType;
+    accountType: "business" | "personal";
+    status: boolean;
     accountName: string;
     password: string;
     phoneNumber: string;
@@ -23,5 +23,4 @@ export declare class User {
     compliance: Compliances;
     wallet: Wallet;
     transaction: Transactions;
-    get status(): boolean;
 }

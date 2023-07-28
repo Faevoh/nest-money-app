@@ -14,11 +14,7 @@ const typeorm_1 = require("typeorm");
 const compEntity_entity_1 = require("./compEntity.entity");
 const walletEntity_entity_1 = require("./walletEntity.entity");
 const transactionEntity_entity_1 = require("./transactionEntity.entity");
-const accountEntity_entity_1 = require("./accountEntity.entity");
 let User = class User {
-    get status() {
-        return this.accountType.type === 'business';
-    }
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
@@ -37,10 +33,13 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.OneToOne)(type => accountEntity_entity_1.AccountType, { cascade: true }),
-    (0, typeorm_1.JoinColumn)(),
-    __metadata("design:type", accountEntity_entity_1.AccountType)
+    (0, typeorm_1.Column)({ default: "personal" }),
+    __metadata("design:type", String)
 ], User.prototype, "accountType", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: false }),
+    __metadata("design:type", Boolean)
+], User.prototype, "status", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)

@@ -36,6 +36,7 @@ export class UserService {
             data.lastName = lastName;
             data.email = email;
             data.password = hashed;
+            data.accountType =  accountType as "business" | "personal";
             data.accountName = `${data.lastName} ${data.firstName}`;
             data.verified = false;
             data.verifyToken = uuidv4();
@@ -43,16 +44,9 @@ export class UserService {
             data.createDate = new Date();
             data.updateDate = new Date();
 
-            const accountTypeEntity = await this.accountTypeRepo.findOneBy({
-                type: accountType === 'business' ? 'business' : 'personal',
-            });
-
-            if (!accountTypeEntity) {
-                console.error(`Invalid Account Type: ${accountType}`);
-                throw new BadRequestException("Invalid Account Type");
-            }
-            data.accountType = accountTypeEntity;
-            console.log(data.accountType)
+            if(data.accountType === 'business'){
+                data.status = true;
+            } 
 
             await this.userRepo.save(data)
             await this.walletService.newWallet(data)
