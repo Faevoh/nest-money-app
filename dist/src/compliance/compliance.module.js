@@ -23,11 +23,12 @@ const mail_service_1 = require("../mail/mail.service");
 const auth_module_1 = require("../auth/auth.module");
 const auth_service_1 = require("../auth/auth.service");
 const cloudinary_service_1 = require("../cloudinary/cloudinary.service");
+const accountEntity_entity_1 = require("../Entities/accountEntity.entity");
 let ComplianceModule = class ComplianceModule {
 };
 ComplianceModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([compEntity_entity_1.Compliances, userEntity_entity_1.User, walletEntity_entity_1.Wallet]), jwt_1.JwtModule.register({
+        imports: [typeorm_1.TypeOrmModule.forFeature([compEntity_entity_1.Compliances, userEntity_entity_1.User, walletEntity_entity_1.Wallet, accountEntity_entity_1.AccountType]), jwt_1.JwtModule.register({
                 secret: process.env.SECRET,
                 signOptions: {
                     algorithm: "HS512",

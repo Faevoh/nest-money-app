@@ -23,13 +23,15 @@ const wallet_service_1 = require("../wallet/wallet.service");
 const uuid_1 = require("uuid");
 const generator_service_1 = require("../auth/generator.service");
 const mail_service_1 = require("../mail/mail.service");
+const accountEntity_entity_1 = require("../Entities/accountEntity.entity");
 let UserService = class UserService {
-    constructor(userRepo, walletService, jwtService, acctService, mailService) {
+    constructor(userRepo, walletService, jwtService, acctService, mailService, accountTypeRepo) {
         this.userRepo = userRepo;
         this.walletService = walletService;
         this.jwtService = jwtService;
         this.acctService = acctService;
         this.mailService = mailService;
+        this.accountTypeRepo = accountTypeRepo;
     }
     async register(createUserDto) {
         try {
@@ -46,16 +48,19 @@ let UserService = class UserService {
             data.email = email;
             data.password = hashed;
             data.accountName = `${data.lastName} ${data.firstName}`;
-            data.accountType = accountType;
             data.verified = false;
             data.verifyToken = (0, uuid_1.v4)();
             data.token = (0, uuid_1.v4)();
             data.createDate = new Date();
             data.updateDate = new Date();
-            const newData = await this.userRepo.create(data);
-            console.log(newData);
-            console.log(newData.accountType);
-            console.log(newData.accountType.status);
+            const accountTypeEntity = await this.accountTypeRepo.findOneBy({
+                type: accountType.type,
+            });
+            if (!accountTypeEntity) {
+                throw new common_1.BadRequestException("Invalid Account Type");
+            }
+            data.accountType = accountTypeEntity;
+            await this.userRepo.create(data);
             await this.userRepo.save(data);
             await this.walletService.newWallet(data);
             delete data.token;
@@ -141,7 +146,9 @@ let UserService = class UserService {
 UserService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(userEntity_entity_1.User)),
-    __metadata("design:paramtypes", [typeorm_2.Repository, wallet_service_1.WalletService, jwt_1.JwtService, generator_service_1.accountGenerator, mail_service_1.MailService])
+    __param(5, (0, typeorm_1.InjectRepository)(accountEntity_entity_1.AccountType)),
+    __metadata("design:paramtypes", [typeorm_2.Repository, wallet_service_1.WalletService, jwt_1.JwtService, generator_service_1.accountGenerator, mail_service_1.MailService,
+        typeorm_2.Repository])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

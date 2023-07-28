@@ -11,9 +11,11 @@ import { WalletService } from 'src/wallet/wallet.service';
 import {v4 as uuidv4} from "uuid"
 import {accountGenerator} from "../auth/generator.service"
 import { MailService } from 'src/mail/mail.service';
+import { AccountType } from 'src/Entities/accountEntity.entity';
 @Injectable()
 export class UserService {
-    constructor(@InjectRepository(User) private userRepo: Repository<User>, private walletService: WalletService, private jwtService: JwtService, private acctService: accountGenerator, private mailService: MailService){}
+    constructor(@InjectRepository(User) private userRepo: Repository<User>, private walletService: WalletService, private jwtService: JwtService, private acctService: accountGenerator, private mailService: MailService, @InjectRepository(AccountType)
+    private accountTypeRepo: Repository<AccountType>) {}
 
     async register(createUserDto: CreateUserDto) {
         try{
@@ -35,17 +37,22 @@ export class UserService {
             data.email = email;
             data.password = hashed;
             data.accountName = `${data.lastName} ${data.firstName}`;
-            data.accountType = accountType;
             data.verified = false;
             data.verifyToken = uuidv4();
             data.token = uuidv4()
             data.createDate = new Date();
             data.updateDate = new Date();
-            const newData = await this.userRepo.create(data)
-            console.log(newData)
-            // newData.accountType = accountType
-            console.log(newData.accountType)
-            console.log(newData.accountType.status)
+
+            const accountTypeEntity = await this.accountTypeRepo.findOneBy({
+                type: accountType.type,
+            });
+
+            if (!accountTypeEntity) {
+                throw new BadRequestException("Invalid Account Type");
+            }
+            data.accountType = accountTypeEntity;
+
+            await this.userRepo.create(data)
             await this.userRepo.save(data)
             await this.walletService.newWallet(data)
             // console.log(data.accountType.status)

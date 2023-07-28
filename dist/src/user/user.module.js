@@ -19,11 +19,12 @@ const jwt_strategy_1 = require("../auth/jwt.strategy");
 const mail_service_1 = require("../mail/mail.service");
 const wallet_module_1 = require("../wallet/wallet.module");
 const generator_service_1 = require("../auth/generator.service");
+const accountEntity_entity_1 = require("../Entities/accountEntity.entity");
 let UserModule = class UserModule {
 };
 UserModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([userEntity_entity_1.User]), passport_1.PassportModule, wallet_module_1.WalletModule, jwt_1.JwtModule.register({
+        imports: [typeorm_1.TypeOrmModule.forFeature([userEntity_entity_1.User, accountEntity_entity_1.AccountType]), passport_1.PassportModule, wallet_module_1.WalletModule, jwt_1.JwtModule.register({
                 secret: process.env.SECRET,
                 signOptions: {
                     algorithm: "HS512",
