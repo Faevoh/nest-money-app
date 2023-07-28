@@ -11,7 +11,7 @@ export declare class User {
     password: string;
     phoneNumber: string;
     sex: string;
-    imageurl: string;
+    imageurl?: string;
     verified: boolean;
     verifyToken: string;
     createDate: Date;

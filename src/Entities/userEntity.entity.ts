@@ -33,7 +33,7 @@ export class User {
     sex: string;
     
     @Column({nullable: true})
-    imageurl: string;
+    imageurl ?: string;
 
     @Column({default: false})
     verified: boolean;

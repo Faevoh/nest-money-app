@@ -46,7 +46,7 @@ export declare class UserController {
             accountName: string;
             phoneNumber: string;
             sex: string;
-            imageurl: string;
+            imageurl?: string;
             verified: boolean;
             createDate: Date;
             updateDate: Date;
