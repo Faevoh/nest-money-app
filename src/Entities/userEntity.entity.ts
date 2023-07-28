@@ -17,8 +17,8 @@ export class User {
     @Column({unique: true})
     email: string;
  
-    @Column('json', { default: { type: 'personal', status: false } }) 
-    accountType: AccountType;
+    @Column({ type: 'varchar', length: 200, default: JSON.stringify({ type: 'personal', status: false }) }) 
+    accountType: string;
 
     @Column()
     accountName: string;

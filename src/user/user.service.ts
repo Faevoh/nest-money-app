@@ -34,7 +34,7 @@ export class UserService {
             data.lastName = lastName;
             data.email = email;
             data.password = hashed;
-            data.accountType = accountType;
+            // data.accountType = accountType;
             data.accountName = `${data.lastName} ${data.firstName}`;
             data.verified = false;
             data.verifyToken = uuidv4();

@@ -45,7 +45,6 @@ let UserService = class UserService {
             data.lastName = lastName;
             data.email = email;
             data.password = hashed;
-            data.accountType = accountType;
             data.accountName = `${data.lastName} ${data.firstName}`;
             data.verified = false;
             data.verifyToken = (0, uuid_1.v4)();

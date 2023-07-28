@@ -33,8 +33,8 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.Column)('json', { default: { type: 'personal', status: false } }),
-    __metadata("design:type", Object)
+    (0, typeorm_1.Column)({ type: 'varchar', length: 200, default: JSON.stringify({ type: 'personal', status: false }) }),
+    __metadata("design:type", String)
 ], User.prototype, "accountType", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
