@@ -16,7 +16,7 @@ export class WalletService {
         wallet.user = user;
         wallet.userId = user.id
 
-        console.log(wallet)
+        // console.log(wallet)
         return await this.walletRepo.save(wallet)
     }
 
