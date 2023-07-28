@@ -15,7 +15,4 @@ export class AccountType {
   @Column({ default: false })
   status: boolean;
 
-  setStatusFromType() {
-  this.status = this.type === this.type;
-  }
 }
