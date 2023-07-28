@@ -37,7 +37,7 @@ __decorate([
 ], CreateUserDto.prototype, "password", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
+    __metadata("design:type", Object)
 ], CreateUserDto.prototype, "accountType", void 0);
 exports.CreateUserDto = CreateUserDto;
 //# sourceMappingURL=createUser.js.map
