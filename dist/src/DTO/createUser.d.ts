@@ -3,9 +3,5 @@ export declare class CreateUserDto {
     lastName: string;
     email: string;
     password: string;
-    accountType: AccountTypeDto;
-}
-export declare class AccountTypeDto {
-    type: 'business' | 'personal';
-    status: boolean;
+    accountType: 'business' | 'personal';
 }
