@@ -59,7 +59,6 @@ let UserService = class UserService {
             }
             await this.userRepo.save(data);
             await this.walletService.newWallet(data);
-            console.log(data);
             delete data.token;
             delete data.phoneNumber;
             delete data.sex;

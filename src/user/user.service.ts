@@ -51,7 +51,7 @@ export class UserService {
             await this.userRepo.save(data)
             await this.walletService.newWallet(data)
             // console.log(data.accountType.status)
-            console.log(data)
+            // console.log(data)
             // const createdUser = await this.userRepo.save(user)
             // console.log("user" ,user)
             
