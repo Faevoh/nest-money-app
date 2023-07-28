@@ -51,7 +51,6 @@ let UserService = class UserService {
             data.accountName = `${data.lastName} ${data.firstName}`;
             data.verified = false;
             data.verifyToken = (0, uuid_1.v4)();
-            data.token = (0, uuid_1.v4)();
             data.createDate = new Date();
             data.updateDate = new Date();
             if (data.accountType === 'Business') {
@@ -59,7 +58,6 @@ let UserService = class UserService {
             }
             await this.userRepo.save(data);
             await this.walletService.newWallet(data);
-            delete data.token;
             delete data.phoneNumber;
             delete data.sex;
             delete data.imageurl;
@@ -113,9 +111,6 @@ let UserService = class UserService {
     }
     async findByToken(resetToken) {
         return await this.userRepo.findOneBy({ resetToken });
-    }
-    async findByChangePasswordToken(token) {
-        return await this.userRepo.findOneBy({ token });
     }
     async allUser() {
         return await this.userRepo.find({

@@ -89,6 +89,9 @@ let UserController = class UserController {
             return { statusCode: 200, message: `success, id ${id}`, data: others };
         }
         catch (err) {
+            if (err instanceof common_1.NotFoundException) {
+                throw new common_1.NotFoundException(err.message);
+            }
             if (err instanceof common_1.UnauthorizedException) {
                 throw new common_1.UnauthorizedException(err.message);
             }
@@ -141,12 +144,20 @@ let UserController = class UserController {
             throw new common_1.BadRequestException("Failed to reset Password");
         }
     }
-    async changePassword(token, changePasswordDto) {
+    async changePassword(access_token, payload, changePasswordDto) {
         try {
-            const user = await this.userService.findByChangePasswordToken(token);
-            if (!user) {
-                throw new common_1.NotFoundException("user token is invalid");
+            const tokenDecode = this.jwtService.decode(access_token);
+            if (!tokenDecode) {
+                throw new common_1.NotFoundException("Invalid Token");
             }
+            ;
+            payload = tokenDecode;
+            const timeInSeconds = Math.floor(Date.now() / 1000);
+            if (payload.exp && payload.exp < timeInSeconds) {
+                throw new common_1.UnauthorizedException("Token has expired");
+            }
+            const id = tokenDecode.sub;
+            const user = await this.userService.findById(id);
             const { oldPassword, newPassword } = changePasswordDto;
             const checkOldPassword = await bcrypt.compare(oldPassword, user.password);
             if (!checkOldPassword) {
@@ -191,6 +202,9 @@ let UserController = class UserController {
             }
         }
         catch (err) {
+            if (err instanceof common_1.NotFoundException) {
+                throw new common_1.NotFoundException(err.message);
+            }
             if (err instanceof common_1.UnauthorizedException) {
                 throw new common_1.UnauthorizedException(err.message);
             }
@@ -263,10 +277,10 @@ __decorate([
 ], UserController.prototype, "resetPassword", null);
 __decorate([
     (0, common_1.Patch)("/change-password/:token"),
-    __param(0, (0, common_1.Param)("token")),
-    __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
+    __param(0, (0, common_1.Query)("access_token")),
+    __param(2, (0, common_1.Body)(common_1.ValidationPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, changePassword_1.ChangePasswordDto]),
+    __metadata("design:paramtypes", [String, Object, changePassword_1.ChangePasswordDto]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "changePassword", null);
 __decorate([

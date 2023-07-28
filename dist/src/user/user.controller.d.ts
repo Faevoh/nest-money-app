@@ -47,7 +47,6 @@ export declare class UserController {
             verified: boolean;
             createDate: Date;
             updateDate: Date;
-            token: string;
             compliance: import("../Entities/compEntity.entity").Compliances;
             wallet: import("../Entities/walletEntity.entity").Wallet;
             transaction: import("../Entities/transactionEntity.entity").Transactions;
@@ -66,7 +65,7 @@ export declare class UserController {
         statusCode: number;
         message: string;
     }>;
-    changePassword(token: string, changePasswordDto: ChangePasswordDto): Promise<{
+    changePassword(access_token: string, payload: any, changePasswordDto: ChangePasswordDto): Promise<{
         statusCode: number;
         message: string;
     }>;

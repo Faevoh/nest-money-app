@@ -70,6 +70,9 @@ export class UserController {
             const{resetToken,resetTokenExpiry, verifyToken,password, ...others} = userObject
             return {statusCode: 200, message: `success, id ${id}`, data: others}
        }catch(err){
+        if(err instanceof NotFoundException){
+            throw new NotFoundException(err.message)
+        }
         if(err instanceof UnauthorizedException){
             throw new UnauthorizedException(err.message)
         }
@@ -140,12 +143,17 @@ export class UserController {
     }
 
     @Patch("/change-password/:token")
-    async changePassword(@Param("token") token: string, @Body(ValidationPipe) changePasswordDto: ChangePasswordDto) {
+    async changePassword(@Query("access_token") access_token: string, payload, @Body(ValidationPipe) changePasswordDto: ChangePasswordDto) {
         try{
-            const user = await this.userService.findByChangePasswordToken(token);
-            if(!user) {
-                throw new NotFoundException("user token is invalid");
+            const tokenDecode = this.jwtService.decode(access_token);
+            if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
+            payload = tokenDecode
+            const timeInSeconds = Math.floor(Date.now() / 1000); 
+            if (payload.exp && payload.exp < timeInSeconds) {
+            throw new UnauthorizedException("Token has expired");
             }
+            const id = tokenDecode.sub;
+            const user = await this.userService.findById(id) 
 
             const {oldPassword, newPassword} = changePasswordDto;
             const checkOldPassword = await bcrypt.compare(oldPassword, user.password);
@@ -194,6 +202,9 @@ export class UserController {
                 return {statusCode: 201, message: "Password is correct"}
             }
         }catch(err){
+            if(err instanceof NotFoundException){
+                throw new NotFoundException(err.message)
+            }
             if(err instanceof UnauthorizedException){
                 throw new UnauthorizedException(err.message)
             }
