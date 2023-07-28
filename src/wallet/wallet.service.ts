@@ -11,12 +11,12 @@ export class WalletService {
 
     async newWallet(user: User) {
         const wallet = this.walletRepo.create();
-        wallet.accountNumber = this.acctService.accountnumberGenerator()
+        wallet.accountNumber = this.acctService.accountnumberGenerator();
         wallet.accountBalance = 0;
         wallet.user = user;
         wallet.userId = user.id
 
-        // console.log(wallet)
+        console.log(wallet)
         return await this.walletRepo.save(wallet)
     }
 
