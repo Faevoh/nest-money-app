@@ -37,7 +37,7 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.OneToOne)(type => accountEntity_entity_1.AccountType, { cascade: true, eager: true }),
+    (0, typeorm_1.OneToOne)(type => accountEntity_entity_1.AccountType, { cascade: true }),
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", accountEntity_entity_1.AccountType)
 ], User.prototype, "accountType", void 0);

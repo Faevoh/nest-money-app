@@ -18,7 +18,7 @@ export class User {
     @Column({unique: true})
     email: string;
  
-    @OneToOne(type => AccountType, { cascade: true, eager: true })
+    @OneToOne(type => AccountType, { cascade: true})
     @JoinColumn()
     accountType: AccountType;
 
