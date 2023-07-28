@@ -19,5 +19,10 @@ export class CreateUserDto {
     password: string;
 
     @IsNotEmpty()
-    accountType: boolean;
+    accountType: AccountTypeDto;
 }
+
+export class AccountTypeDto {
+    type: 'business' | 'personal';
+    status: boolean;
+  }

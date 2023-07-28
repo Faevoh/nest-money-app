@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateUserDto = void 0;
+exports.AccountTypeDto = exports.CreateUserDto = void 0;
 const class_validator_1 = require("class-validator");
 class CreateUserDto {
 }
@@ -37,7 +37,10 @@ __decorate([
 ], CreateUserDto.prototype, "password", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Boolean)
+    __metadata("design:type", AccountTypeDto)
 ], CreateUserDto.prototype, "accountType", void 0);
 exports.CreateUserDto = CreateUserDto;
+class AccountTypeDto {
+}
+exports.AccountTypeDto = AccountTypeDto;
 //# sourceMappingURL=createUser.js.map
