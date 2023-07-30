@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, Headers, NotFoundException, Param, ParseIntPipe, Patch, Post, Query, Request, UnauthorizedException, UseGuards, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Headers, NotFoundException, Param, ParseIntPipe, Patch, Post, Query, Request, UnauthorizedException, UploadedFile, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from 'src/DTO/createUser';
 import { LocalAuthGuard } from 'src/auth/local.auth.guard';
@@ -10,14 +10,14 @@ import { MailService } from 'src/mail/mail.service';
 import { ResetPasswordDto } from 'src/DTO/resetPassword';
 import * as bcrypt from 'bcryptjs'
 import { accountGenerator } from 'src/auth/generator.service';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { User } from 'src/Entities/userEntity.entity';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { JwtService } from '@nestjs/jwt';
 import { ChangePasswordDto } from 'src/DTO/changePassword';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('user')
 export class UserController {
-    constructor(private userService: UserService, private mailService: MailService, private authService: AuthService, private acctService: accountGenerator, private jwtService: JwtService){}
+    constructor(private userService: UserService, private mailService: MailService, private authService: AuthService, private acctService: accountGenerator, private jwtService: JwtService, private cloudinaryService: CloudinaryService){}
 
     @Post("/register")
     async registerUser(@Body(ValidationPipe) createUserDto: CreateUserDto){ 
@@ -79,11 +79,36 @@ export class UserController {
        }
     }
 
-    @Patch("/:id/profile-update")
-    @UseGuards(JwtAuthGuard)
-    async updateUser(@Param("id", ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
-        const updatedUser = await this.userService.updateUser(id, updateUserDto);
-        return { statusCode: 200, message: "success", user: updatedUser };
+    @Patch("/profile-update")
+    @UseInterceptors(FileInterceptor('image'))
+    async updateUser(@Query("access_token") access_token: string, @Body() updateUserDto: UpdateUserDto, payload, @UploadedFile() file: Express.Multer.File,) {
+        try{
+            const {imageurl} = updateUserDto;
+
+            if (file) {
+                const uploadedImage = await this.cloudinaryService.uploadImage(file);
+                updateUserDto.imageurl = uploadedImage.secure_url;
+            }
+
+            const tokenDecode = this.jwtService.decode(access_token);
+            if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
+            payload = tokenDecode
+            const timeInSeconds = Math.floor(Date.now() / 1000); 
+            if (payload.exp && payload.exp < timeInSeconds) {
+            throw new UnauthorizedException("Token has expired");
+            }
+            const id = tokenDecode.sub;
+            const updatedUser = await this.userService.update(id ,updateUserDto);
+            return { statusCode: 200, message: "success", user: updatedUser };
+        }catch(err){
+            if(err instanceof NotFoundException) {
+                throw new NotFoundException(err.message)
+            }
+            if(err instanceof UnauthorizedException) {
+                throw new UnauthorizedException(err.message)
+            }
+            throw new UnauthorizedException("Cannot update")
+        }
     }
 
     @Post("/recover-password")
@@ -158,7 +183,7 @@ export class UserController {
             const {oldPassword, newPassword} = changePasswordDto;
             const checkOldPassword = await bcrypt.compare(oldPassword, user.password);
             if(!checkOldPassword) {
-                throw new UnauthorizedException("password doesn't match. Please check properly")
+                throw new UnauthorizedException("Incorrect Password")
             }
 
             const hashedPassword = await bcrypt.hash(newPassword, 10)

@@ -1,6 +1,5 @@
 export declare class UpdateUserDto {
-    FirstName?: string;
-    LastName?: string;
-    email?: string;
     phoneNumber?: string;
+    sex?: string;
+    imageurl?: string;
 }

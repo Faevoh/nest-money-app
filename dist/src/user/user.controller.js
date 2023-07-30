@@ -36,16 +36,18 @@ const mail_service_1 = require("../mail/mail.service");
 const resetPassword_1 = require("../DTO/resetPassword");
 const bcrypt = require("bcryptjs");
 const generator_service_1 = require("../auth/generator.service");
-const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
+const cloudinary_service_1 = require("../cloudinary/cloudinary.service");
 const jwt_1 = require("@nestjs/jwt");
 const changePassword_1 = require("../DTO/changePassword");
+const platform_express_1 = require("@nestjs/platform-express");
 let UserController = class UserController {
-    constructor(userService, mailService, authService, acctService, jwtService) {
+    constructor(userService, mailService, authService, acctService, jwtService, cloudinaryService) {
         this.userService = userService;
         this.mailService = mailService;
         this.authService = authService;
         this.acctService = acctService;
         this.jwtService = jwtService;
+        this.cloudinaryService = cloudinaryService;
     }
     async registerUser(createUserDto) {
         return this.userService.register(createUserDto);
@@ -97,9 +99,36 @@ let UserController = class UserController {
             }
         }
     }
-    async updateUser(id, updateUserDto) {
-        const updatedUser = await this.userService.updateUser(id, updateUserDto);
-        return { statusCode: 200, message: "success", user: updatedUser };
+    async updateUser(access_token, updateUserDto, payload, file) {
+        try {
+            const { imageurl } = updateUserDto;
+            if (file) {
+                const uploadedImage = await this.cloudinaryService.uploadImage(file);
+                updateUserDto.imageurl = uploadedImage.secure_url;
+            }
+            const tokenDecode = this.jwtService.decode(access_token);
+            if (!tokenDecode) {
+                throw new common_1.NotFoundException("Invalid Token");
+            }
+            ;
+            payload = tokenDecode;
+            const timeInSeconds = Math.floor(Date.now() / 1000);
+            if (payload.exp && payload.exp < timeInSeconds) {
+                throw new common_1.UnauthorizedException("Token has expired");
+            }
+            const id = tokenDecode.sub;
+            const updatedUser = await this.userService.update(id, updateUserDto);
+            return { statusCode: 200, message: "success", user: updatedUser };
+        }
+        catch (err) {
+            if (err instanceof common_1.NotFoundException) {
+                throw new common_1.NotFoundException(err.message);
+            }
+            if (err instanceof common_1.UnauthorizedException) {
+                throw new common_1.UnauthorizedException(err.message);
+            }
+            throw new common_1.UnauthorizedException("Cannot update");
+        }
     }
     async recoverPassword(forgotPasswordDto) {
         try {
@@ -161,7 +190,7 @@ let UserController = class UserController {
             const { oldPassword, newPassword } = changePasswordDto;
             const checkOldPassword = await bcrypt.compare(oldPassword, user.password);
             if (!checkOldPassword) {
-                throw new common_1.UnauthorizedException("password doesn't match. Please check properly");
+                throw new common_1.UnauthorizedException("Incorrect Password");
             }
             const hashedPassword = await bcrypt.hash(newPassword, 10);
             user.password = hashedPassword;
@@ -252,12 +281,13 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getUser", null);
 __decorate([
-    (0, common_1.Patch)("/:id/profile-update"),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
-    __param(0, (0, common_1.Param)("id", common_1.ParseIntPipe)),
+    (0, common_1.Patch)("/profile-update"),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('image')),
+    __param(0, (0, common_1.Query)("access_token")),
     __param(1, (0, common_1.Body)()),
+    __param(3, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, updateUser_1.UpdateUserDto]),
+    __metadata("design:paramtypes", [String, updateUser_1.UpdateUserDto, Object, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "updateUser", null);
 __decorate([
@@ -300,7 +330,7 @@ __decorate([
 ], UserController.prototype, "logOut", null);
 UserController = __decorate([
     (0, common_1.Controller)('user'),
-    __metadata("design:paramtypes", [user_service_1.UserService, mail_service_1.MailService, auth_service_1.AuthService, generator_service_1.accountGenerator, jwt_1.JwtService])
+    __metadata("design:paramtypes", [user_service_1.UserService, mail_service_1.MailService, auth_service_1.AuthService, generator_service_1.accountGenerator, jwt_1.JwtService, cloudinary_service_1.CloudinaryService])
 ], UserController);
 exports.UserController = UserController;
 //# sourceMappingURL=user.controller.js.map

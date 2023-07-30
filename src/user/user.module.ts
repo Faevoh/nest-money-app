@@ -11,6 +11,7 @@ import { MailService } from 'src/mail/mail.service';
 import { WalletModule } from 'src/wallet/wallet.module';
 import { accountGenerator } from 'src/auth/generator.service';
 import { AccountType } from 'src/Entities/accountEntity.entity';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, AccountType]), PassportModule, WalletModule, JwtModule.register({
@@ -21,7 +22,7 @@ import { AccountType } from 'src/Entities/accountEntity.entity';
     }
   })],
   controllers: [UserController],
-  providers: [UserService,AuthService,JwtStrategy,MailService, accountGenerator],
+  providers: [UserService,AuthService,JwtStrategy,MailService, accountGenerator, CloudinaryService],
   exports: [UserService, PassportModule]
 })
 export class UserModule {}

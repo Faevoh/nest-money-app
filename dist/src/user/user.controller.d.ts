@@ -1,3 +1,4 @@
+/// <reference types="multer" />
 import { UserService } from './user.service';
 import { CreateUserDto } from 'src/DTO/createUser';
 import { AuthService } from 'src/auth/auth.service';
@@ -6,7 +7,7 @@ import { ForgotPasswordDto } from 'src/DTO/forgotPassword';
 import { MailService } from 'src/mail/mail.service';
 import { ResetPasswordDto } from 'src/DTO/resetPassword';
 import { accountGenerator } from 'src/auth/generator.service';
-import { User } from 'src/Entities/userEntity.entity';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { JwtService } from '@nestjs/jwt';
 import { ChangePasswordDto } from 'src/DTO/changePassword';
 export declare class UserController {
@@ -15,7 +16,8 @@ export declare class UserController {
     private authService;
     private acctService;
     private jwtService;
-    constructor(userService: UserService, mailService: MailService, authService: AuthService, acctService: accountGenerator, jwtService: JwtService);
+    private cloudinaryService;
+    constructor(userService: UserService, mailService: MailService, authService: AuthService, acctService: accountGenerator, jwtService: JwtService, cloudinaryService: CloudinaryService);
     registerUser(createUserDto: CreateUserDto): Promise<{
         statusCode: number;
         message: string;
@@ -29,7 +31,7 @@ export declare class UserController {
         message: string;
         access_token: string;
     }>;
-    getAll(): Promise<User[]>;
+    getAll(): Promise<import("../Entities/userEntity.entity").User[]>;
     getUser(access_token: string, payload: any): Promise<{
         statusCode: number;
         message: string;
@@ -52,10 +54,10 @@ export declare class UserController {
             transaction: import("../Entities/transactionEntity.entity").Transactions;
         };
     }>;
-    updateUser(id: number, updateUserDto: UpdateUserDto): Promise<{
+    updateUser(access_token: string, updateUserDto: UpdateUserDto, payload: any, file: Express.Multer.File): Promise<{
         statusCode: number;
         message: string;
-        user: User;
+        user: import("../Entities/userEntity.entity").User;
     }>;
     recoverPassword(forgotPasswordDto: ForgotPasswordDto): Promise<{
         statusCode: number;

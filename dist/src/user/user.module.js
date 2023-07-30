@@ -20,6 +20,7 @@ const mail_service_1 = require("../mail/mail.service");
 const wallet_module_1 = require("../wallet/wallet.module");
 const generator_service_1 = require("../auth/generator.service");
 const accountEntity_entity_1 = require("../Entities/accountEntity.entity");
+const cloudinary_service_1 = require("../cloudinary/cloudinary.service");
 let UserModule = class UserModule {
 };
 UserModule = __decorate([
@@ -32,7 +33,7 @@ UserModule = __decorate([
                 }
             })],
         controllers: [user_controller_1.UserController],
-        providers: [user_service_1.UserService, auth_service_1.AuthService, jwt_strategy_1.JwtStrategy, mail_service_1.MailService, generator_service_1.accountGenerator],
+        providers: [user_service_1.UserService, auth_service_1.AuthService, jwt_strategy_1.JwtStrategy, mail_service_1.MailService, generator_service_1.accountGenerator, cloudinary_service_1.CloudinaryService],
         exports: [user_service_1.UserService, passport_1.PassportModule]
     })
 ], UserModule);
