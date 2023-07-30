@@ -29,24 +29,35 @@ let ComplianceController = class ComplianceController {
         this.cloudinaryService = cloudinaryService;
     }
     async addCompliance(access_token, createCompDto, file, payload) {
-        if (file) {
-            const uploadedImage = await this.cloudinaryService.uploadImage(file);
-            createCompDto.imageUrl = uploadedImage.secure_url;
+        try {
+            if (file) {
+                const uploadedImage = await this.cloudinaryService.uploadImage(file);
+                createCompDto.imageUrl = uploadedImage.secure_url;
+            }
+            const user = await this.jwtService.decode(access_token);
+            if (!user) {
+                throw new common_1.NotFoundException("Invalid Token");
+            }
+            ;
+            payload = user;
+            const timeInSeconds = Math.floor(Date.now() / 1000);
+            if (payload.exp && payload.exp < timeInSeconds) {
+                throw new common_1.UnauthorizedException("Token has expired");
+            }
+            const id = user.sub;
+            const getUser = await this.userService.findById(id);
+            const data = await this.compService.createComp(createCompDto, getUser);
+            return data;
         }
-        const user = await this.jwtService.decode(access_token);
-        if (!user) {
-            throw new common_1.NotFoundException("Invalid Token");
+        catch (err) {
+            if (err instanceof common_1.NotFoundException) {
+                throw new common_1.NotFoundException(err.message);
+            }
+            if (err instanceof common_1.UnauthorizedException) {
+                throw new common_1.UnauthorizedException(err.message);
+            }
+            throw new common_1.UnauthorizedException("Cannot create Compliance");
         }
-        ;
-        payload = user;
-        const timeInSeconds = Math.floor(Date.now() / 1000);
-        if (payload.exp && payload.exp < timeInSeconds) {
-            throw new common_1.UnauthorizedException("Token has expired");
-        }
-        const id = user.sub;
-        const getUser = await this.userService.findById(id);
-        const data = await this.compService.createComp(createCompDto, getUser);
-        return data;
     }
     async updateCompliance(updateCompDto, id) {
         return await this.compService.updateComp(id, updateCompDto);

@@ -16,25 +16,35 @@ export class ComplianceController {
     @Post("/new")
     @UseInterceptors(FileInterceptor('image'))
     async addCompliance(@Query("access_token") access_token: string,@Body(ValidationPipe) createCompDto: CreateCompDto, @UploadedFile() file: Express.Multer.File,payload ){
-        if (file) {
-            const uploadedImage = await this.cloudinaryService.uploadImage(file);
-            createCompDto.imageUrl = uploadedImage.secure_url;
-            // console.log(createCompDto.imageUrl)
+        try{
+            if (file) {
+                const uploadedImage = await this.cloudinaryService.uploadImage(file);
+                createCompDto.imageUrl = uploadedImage.secure_url;
+                // console.log(createCompDto.imageUrl)
+            }
+    
+            const user = await this.jwtService.decode(access_token);
+            if(!user) {throw new NotFoundException("Invalid Token")};
+            payload = user
+            // console.log(payload)
+            const timeInSeconds = Math.floor(Date.now() / 1000); 
+            if (payload.exp && payload.exp < timeInSeconds) {
+            throw new UnauthorizedException("Token has expired");
+            }
+            const id = user.sub;
+            const getUser = await this.userService.findById(id);
+            const data = await this.compService.createComp(createCompDto, getUser);
+            // console.log(data);
+            return data;
+        }catch(err){
+            if(err instanceof NotFoundException) {
+                throw new NotFoundException(err.message)
+            }
+            if(err instanceof UnauthorizedException) {
+                throw new UnauthorizedException(err.message)
+            }
+            throw new UnauthorizedException("Cannot create Compliance")
         }
-
-        const user = await this.jwtService.decode(access_token);
-        if(!user) {throw new NotFoundException("Invalid Token")};
-        payload = user
-        // console.log(payload)
-        const timeInSeconds = Math.floor(Date.now() / 1000); 
-        if (payload.exp && payload.exp < timeInSeconds) {
-        throw new UnauthorizedException("Token has expired");
-        }
-        const id = user.sub;
-        const getUser = await this.userService.findById(id);
-        const data = await this.compService.createComp(createCompDto, getUser);
-        // console.log(data);
-        return data;
     }
 
     @Patch("/:id/compliance-update")
