@@ -10,6 +10,8 @@ import { accountGenerator } from 'src/auth/generator.service';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { JwtService } from '@nestjs/jwt';
 import { ChangePasswordDto } from 'src/DTO/changePassword';
+import { UserPinDto } from 'src/DTO/pindto';
+import { BankPin } from 'src/Entities/pinCreation';
 export declare class UserController {
     private userService;
     private mailService;
@@ -49,6 +51,7 @@ export declare class UserController {
             verified: boolean;
             createDate: Date;
             updateDate: Date;
+            bankPin: BankPin;
             compliance: import("../Entities/compEntity.entity").Compliances;
             wallet: import("../Entities/walletEntity.entity").Wallet;
             transaction: import("../Entities/transactionEntity.entity").Transactions;
@@ -76,6 +79,11 @@ export declare class UserController {
     }, payload: any): Promise<{
         statusCode: number;
         message: string;
+    }>;
+    newPin(access_token: string, userPinDto: UserPinDto, payload: any, bankPin: BankPin): Promise<{
+        statusCode: number;
+        message: string;
+        data: void;
     }>;
     logOut(access_token: string): Promise<{
         statusCode: number;

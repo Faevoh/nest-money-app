@@ -2,7 +2,7 @@ import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, Prim
 import { Compliances } from "./compEntity.entity";
 import { Wallet } from "./walletEntity.entity";
 import { Transactions } from "./transactionEntity.entity";
-import { AccountType } from "./accountEntity.entity";
+import { BankPin } from "./pinCreation";
 
 @Entity("users")
 export class User {
@@ -58,6 +58,9 @@ export class User {
 
   @Column({ nullable: true })
   resetTokenExpiry: Date;
+
+  @OneToOne( () => BankPin, (bankpin) => bankpin.user)
+  bankPin: BankPin;
 
   @OneToOne( () => Compliances, (compliance) => compliance.user, {onDelete: "CASCADE"})
   compliance: Compliances;

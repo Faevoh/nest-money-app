@@ -23,15 +23,15 @@ const wallet_service_1 = require("../wallet/wallet.service");
 const uuid_1 = require("uuid");
 const generator_service_1 = require("../auth/generator.service");
 const mail_service_1 = require("../mail/mail.service");
-const accountEntity_entity_1 = require("../Entities/accountEntity.entity");
+const pinCreation_1 = require("../Entities/pinCreation");
 let UserService = class UserService {
-    constructor(userRepo, walletService, jwtService, acctService, mailService, accountTypeRepo) {
+    constructor(userRepo, walletService, jwtService, acctService, mailService, pinRepo) {
         this.userRepo = userRepo;
         this.walletService = walletService;
         this.jwtService = jwtService;
         this.acctService = acctService;
         this.mailService = mailService;
-        this.accountTypeRepo = accountTypeRepo;
+        this.pinRepo = pinRepo;
     }
     async register(createUserDto) {
         try {
@@ -137,13 +137,20 @@ let UserService = class UserService {
     async updateStatus(id, verified) {
         return this.userRepo.update(id, { verified });
     }
+    async createPin(userPinDto, user) {
+        const { bankPin } = userPinDto;
+        const newPin = new pinCreation_1.BankPin();
+        newPin.bankPin = bankPin;
+        newPin.userId = user.id;
+        const Pin = await this.pinRepo.create(userPinDto);
+        await this.pinRepo.save(Pin);
+    }
 };
 UserService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(userEntity_entity_1.User)),
-    __param(5, (0, typeorm_1.InjectRepository)(accountEntity_entity_1.AccountType)),
-    __metadata("design:paramtypes", [typeorm_2.Repository, wallet_service_1.WalletService, jwt_1.JwtService, generator_service_1.accountGenerator, mail_service_1.MailService,
-        typeorm_2.Repository])
+    __param(5, (0, typeorm_1.InjectRepository)(pinCreation_1.BankPin)),
+    __metadata("design:paramtypes", [typeorm_2.Repository, wallet_service_1.WalletService, jwt_1.JwtService, generator_service_1.accountGenerator, mail_service_1.MailService, typeorm_2.Repository])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

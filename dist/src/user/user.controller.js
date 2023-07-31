@@ -40,6 +40,8 @@ const cloudinary_service_1 = require("../cloudinary/cloudinary.service");
 const jwt_1 = require("@nestjs/jwt");
 const changePassword_1 = require("../DTO/changePassword");
 const platform_express_1 = require("@nestjs/platform-express");
+const pindto_1 = require("../DTO/pindto");
+const pinCreation_1 = require("../Entities/pinCreation");
 let UserController = class UserController {
     constructor(userService, mailService, authService, acctService, jwtService, cloudinaryService) {
         this.userService = userService;
@@ -237,6 +239,35 @@ let UserController = class UserController {
             if (err instanceof common_1.UnauthorizedException) {
                 throw new common_1.UnauthorizedException(err.message);
             }
+            throw new common_1.UnauthorizedException(err.message);
+        }
+    }
+    async newPin(access_token, userPinDto, payload, bankPin) {
+        try {
+            const tokenDecode = this.jwtService.decode(access_token);
+            if (!tokenDecode) {
+                throw new common_1.NotFoundException("Invalid Token");
+            }
+            ;
+            payload = tokenDecode;
+            const timeInSeconds = Math.floor(Date.now() / 1000);
+            if (payload.exp && payload.exp < timeInSeconds) {
+                throw new common_1.UnauthorizedException("Token has expired");
+            }
+            const id = tokenDecode.sub;
+            bankPin.userId = id;
+            const user = await this.userService.findById(id);
+            const bankPins = await this.userService.createPin(userPinDto, user);
+            return { statusCode: 201, message: "Pin created", data: bankPins };
+        }
+        catch (err) {
+            if (err instanceof common_1.NotFoundException) {
+                throw new common_1.NotFoundException(err.message);
+            }
+            if (err instanceof common_1.UnauthorizedException) {
+                throw new common_1.UnauthorizedException(err.message);
+            }
+            throw new common_1.UnauthorizedException(err.message);
         }
     }
     async logOut(access_token) {
@@ -321,6 +352,14 @@ __decorate([
     __metadata("design:paramtypes", [String, Object, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "confirmPassword", null);
+__decorate([
+    (0, common_1.Post)("/bankpin"),
+    __param(0, (0, common_1.Query)("access_token")),
+    __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, pindto_1.UserPinDto, Object, pinCreation_1.BankPin]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "newPin", null);
 __decorate([
     (0, common_1.Post)("/logout"),
     __param(0, (0, common_1.Query)("access_token")),

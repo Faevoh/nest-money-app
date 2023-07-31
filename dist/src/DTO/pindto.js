@@ -9,20 +9,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BankPin = void 0;
-const typeorm_1 = require("typeorm");
-let BankPin = class BankPin {
-};
+exports.UserPinDto = void 0;
+const class_validator_1 = require("class-validator");
+class UserPinDto {
+}
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Number)
-], BankPin.prototype, "id", void 0);
-__decorate([
-    (0, typeorm_1.Column)({}),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
-], BankPin.prototype, "bankPin", void 0);
-BankPin = __decorate([
-    (0, typeorm_1.Entity)("bankpin")
-], BankPin);
-exports.BankPin = BankPin;
-//# sourceMappingURL=accountEntity.entity.js.map
+], UserPinDto.prototype, "bankPin", void 0);
+exports.UserPinDto = UserPinDto;
+//# sourceMappingURL=pindto.js.map

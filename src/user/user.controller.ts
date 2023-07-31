@@ -14,6 +14,8 @@ import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { JwtService } from '@nestjs/jwt';
 import { ChangePasswordDto } from 'src/DTO/changePassword';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { UserPinDto } from 'src/DTO/pindto';
+import { BankPin } from 'src/Entities/pinCreation';
 
 @Controller('user')
 export class UserController {
@@ -233,6 +235,38 @@ export class UserController {
             if(err instanceof UnauthorizedException){
                 throw new UnauthorizedException(err.message)
             }
+            throw new UnauthorizedException(err.message)
+        }
+    }
+
+    @Post("/bankpin")
+    async newPin(@Query("access_token") access_token: string, @Body(ValidationPipe) userPinDto: UserPinDto, payload, bankPin: BankPin) {
+        try{
+            const tokenDecode = this.jwtService.decode(access_token);
+            if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
+            payload = tokenDecode
+            const timeInSeconds = Math.floor(Date.now() / 1000); 
+            if (payload.exp && payload.exp < timeInSeconds) {
+            throw new UnauthorizedException("Token has expired");
+            }
+            const id = tokenDecode.sub;
+            
+            bankPin.userId = id
+
+            const user = await this.userService.findById(id)
+
+            const bankPins = await this.userService.createPin(userPinDto, user)
+
+            return {statusCode: 201, message: "Pin created", data: bankPins}
+
+        }catch(err){
+            if(err instanceof NotFoundException){
+                throw new NotFoundException(err.message)
+            }
+            if(err instanceof UnauthorizedException){
+                throw new UnauthorizedException(err.message)
+            }
+            throw new UnauthorizedException(err.message)
         }
     }
 

@@ -1,6 +1,5 @@
 import { Optional } from "@nestjs/common";
 import { IsEmail, IsNotEmpty, IsNumberString, Matches, MaxLength, MinLength } from "class-validator";
-import { AccountType } from "src/Entities/accountEntity.entity";
 
 export class CreateUserDto {
     @IsNotEmpty()

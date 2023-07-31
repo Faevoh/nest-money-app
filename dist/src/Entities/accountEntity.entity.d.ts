@@ -1,5 +1,4 @@
-export declare class AccountType {
+export declare class BankPin {
     id: number;
-    type: 'business' | 'personal';
-    status: boolean;
+    bankPin: string;
 }

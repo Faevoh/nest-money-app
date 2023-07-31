@@ -14,6 +14,7 @@ const typeorm_1 = require("typeorm");
 const compEntity_entity_1 = require("./compEntity.entity");
 const walletEntity_entity_1 = require("./walletEntity.entity");
 const transactionEntity_entity_1 = require("./transactionEntity.entity");
+const pinCreation_1 = require("./pinCreation");
 let User = class User {
 };
 __decorate([
@@ -86,6 +87,10 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", Date)
 ], User.prototype, "resetTokenExpiry", void 0);
+__decorate([
+    (0, typeorm_1.OneToOne)(() => pinCreation_1.BankPin, (bankpin) => bankpin.user),
+    __metadata("design:type", pinCreation_1.BankPin)
+], User.prototype, "bankPin", void 0);
 __decorate([
     (0, typeorm_1.OneToOne)(() => compEntity_entity_1.Compliances, (compliance) => compliance.user, { onDelete: "CASCADE" }),
     __metadata("design:type", compEntity_entity_1.Compliances)

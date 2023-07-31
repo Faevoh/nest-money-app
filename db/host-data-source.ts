@@ -5,7 +5,7 @@ import { Compliances } from "src/Entities/compEntity.entity";
 import { Airtime } from "src/Entities/airtimeEntity.entity";
 import { Wallet } from "src/Entities/walletEntity.entity";
 import { Transactions } from "src/Entities/transactionEntity.entity";
-import { AccountType } from "src/Entities/accountEntity.entity";
+import { BankPin } from "src/Entities/pinCreation";
 
 config();
 
@@ -16,7 +16,7 @@ export const hostDataSourceOptions: DataSourceOptions = {
     username: process.env.MYSQLUSER,
     password: process.env.MYSQLPASSWORD,
     database: process.env.MYSQLDATABASE,
-    entities: [User, Compliances, Airtime, Wallet, Transactions, AccountType ],
+    entities: [User, Compliances, Airtime, Wallet, Transactions, BankPin],
     synchronize: true,
     migrations: ["dist/db/migrations/*.js"],
     url: process.env.MYSQL_URL

@@ -10,7 +10,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BankPin = void 0;
+const class_validator_1 = require("class-validator");
 const typeorm_1 = require("typeorm");
+const userEntity_entity_1 = require("./userEntity.entity");
 let BankPin = class BankPin {
 };
 __decorate([
@@ -18,11 +20,21 @@ __decorate([
     __metadata("design:type", Number)
 ], BankPin.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({}),
+    (0, typeorm_1.Column)(),
+    (0, class_validator_1.Length)(4, 4, { message: 'Input 4 numbers' }),
     __metadata("design:type", String)
 ], BankPin.prototype, "bankPin", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], BankPin.prototype, "userId", void 0);
+__decorate([
+    (0, typeorm_1.OneToOne)(() => userEntity_entity_1.User, (user) => user.bankPin),
+    (0, typeorm_1.JoinColumn)(),
+    __metadata("design:type", userEntity_entity_1.User)
+], BankPin.prototype, "user", void 0);
 BankPin = __decorate([
     (0, typeorm_1.Entity)("bankpin")
 ], BankPin);
 exports.BankPin = BankPin;
-//# sourceMappingURL=accountEntity.entity.js.map
+//# sourceMappingURL=pinCreation.js.map

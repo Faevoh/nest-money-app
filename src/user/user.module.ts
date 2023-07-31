@@ -10,11 +10,11 @@ import { JwtStrategy } from 'src/auth/jwt.strategy';
 import { MailService } from 'src/mail/mail.service';
 import { WalletModule } from 'src/wallet/wallet.module';
 import { accountGenerator } from 'src/auth/generator.service';
-import { AccountType } from 'src/Entities/accountEntity.entity';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { BankPin } from 'src/Entities/pinCreation';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, AccountType]), PassportModule, WalletModule, JwtModule.register({
+  imports: [TypeOrmModule.forFeature([User, BankPin]), PassportModule, WalletModule, JwtModule.register({
     secret: process.env.SECRET,
     signOptions: {
       algorithm: "HS512",

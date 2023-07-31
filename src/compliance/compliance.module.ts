@@ -14,10 +14,10 @@ import { MailService } from 'src/mail/mail.service';
 import { AuthModule } from 'src/auth/auth.module';
 import { AuthService } from 'src/auth/auth.service';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
-import { AccountType } from 'src/Entities/accountEntity.entity';
+import { BankPin } from 'src/Entities/pinCreation';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Compliances, User, Wallet, AccountType]),JwtModule.register({
+  imports: [TypeOrmModule.forFeature([Compliances, User, Wallet, BankPin]),JwtModule.register({
     secret: process.env.SECRET,
     signOptions: {
       algorithm: "HS512",
