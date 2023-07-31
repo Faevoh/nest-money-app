@@ -32,5 +32,5 @@ export declare class UserService {
     updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User>;
     findByVerifyToken(verifyToken: string): Promise<User>;
     updateStatus(id: number, verified: boolean): Promise<import("typeorm").UpdateResult>;
-    createPin(userPinDto: UserPinDto, user: User): Promise<void>;
+    createPin(userPinDto: UserPinDto): Promise<void>;
 }

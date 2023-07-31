@@ -137,12 +137,10 @@ let UserService = class UserService {
     async updateStatus(id, verified) {
         return this.userRepo.update(id, { verified });
     }
-    async createPin(userPinDto, user) {
+    async createPin(userPinDto) {
         const { bankPin } = userPinDto;
         const newPin = new pinCreation_1.BankPin();
         newPin.bankPin = bankPin;
-        newPin.userId = user.id;
-        console.log("'hey" + user.id);
         const Pin = await this.pinRepo.create(userPinDto);
         console.log(Pin);
         await this.pinRepo.save(Pin);

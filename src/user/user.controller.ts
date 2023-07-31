@@ -256,7 +256,7 @@ export class UserController {
 
             const user = await this.userService.findById(id)
 
-            const bankPins = await this.userService.createPin(userPinDto, user)
+            const bankPins = await this.userService.createPin(userPinDto)
 
             return {statusCode: 201, message: "Pin created", data: bankPins}
 
