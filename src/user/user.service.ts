@@ -160,6 +160,7 @@ export class UserService {
         newPin.userId = user.id;
         console.log("'hey" + user.id)
         const Pin = await this.pinRepo.create(userPinDto);
+        console.log(Pin)
         await this.pinRepo.save(Pin);
     }
 }
