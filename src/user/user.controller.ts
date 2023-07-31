@@ -252,6 +252,7 @@ export class UserController {
             const id = tokenDecode.sub;
             
             bankPin.userId = id
+            console.log(bankPin.userId)
 
             const user = await this.userService.findById(id)
 

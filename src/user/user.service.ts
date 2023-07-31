@@ -158,6 +158,7 @@ export class UserService {
         const newPin = new BankPin()
         newPin.bankPin = bankPin
         newPin.userId = user.id;
+        console.log("'hey" + user.id)
         const Pin = await this.pinRepo.create(userPinDto);
         await this.pinRepo.save(Pin);
     }
