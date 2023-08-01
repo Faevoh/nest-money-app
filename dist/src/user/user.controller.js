@@ -257,7 +257,7 @@ let UserController = class UserController {
             }
             const id = tokenDecode.sub;
             const user = await this.userService.findById(id);
-            const data = await this.bankPinservice.createPin(user);
+            const data = await this.bankPinservice.createPin(user, userPinDto);
             return { statusCode: 201, message: "Pin created", data: data };
         }
         catch (err) {
