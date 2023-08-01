@@ -25,8 +25,6 @@ let BankpinService = class BankpinService {
         const newPin = this.pinRepo.create(userPinDto);
         newPin.userId = user.id;
         newPin.user = user;
-        console.log("this is user" + user.id);
-        console.log("this is pin" + newPin);
         return await this.pinRepo.save(newPin);
     }
 };
