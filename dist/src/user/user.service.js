@@ -87,7 +87,7 @@ let UserService = class UserService {
     async findIdWithRelations(id) {
         return await this.userRepo.find({
             where: { id },
-            relations: ["compliance", "wallet", "transaction"]
+            relations: ["compliance", "wallet", "transaction", "bankpin"]
         });
     }
     async findByAccountType(accountType) {
@@ -112,7 +112,7 @@ let UserService = class UserService {
     }
     async allUser() {
         return await this.userRepo.find({
-            relations: ["compliance", "wallet", "transaction"]
+            relations: ["compliance", "wallet", "transaction", "bankpin"]
         });
     }
     async updateUser(id, updateUserDto) {

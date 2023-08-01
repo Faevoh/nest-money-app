@@ -85,7 +85,6 @@ export declare class UserController {
     newPin(access_token: string, userPinDto: UserPinDto, payload: any): Promise<{
         statusCode: number;
         message: string;
-        data: BankPin;
     }>;
     logOut(access_token: string): Promise<{
         statusCode: number;
