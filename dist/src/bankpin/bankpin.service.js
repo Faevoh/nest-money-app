@@ -22,7 +22,7 @@ let BankpinService = class BankpinService {
         this.pinRepo = pinRepo;
     }
     async createPin(user, userPinDto) {
-        const newPin = this.pinRepo.create();
+        const newPin = this.pinRepo.create(userPinDto);
         newPin.userId = user.id;
         newPin.user = user;
         console.log("this is user" + user.id);

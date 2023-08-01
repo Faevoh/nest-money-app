@@ -10,7 +10,7 @@ export class BankpinService {
     constructor(@InjectRepository(BankPin) private pinRepo: Repository<BankPin>) {}
 
     async createPin(user: User, userPinDto: UserPinDto) {
-        const newPin = this.pinRepo.create();
+        const newPin = this.pinRepo.create(userPinDto);
         newPin.userId = user.id;
         newPin.user = user;
         console.log("this is user" + user.id)
