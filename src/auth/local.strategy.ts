@@ -17,10 +17,10 @@ export class LocalStraregy extends PassportStrategy(Strategy) {
             return user;
         }catch(err){
             if (err instanceof NotFoundException){
-                throw new UnauthorizedException("Invalid User");
+                throw new UnauthorizedException("email or password incorrect");
             }
             if (err instanceof UnauthorizedException){
-                throw new UnauthorizedException("Wrong User Credentials");
+                throw new UnauthorizedException("email or password incorrect");
             }
             if (err instanceof BadRequestException){
                 throw new UnauthorizedException("Check email and verify account before sign in")

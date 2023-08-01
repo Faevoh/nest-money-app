@@ -12,7 +12,7 @@ export class BankpinService {
         const newPin = this.pinRepo.create();
         newPin.userId = user.id;
         newPin.user = user;
-        console.log("this is user" + user)
+        console.log("this is user" + user.id)
         console.log("this is pin" + newPin )
 
         return await this.pinRepo.save(newPin);
