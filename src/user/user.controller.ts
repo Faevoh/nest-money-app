@@ -255,7 +255,7 @@ export class UserController {
             const user = await this.userService.findById(id)
             const data = await this.bankPinservice.createPin(user,userPinDto)
 
-            return {statusCode: 201, message: "Pin created", data: data}
+            return {statusCode: 201, message: "Pin created"}
 
         }catch(err){
             if(err instanceof NotFoundException){
