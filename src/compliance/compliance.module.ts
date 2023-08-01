@@ -17,7 +17,7 @@ import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { BankPin } from 'src/Entities/pinCreation';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Compliances, User, Wallet, BankPin]),JwtModule.register({
+  imports: [TypeOrmModule.forFeature([Compliances, User, Wallet]),JwtModule.register({
     secret: process.env.SECRET,
     signOptions: {
       algorithm: "HS512",

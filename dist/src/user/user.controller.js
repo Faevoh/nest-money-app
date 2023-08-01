@@ -41,15 +41,16 @@ const jwt_1 = require("@nestjs/jwt");
 const changePassword_1 = require("../DTO/changePassword");
 const platform_express_1 = require("@nestjs/platform-express");
 const pindto_1 = require("../DTO/pindto");
-const pinCreation_1 = require("../Entities/pinCreation");
+const bankpin_service_1 = require("../bankpin/bankpin.service");
 let UserController = class UserController {
-    constructor(userService, mailService, authService, acctService, jwtService, cloudinaryService) {
+    constructor(userService, mailService, authService, acctService, jwtService, cloudinaryService, bankPinservice) {
         this.userService = userService;
         this.mailService = mailService;
         this.authService = authService;
         this.acctService = acctService;
         this.jwtService = jwtService;
         this.cloudinaryService = cloudinaryService;
+        this.bankPinservice = bankPinservice;
     }
     async registerUser(createUserDto) {
         return this.userService.register(createUserDto);
@@ -242,7 +243,7 @@ let UserController = class UserController {
             throw new common_1.UnauthorizedException(err.message);
         }
     }
-    async newPin(access_token, userPinDto, payload, bankPin) {
+    async newPin(access_token, userPinDto, payload) {
         try {
             const tokenDecode = this.jwtService.decode(access_token);
             if (!tokenDecode) {
@@ -255,11 +256,9 @@ let UserController = class UserController {
                 throw new common_1.UnauthorizedException("Token has expired");
             }
             const id = tokenDecode.sub;
-            bankPin.userId = id;
-            console.log(bankPin.userId);
             const user = await this.userService.findById(id);
-            const bankPins = await this.userService.createPin(userPinDto);
-            return { statusCode: 201, message: "Pin created", data: bankPins };
+            const data = await this.bankPinservice.createPin(user);
+            return { statusCode: 201, message: "Pin created", data: data };
         }
         catch (err) {
             if (err instanceof common_1.NotFoundException) {
@@ -358,7 +357,7 @@ __decorate([
     __param(0, (0, common_1.Query)("access_token")),
     __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, pindto_1.UserPinDto, Object, pinCreation_1.BankPin]),
+    __metadata("design:paramtypes", [String, pindto_1.UserPinDto, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "newPin", null);
 __decorate([
@@ -370,7 +369,7 @@ __decorate([
 ], UserController.prototype, "logOut", null);
 UserController = __decorate([
     (0, common_1.Controller)('user'),
-    __metadata("design:paramtypes", [user_service_1.UserService, mail_service_1.MailService, auth_service_1.AuthService, generator_service_1.accountGenerator, jwt_1.JwtService, cloudinary_service_1.CloudinaryService])
+    __metadata("design:paramtypes", [user_service_1.UserService, mail_service_1.MailService, auth_service_1.AuthService, generator_service_1.accountGenerator, jwt_1.JwtService, cloudinary_service_1.CloudinaryService, bankpin_service_1.BankpinService])
 ], UserController);
 exports.UserController = UserController;
 //# sourceMappingURL=user.controller.js.map

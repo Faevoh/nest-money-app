@@ -20,12 +20,14 @@ const mail_service_1 = require("../mail/mail.service");
 const wallet_module_1 = require("../wallet/wallet.module");
 const generator_service_1 = require("../auth/generator.service");
 const cloudinary_service_1 = require("../cloudinary/cloudinary.service");
+const bankpin_service_1 = require("../bankpin/bankpin.service");
+const bankpin_module_1 = require("../bankpin/bankpin.module");
 const pinCreation_1 = require("../Entities/pinCreation");
 let UserModule = class UserModule {
 };
 UserModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([userEntity_entity_1.User, pinCreation_1.BankPin]), passport_1.PassportModule, wallet_module_1.WalletModule, jwt_1.JwtModule.register({
+        imports: [typeorm_1.TypeOrmModule.forFeature([userEntity_entity_1.User, pinCreation_1.BankPin]), passport_1.PassportModule, bankpin_module_1.BankpinModule, wallet_module_1.WalletModule, jwt_1.JwtModule.register({
                 secret: process.env.SECRET,
                 signOptions: {
                     algorithm: "HS512",
@@ -33,7 +35,7 @@ UserModule = __decorate([
                 }
             })],
         controllers: [user_controller_1.UserController],
-        providers: [user_service_1.UserService, auth_service_1.AuthService, jwt_strategy_1.JwtStrategy, mail_service_1.MailService, generator_service_1.accountGenerator, cloudinary_service_1.CloudinaryService],
+        providers: [user_service_1.UserService, auth_service_1.AuthService, jwt_strategy_1.JwtStrategy, mail_service_1.MailService, generator_service_1.accountGenerator, cloudinary_service_1.CloudinaryService, bankpin_service_1.BankpinService],
         exports: [user_service_1.UserService, passport_1.PassportModule]
     })
 ], UserModule);

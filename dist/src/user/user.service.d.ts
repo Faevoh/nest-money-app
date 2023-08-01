@@ -6,16 +6,13 @@ import { UpdateUserDto } from 'src/DTO/updateUser';
 import { WalletService } from 'src/wallet/wallet.service';
 import { accountGenerator } from "../auth/generator.service";
 import { MailService } from 'src/mail/mail.service';
-import { BankPin } from 'src/Entities/pinCreation';
-import { UserPinDto } from 'src/DTO/pindto';
 export declare class UserService {
     private userRepo;
     private walletService;
     private jwtService;
     private acctService;
     private mailService;
-    private pinRepo;
-    constructor(userRepo: Repository<User>, walletService: WalletService, jwtService: JwtService, acctService: accountGenerator, mailService: MailService, pinRepo: Repository<BankPin>);
+    constructor(userRepo: Repository<User>, walletService: WalletService, jwtService: JwtService, acctService: accountGenerator, mailService: MailService);
     register(createUserDto: CreateUserDto): Promise<{
         statusCode: number;
         message: string;
@@ -32,5 +29,4 @@ export declare class UserService {
     updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User>;
     findByVerifyToken(verifyToken: string): Promise<User>;
     updateStatus(id: number, verified: boolean): Promise<import("typeorm").UpdateResult>;
-    createPin(userPinDto: UserPinDto): Promise<void>;
 }

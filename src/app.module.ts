@@ -15,6 +15,7 @@ import { hostDataSourceOptions } from 'db/host-data-source';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { BankpinModule } from './bankpin/bankpin.module';
 
 @Module({
   imports: [ ConfigModule.forRoot({
@@ -30,7 +31,7 @@ import { join } from 'path';
     expandVariables: true,
   }), ServeStaticModule.forRoot({
     rootPath: join(__dirname, '..'),
-  }), WalletModule, TransactionModule, CloudinaryModule],
+  }), WalletModule, TransactionModule, CloudinaryModule, BankpinModule],
   controllers: [AppController],
   providers: [AppService]
 })

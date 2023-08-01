@@ -11,10 +11,12 @@ import { MailService } from 'src/mail/mail.service';
 import { WalletModule } from 'src/wallet/wallet.module';
 import { accountGenerator } from 'src/auth/generator.service';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { BankpinService } from 'src/bankpin/bankpin.service';
+import { BankpinModule } from 'src/bankpin/bankpin.module';
 import { BankPin } from 'src/Entities/pinCreation';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, BankPin]), PassportModule, WalletModule, JwtModule.register({
+  imports: [TypeOrmModule.forFeature([User, BankPin]), PassportModule, BankpinModule, WalletModule, JwtModule.register({
     secret: process.env.SECRET,
     signOptions: {
       algorithm: "HS512",
@@ -22,7 +24,7 @@ import { BankPin } from 'src/Entities/pinCreation';
     }
   })],
   controllers: [UserController],
-  providers: [UserService,AuthService,JwtStrategy,MailService, accountGenerator, CloudinaryService],
+  providers: [UserService,AuthService,JwtStrategy,MailService, accountGenerator, CloudinaryService, BankpinService],
   exports: [UserService, PassportModule]
 })
 export class UserModule {}

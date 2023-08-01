@@ -23,15 +23,13 @@ const wallet_service_1 = require("../wallet/wallet.service");
 const uuid_1 = require("uuid");
 const generator_service_1 = require("../auth/generator.service");
 const mail_service_1 = require("../mail/mail.service");
-const pinCreation_1 = require("../Entities/pinCreation");
 let UserService = class UserService {
-    constructor(userRepo, walletService, jwtService, acctService, mailService, pinRepo) {
+    constructor(userRepo, walletService, jwtService, acctService, mailService) {
         this.userRepo = userRepo;
         this.walletService = walletService;
         this.jwtService = jwtService;
         this.acctService = acctService;
         this.mailService = mailService;
-        this.pinRepo = pinRepo;
     }
     async register(createUserDto) {
         try {
@@ -137,20 +135,11 @@ let UserService = class UserService {
     async updateStatus(id, verified) {
         return this.userRepo.update(id, { verified });
     }
-    async createPin(userPinDto) {
-        const { bankPin } = userPinDto;
-        const newPin = new pinCreation_1.BankPin();
-        newPin.bankPin = bankPin;
-        const Pin = await this.pinRepo.create(userPinDto);
-        console.log(Pin);
-        await this.pinRepo.save(Pin);
-    }
 };
 UserService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(userEntity_entity_1.User)),
-    __param(5, (0, typeorm_1.InjectRepository)(pinCreation_1.BankPin)),
-    __metadata("design:paramtypes", [typeorm_2.Repository, wallet_service_1.WalletService, jwt_1.JwtService, generator_service_1.accountGenerator, mail_service_1.MailService, typeorm_2.Repository])
+    __metadata("design:paramtypes", [typeorm_2.Repository, wallet_service_1.WalletService, jwt_1.JwtService, generator_service_1.accountGenerator, mail_service_1.MailService])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

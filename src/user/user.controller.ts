@@ -16,10 +16,11 @@ import { ChangePasswordDto } from 'src/DTO/changePassword';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UserPinDto } from 'src/DTO/pindto';
 import { BankPin } from 'src/Entities/pinCreation';
+import { BankpinService } from 'src/bankpin/bankpin.service';
 
 @Controller('user')
 export class UserController {
-    constructor(private userService: UserService, private mailService: MailService, private authService: AuthService, private acctService: accountGenerator, private jwtService: JwtService, private cloudinaryService: CloudinaryService){}
+    constructor(private userService: UserService, private mailService: MailService, private authService: AuthService, private acctService: accountGenerator, private jwtService: JwtService, private cloudinaryService: CloudinaryService, private bankPinservice: BankpinService){}
 
     @Post("/register")
     async registerUser(@Body(ValidationPipe) createUserDto: CreateUserDto){ 
@@ -240,7 +241,7 @@ export class UserController {
     }
 
     @Post("/bankpin")
-    async newPin(@Query("access_token") access_token: string, @Body(ValidationPipe) userPinDto: UserPinDto, payload, bankPin: BankPin) {
+    async newPin(@Query("access_token") access_token: string, @Body(ValidationPipe) userPinDto: UserPinDto, payload) {
         try{
             const tokenDecode = this.jwtService.decode(access_token);
             if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
@@ -250,15 +251,11 @@ export class UserController {
             throw new UnauthorizedException("Token has expired");
             }
             const id = tokenDecode.sub;
-            
-            bankPin.userId = id
-            console.log(bankPin.userId)
 
             const user = await this.userService.findById(id)
+            const data = await this.bankPinservice.createPin(user)
 
-            const bankPins = await this.userService.createPin(userPinDto)
-
-            return {statusCode: 201, message: "Pin created", data: bankPins}
+            return {statusCode: 201, message: "Pin created", data: data}
 
         }catch(err){
             if(err instanceof NotFoundException){

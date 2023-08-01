@@ -24,6 +24,7 @@ const host_data_source_1 = require("../db/host-data-source");
 const cloudinary_module_1 = require("./cloudinary/cloudinary.module");
 const serve_static_1 = require("@nestjs/serve-static");
 const path_1 = require("path");
+const bankpin_module_1 = require("./bankpin/bankpin.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -41,7 +42,7 @@ AppModule = __decorate([
                 expandVariables: true,
             }), serve_static_1.ServeStaticModule.forRoot({
                 rootPath: (0, path_1.join)(__dirname, '..'),
-            }), wallet_module_1.WalletModule, transaction_module_1.TransactionModule, cloudinary_module_1.CloudinaryModule],
+            }), wallet_module_1.WalletModule, transaction_module_1.TransactionModule, cloudinary_module_1.CloudinaryModule, bankpin_module_1.BankpinModule],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService]
     })

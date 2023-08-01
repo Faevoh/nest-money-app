@@ -12,6 +12,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ChangePasswordDto } from 'src/DTO/changePassword';
 import { UserPinDto } from 'src/DTO/pindto';
 import { BankPin } from 'src/Entities/pinCreation';
+import { BankpinService } from 'src/bankpin/bankpin.service';
 export declare class UserController {
     private userService;
     private mailService;
@@ -19,7 +20,8 @@ export declare class UserController {
     private acctService;
     private jwtService;
     private cloudinaryService;
-    constructor(userService: UserService, mailService: MailService, authService: AuthService, acctService: accountGenerator, jwtService: JwtService, cloudinaryService: CloudinaryService);
+    private bankPinservice;
+    constructor(userService: UserService, mailService: MailService, authService: AuthService, acctService: accountGenerator, jwtService: JwtService, cloudinaryService: CloudinaryService, bankPinservice: BankpinService);
     registerUser(createUserDto: CreateUserDto): Promise<{
         statusCode: number;
         message: string;
@@ -80,10 +82,10 @@ export declare class UserController {
         statusCode: number;
         message: string;
     }>;
-    newPin(access_token: string, userPinDto: UserPinDto, payload: any, bankPin: BankPin): Promise<{
+    newPin(access_token: string, userPinDto: UserPinDto, payload: any): Promise<{
         statusCode: number;
         message: string;
-        data: void;
+        data: BankPin;
     }>;
     logOut(access_token: string): Promise<{
         statusCode: number;

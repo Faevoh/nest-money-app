@@ -15,7 +15,7 @@ import { BankPin } from 'src/Entities/pinCreation';
 import { UserPinDto } from 'src/DTO/pindto';
 @Injectable()
 export class UserService {
-    constructor(@InjectRepository(User) private userRepo: Repository<User>, private walletService: WalletService, private jwtService: JwtService, private acctService: accountGenerator, private mailService: MailService,@InjectRepository(BankPin) private pinRepo: Repository<BankPin>) {}
+    constructor(@InjectRepository(User) private userRepo: Repository<User>, private walletService: WalletService, private jwtService: JwtService, private acctService: accountGenerator, private mailService: MailService,) {}
 
     async register(createUserDto: CreateUserDto) {
         try{
@@ -152,13 +152,5 @@ export class UserService {
     async updateStatus(id: number, verified:  boolean) {
         return this.userRepo.update(id, {verified});
     }
-
-    async createPin(userPinDto: UserPinDto) {
-        const {bankPin} = userPinDto;
-        const newPin = new BankPin()
-        newPin.bankPin = bankPin
-        const Pin = await this.pinRepo.create(userPinDto);
-        console.log(Pin)
-        await this.pinRepo.save(Pin);
-    }
+    
 }
