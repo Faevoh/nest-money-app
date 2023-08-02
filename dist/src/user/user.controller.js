@@ -290,9 +290,7 @@ let UserController = class UserController {
             if (bankPin !== pinDecode) {
                 throw new common_1.UnauthorizedException("Invalid Pin");
             }
-            else {
-                return { statusCode: 201, message: "Pin is correct" };
-            }
+            return { statusCode: 201, message: "Pin is correct" };
         }
         catch (err) {
             if (err instanceof common_1.NotFoundException) {

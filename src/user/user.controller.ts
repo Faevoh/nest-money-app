@@ -288,9 +288,8 @@ export class UserController {
 
             if(bankPin !== pinDecode) {
                 throw new UnauthorizedException("Invalid Pin")
-            }else{
-                return {statusCode: 201, message: "Pin is correct"}
             }
+            return {statusCode: 201, message: "Pin is correct"}
 
         }catch(err){
             if(err instanceof NotFoundException){
