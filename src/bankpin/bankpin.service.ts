@@ -16,12 +16,12 @@ export class BankpinService {
     async createPin(user: User, userPinDto: UserPinDto) {
         try{
         const {bankPin} = userPinDto;
-        const checkPin = await this.pinRepo.findOneBy({bankPin})
-        if(checkPin !== null) {
-            throw new BadRequestException("You already have a Pin")
-        }
         const encrptPin = await bcrypt.hash(bankPin, 10);
         const salt = bcrypt.getSalt(encrptPin)
+
+        if(user.bankPin.bankPin){
+            throw new BadRequestException("You already have a pin")
+        }
 
         const newPin = new BankPin();
         newPin.bankPin = encrptPin;
