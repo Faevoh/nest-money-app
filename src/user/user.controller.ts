@@ -283,14 +283,18 @@ export class UserController {
             }
             
             const {bankPin} = body;
+            console.log(bankPin)
 
             const checkPin = await this.bankPinservice.findByPin(bankPin)
             const storedPin = checkPin.bankPin
             if(!storedPin){
                 throw new NotFoundException("Wrong Pin")
             }
+            console.log(storedPin)
 
             const pinDecode = await crypto.AES.decrypt(storedPin, process.env.SECRET).toString(CryptoJS.enc.Utf8)
+
+            console.log(pinDecode)
 
             if(bankPin !== pinDecode) {
                 throw new UnauthorizedException("Invalid Pin")
