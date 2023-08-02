@@ -18,11 +18,7 @@ export class BankpinService {
         const {bankPin} = userPinDto;
         const encrptPin = await bcrypt.hash(bankPin, 10);
         const salt = bcrypt.getSalt(encrptPin)
-
-        if(user.bankPin.bankPin){
-            throw new BadRequestException("You already have a pin")
-        }
-
+    
         const newPin = new BankPin();
         newPin.bankPin = encrptPin;
         newPin.userId = user.id;
@@ -30,9 +26,7 @@ export class BankpinService {
         this.pinRepo.create(newPin)
         return await this.pinRepo.save(newPin);
         }catch(err){
-            if(err instanceof BadRequestException){
-                throw new BadRequestException(err.message)
-            }
+            throw err.message
         }
     }
     

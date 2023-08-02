@@ -259,6 +259,11 @@ let UserController = class UserController {
             }
             const id = tokenDecode.sub;
             const user = await this.userService.findById(id);
+            const pins = user.bankPin.bankPin;
+            console.log("this is pins" + pins);
+            if (pins) {
+                throw new common_1.BadRequestException("You already have a Pin");
+            }
             const data = await this.bankPinservice.createPin(user, userPinDto);
             return { statusCode: 201, message: "Pin created" };
         }
