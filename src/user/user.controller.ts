@@ -285,12 +285,12 @@ export class UserController {
             const {bankPin} = body;
 
             const checkPin = await this.bankPinservice.findByPin(bankPin)
-            checkPin.bankPin
-            if(!checkPin.bankPin){
-                throw new UnauthorizedException("Wrong Pin")
+            const storedPin = checkPin.bankPin
+            if(!storedPin){
+                throw new NotFoundException("Wrong Pin")
             }
 
-            const pinDecode = await crypto.AES.decrypt(checkPin.bankPin, process.env.SECRET).toString(CryptoJS.enc.Utf8)
+            const pinDecode = await crypto.AES.decrypt(storedPin, process.env.SECRET).toString(CryptoJS.enc.Utf8)
 
             if(bankPin !== pinDecode) {
                 throw new UnauthorizedException("Invalid Pin")
@@ -304,6 +304,7 @@ export class UserController {
             if(err instanceof UnauthorizedException){
                 throw new UnauthorizedException(err.message)
             }
+            throw err.message;
         }
     }
 
