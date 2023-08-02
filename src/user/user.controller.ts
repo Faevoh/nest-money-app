@@ -308,7 +308,7 @@ export class UserController {
             if(err instanceof UnauthorizedException){
                 throw new UnauthorizedException(err.message)
             }
-            throw err.message;
+            throw err.message("sumfin's wrong");
         }
     }
 

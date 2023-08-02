@@ -307,7 +307,7 @@ let UserController = class UserController {
             if (err instanceof common_1.UnauthorizedException) {
                 throw new common_1.UnauthorizedException(err.message);
             }
-            throw err.message;
+            throw err.message("sumfin's wrong");
         }
     }
     async logOut(access_token) {
