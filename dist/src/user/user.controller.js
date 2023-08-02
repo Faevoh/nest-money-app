@@ -293,7 +293,7 @@ let UserController = class UserController {
                 throw new common_1.NotFoundException("Wrong Pin");
             }
             console.log("2" + storedPin);
-            const pinDecode = await crypto.AES.decrypt(storedPin, process.env.SECRET).toString(CryptoJS.enc.Utf8);
+            const pinDecode = await crypto.AES.decrypt(storedPin, process.env.SECRET).toString(crypto.enc.Utf8);
             console.log("3" + pinDecode);
             if (bankPin !== pinDecode) {
                 throw new common_1.UnauthorizedException("Invalid Pin");
