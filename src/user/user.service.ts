@@ -92,7 +92,7 @@ export class UserService {
     async findIdWithRelations(id: number) {
         return await this.userRepo.find({
             where:{id},
-            relations: ["compliance", "wallet", "transaction"]
+            relations: ["compliance", "wallet", "transaction", "bankPin"]
         })
     }
 
@@ -124,7 +124,7 @@ export class UserService {
 
     async allUser():Promise<User[]> {
         return await this.userRepo.find({
-            relations: ["compliance", "wallet", "transaction"]
+            relations: ["compliance", "wallet", "transaction", "bankPin"]
         })
     }
 
