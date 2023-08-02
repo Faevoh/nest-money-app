@@ -16,7 +16,8 @@ export class BankpinService {
     async createPin(user: User, userPinDto: UserPinDto) {
         try{
         const {bankPin} = userPinDto;
-        if(bankPin) {
+        const checkPin = await this.pinRepo.findOneBy({bankPin})
+        if(checkPin) {
             throw new BadRequestException("You already have a Pin")
         }
         const encrptPin = await crypto.AES.encrypt(bankPin, process.env.SECRET).toString();
