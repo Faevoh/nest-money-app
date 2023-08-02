@@ -286,7 +286,12 @@ let UserController = class UserController {
                 throw new common_1.UnauthorizedException("Token has expired");
             }
             const { bankPin } = body;
-            const pinDecode = await crypto.AES.decrypt(bankPin, process.env.SECRET).toString(CryptoJS.enc.Utf8);
+            const checkPin = await this.bankPinservice.findByPin(bankPin);
+            checkPin.bankPin;
+            if (!checkPin.bankPin) {
+                throw new common_1.UnauthorizedException("Wrong Pin");
+            }
+            const pinDecode = await crypto.AES.decrypt(checkPin.bankPin, process.env.SECRET).toString(CryptoJS.enc.Utf8);
             if (bankPin !== pinDecode) {
                 throw new common_1.UnauthorizedException("Invalid Pin");
             }

@@ -45,10 +45,7 @@ let BankpinService = class BankpinService {
         }
     }
     async findByPin(bankPin) {
-        if (!bankPin) {
-            throw new common_1.BadRequestException("Wrong pin");
-        }
-        await this.pinRepo.findOneBy({ bankPin });
+        return await this.pinRepo.findOneBy({ bankPin });
     }
 };
 BankpinService = __decorate([
