@@ -17,7 +17,7 @@ export class BankpinService {
         try{
         const {bankPin} = userPinDto;
         const checkPin = await this.pinRepo.findOneBy({bankPin})
-        if(checkPin) {
+        if(checkPin !== null) {
             throw new BadRequestException("You already have a Pin")
         }
         const encrptPin = await bcrypt.hash(bankPin, 10);
