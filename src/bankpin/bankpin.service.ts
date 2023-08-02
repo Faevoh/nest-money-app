@@ -33,4 +33,11 @@ export class BankpinService {
             }
         }
     }
+    
+    async findByPin(bankPin: string) {
+        if(!bankPin) {
+            throw new BadRequestException("Wrong pin")
+        }
+        await this.pinRepo.findOneBy({bankPin})
+    }
 }

@@ -41,7 +41,10 @@ const jwt_1 = require("@nestjs/jwt");
 const changePassword_1 = require("../DTO/changePassword");
 const platform_express_1 = require("@nestjs/platform-express");
 const pindto_1 = require("../DTO/pindto");
+const crypto = require("crypto-js");
 const bankpin_service_1 = require("../bankpin/bankpin.service");
+const dotenv_1 = require("dotenv");
+(0, dotenv_1.config)();
 let UserController = class UserController {
     constructor(userService, mailService, authService, acctService, jwtService, cloudinaryService, bankPinservice) {
         this.userService = userService;
@@ -270,6 +273,36 @@ let UserController = class UserController {
             throw new common_1.UnauthorizedException(err.message);
         }
     }
+    async confirmPin(access_token, body, payload) {
+        try {
+            const tokenDecode = this.jwtService.decode(access_token);
+            if (!tokenDecode) {
+                throw new common_1.NotFoundException("Invalid Token");
+            }
+            ;
+            payload = tokenDecode;
+            const timeInSeconds = Math.floor(Date.now() / 1000);
+            if (payload.exp && payload.exp < timeInSeconds) {
+                throw new common_1.UnauthorizedException("Token has expired");
+            }
+            const { bankPin } = body;
+            const pinDecode = await crypto.AES.decrypt(bankPin, process.env.SECRET).toString(CryptoJS.enc.Utf8);
+            if (bankPin !== pinDecode) {
+                throw new common_1.UnauthorizedException("Invalid Pin");
+            }
+            else {
+                return { statusCode: 201, message: "Pin is correct" };
+            }
+        }
+        catch (err) {
+            if (err instanceof common_1.NotFoundException) {
+                throw new common_1.NotFoundException(err.message);
+            }
+            if (err instanceof common_1.UnauthorizedException) {
+                throw new common_1.UnauthorizedException(err.message);
+            }
+        }
+    }
     async logOut(access_token) {
         const user_token = access_token.split(" ")[1];
         await this.authService.revokeToken(user_token);
@@ -360,6 +393,14 @@ __decorate([
     __metadata("design:paramtypes", [String, pindto_1.UserPinDto, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "newPin", null);
+__decorate([
+    (0, common_1.Post)("/pin"),
+    __param(0, (0, common_1.Query)("access_token")),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object, Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "confirmPin", null);
 __decorate([
     (0, common_1.Post)("/logout"),
     __param(0, (0, common_1.Query)("access_token")),

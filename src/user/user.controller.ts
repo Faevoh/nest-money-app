@@ -15,8 +15,11 @@ import { JwtService } from '@nestjs/jwt';
 import { ChangePasswordDto } from 'src/DTO/changePassword';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UserPinDto } from 'src/DTO/pindto';
-import { BankPin } from 'src/Entities/pinCreation';
+import * as crypto from 'crypto-js'
 import { BankpinService } from 'src/bankpin/bankpin.service';
+import { config } from 'dotenv';
+
+config();
 
 @Controller('user')
 export class UserController {
@@ -265,6 +268,37 @@ export class UserController {
                 throw new UnauthorizedException(err.message)
             }
             throw new UnauthorizedException(err.message)
+        }
+    }
+
+    @Post("/pin")
+    async confirmPin(@Query("access_token") access_token: string, @Body() body: {bankPin: string}, payload) {
+        try{
+            const tokenDecode = this.jwtService.decode(access_token);
+            if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
+            payload = tokenDecode
+            const timeInSeconds = Math.floor(Date.now() / 1000); 
+            if (payload.exp && payload.exp < timeInSeconds) {
+            throw new UnauthorizedException("Token has expired");
+            }
+            
+            const {bankPin} = body
+
+            const pinDecode = await crypto.AES.decrypt(bankPin, process.env.SECRET).toString(CryptoJS.enc.Utf8)
+
+            if(bankPin !== pinDecode) {
+                throw new UnauthorizedException("Invalid Pin")
+            }else{
+                return {statusCode: 201, message: "Pin is correct"}
+            }
+
+        }catch(err){
+            if(err instanceof NotFoundException){
+                throw new NotFoundException(err.message)
+            }
+            if(err instanceof UnauthorizedException){
+                throw new UnauthorizedException(err.message)
+            }
         }
     }
 

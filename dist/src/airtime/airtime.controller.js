@@ -18,12 +18,27 @@ const airtime_service_1 = require("./airtime.service");
 const createAirtime_1 = require("../DTO/createAirtime");
 const walletEntity_entity_1 = require("../Entities/walletEntity.entity");
 const wallet_service_1 = require("../wallet/wallet.service");
+const bankpin_service_1 = require("../bankpin/bankpin.service");
+const jwt_1 = require("@nestjs/jwt");
 let AirtimeController = class AirtimeController {
-    constructor(airtimeService, walletService) {
+    constructor(airtimeService, walletService, pinService, jwtService) {
         this.airtimeService = airtimeService;
         this.walletService = walletService;
+        this.pinService = pinService;
+        this.jwtService = jwtService;
     }
-    async recharge(createAirtimeDto, wallet, userId) {
+    async recharge(createAirtimeDto, wallet, access_token, payload) {
+        const tokenDecode = this.jwtService.decode(access_token);
+        if (!tokenDecode) {
+            throw new common_1.NotFoundException("Invalid Token");
+        }
+        ;
+        payload = tokenDecode;
+        const timeInSeconds = Math.floor(Date.now() / 1000);
+        if (payload.exp && payload.exp < timeInSeconds) {
+            throw new common_1.UnauthorizedException("Token has expired");
+        }
+        const userId = tokenDecode.sub;
         const walletData = await this.walletService.findByUserId(userId);
         if (walletData.accountBalance === 0 || walletData.accountBalance < 0 || walletData.accountBalance < createAirtimeDto.amount) {
             throw new common_1.InternalServerErrorException("Insufficient Balance, Can't process Airtime");
@@ -42,11 +57,11 @@ let AirtimeController = class AirtimeController {
     }
 };
 __decorate([
-    (0, common_1.Post)("/airtime-recharge/:userId"),
+    (0, common_1.Post)("/airtime-recharge"),
     __param(0, (0, common_1.Body)(common_1.ValidationPipe)),
-    __param(2, (0, common_1.Param)("userId", common_1.ParseIntPipe)),
+    __param(2, (0, common_1.Query)("access_token")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [createAirtime_1.CreateAirtimeDto, walletEntity_entity_1.Wallet, Number]),
+    __metadata("design:paramtypes", [createAirtime_1.CreateAirtimeDto, walletEntity_entity_1.Wallet, String, Object]),
     __metadata("design:returntype", Promise)
 ], AirtimeController.prototype, "recharge", null);
 __decorate([
@@ -57,7 +72,7 @@ __decorate([
 ], AirtimeController.prototype, "getAll", null);
 AirtimeController = __decorate([
     (0, common_1.Controller)('airtime'),
-    __metadata("design:paramtypes", [airtime_service_1.AirtimeService, wallet_service_1.WalletService])
+    __metadata("design:paramtypes", [airtime_service_1.AirtimeService, wallet_service_1.WalletService, bankpin_service_1.BankpinService, jwt_1.JwtService])
 ], AirtimeController);
 exports.AirtimeController = AirtimeController;
 //# sourceMappingURL=airtime.controller.js.map

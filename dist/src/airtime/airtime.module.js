@@ -13,13 +13,16 @@ const airtime_service_1 = require("./airtime.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const airtimeEntity_entity_1 = require("../Entities/airtimeEntity.entity");
 const wallet_module_1 = require("../wallet/wallet.module");
+const bankpin_service_1 = require("../bankpin/bankpin.service");
+const pinCreation_1 = require("../Entities/pinCreation");
+const jwt_1 = require("@nestjs/jwt");
 let AirtimeModule = class AirtimeModule {
 };
 AirtimeModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([airtimeEntity_entity_1.Airtime]), wallet_module_1.WalletModule],
+        imports: [typeorm_1.TypeOrmModule.forFeature([airtimeEntity_entity_1.Airtime, pinCreation_1.BankPin]), wallet_module_1.WalletModule],
         controllers: [airtime_controller_1.AirtimeController],
-        providers: [airtime_service_1.AirtimeService]
+        providers: [airtime_service_1.AirtimeService, bankpin_service_1.BankpinService, jwt_1.JwtService]
     })
 ], AirtimeModule);
 exports.AirtimeModule = AirtimeModule;

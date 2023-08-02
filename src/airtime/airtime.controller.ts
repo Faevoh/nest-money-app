@@ -1,16 +1,28 @@
-import { Body, Controller, Get, InternalServerErrorException, Param, ParseIntPipe, Post, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, InternalServerErrorException, NotFoundException, Param, ParseIntPipe, Post, Query, UnauthorizedException, UseGuards, ValidationPipe } from '@nestjs/common';
 import { AirtimeService } from './airtime.service';
 import { CreateAirtimeDto } from 'src/DTO/createAirtime';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Wallet } from 'src/Entities/walletEntity.entity';
 import { WalletService } from 'src/wallet/wallet.service';
+import { BankpinService } from 'src/bankpin/bankpin.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller('airtime')
 export class AirtimeController {
-    constructor(private airtimeService: AirtimeService, private walletService: WalletService) {}
+    constructor(private airtimeService: AirtimeService, private walletService: WalletService, private pinService: BankpinService, private jwtService: JwtService) {}
 
-    @Post("/airtime-recharge/:userId")
-    async recharge(@Body(ValidationPipe) createAirtimeDto: CreateAirtimeDto, wallet:Wallet, @Param("userId", ParseIntPipe) userId:number) {
+    @Post("/airtime-recharge")
+    async recharge(@Body(ValidationPipe) createAirtimeDto: CreateAirtimeDto, wallet:Wallet,@Query("access_token") access_token: string, payload) {
+        const tokenDecode = this.jwtService.decode(access_token);
+        if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
+        payload = tokenDecode
+        const timeInSeconds = Math.floor(Date.now() / 1000); 
+        if (payload.exp && payload.exp < timeInSeconds) {
+        throw new UnauthorizedException("Token has expired");
+        }
+        
+        const userId = tokenDecode.sub;
+
         const walletData = await this.walletService.findByUserId(userId)
 
         if(walletData.accountBalance === 0|| walletData.accountBalance < 0 || walletData.accountBalance < createAirtimeDto.amount){

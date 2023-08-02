@@ -2,11 +2,15 @@ import { AirtimeService } from './airtime.service';
 import { CreateAirtimeDto } from 'src/DTO/createAirtime';
 import { Wallet } from 'src/Entities/walletEntity.entity';
 import { WalletService } from 'src/wallet/wallet.service';
+import { BankpinService } from 'src/bankpin/bankpin.service';
+import { JwtService } from '@nestjs/jwt';
 export declare class AirtimeController {
     private airtimeService;
     private walletService;
-    constructor(airtimeService: AirtimeService, walletService: WalletService);
-    recharge(createAirtimeDto: CreateAirtimeDto, wallet: Wallet, userId: number): Promise<{
+    private pinService;
+    private jwtService;
+    constructor(airtimeService: AirtimeService, walletService: WalletService, pinService: BankpinService, jwtService: JwtService);
+    recharge(createAirtimeDto: CreateAirtimeDto, wallet: Wallet, access_token: string, payload: any): Promise<{
         statusCode: number;
         message: string;
         data: import("../Entities/airtimeEntity.entity").Airtime;
