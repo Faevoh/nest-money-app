@@ -272,6 +272,9 @@ let UserController = class UserController {
             if (err instanceof common_1.UnauthorizedException) {
                 throw new common_1.UnauthorizedException(err.message);
             }
+            if (err instanceof common_1.BadRequestException) {
+                throw new common_1.BadRequestException(err.message);
+            }
             throw new common_1.UnauthorizedException(err.message);
         }
     }

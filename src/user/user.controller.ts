@@ -270,6 +270,9 @@ export class UserController {
             if(err instanceof UnauthorizedException){
                 throw new UnauthorizedException(err.message)
             }
+            if(err instanceof BadRequestException){
+                throw new BadRequestException(err.message)
+            }
             throw new UnauthorizedException(err.message)
         }
     }
