@@ -287,13 +287,11 @@ let UserController = class UserController {
             const { bankPin } = body;
             console.log("1" + bankPin);
             const checkPin = await this.bankPinservice.findByPin(bankPin);
-            const storedPin = checkPin.bankPin;
-            if (!storedPin) {
-                throw new common_1.NotFoundException("Wrong Pin");
-            }
-            console.log("2" + storedPin);
-            const pinDecode = await bcrypt.compare(bankPin, storedPin);
-            console.log("3" + pinDecode);
+            const id = tokenDecode.sub;
+            checkPin.userId = id;
+            const user = await this.userService.findById(checkPin.userId);
+            const pinDecode = await bcrypt.compare(bankPin, user.bankPin.bankPin);
+            console.log("2" + pinDecode);
             if (!pinDecode) {
                 throw new common_1.UnauthorizedException("Invalid Pin");
             }

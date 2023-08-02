@@ -281,20 +281,19 @@ export class UserController {
             if (payload.exp && payload.exp < timeInSeconds) {
             throw new UnauthorizedException("Token has expired");
             }
-            
+
             const {bankPin} = body;
             console.log("1" + bankPin)
 
             const checkPin = await this.bankPinservice.findByPin(bankPin)
-            const storedPin = checkPin.bankPin
-            if(!storedPin){
-                throw new NotFoundException("Wrong Pin")
-            }
-            console.log("2" + storedPin)
 
-            const pinDecode = await bcrypt.compare(bankPin, storedPin)
+            const id = tokenDecode.sub;
+            checkPin.userId = id;
+            const user = await this.userService.findById(checkPin.userId)
 
-            console.log("3" + pinDecode)
+            const pinDecode = await bcrypt.compare(bankPin, user.bankPin.bankPin)
+
+            console.log("2" + pinDecode)
 
             if(!pinDecode) {
                 throw new UnauthorizedException("Invalid Pin")
