@@ -41,7 +41,6 @@ const jwt_1 = require("@nestjs/jwt");
 const changePassword_1 = require("../DTO/changePassword");
 const platform_express_1 = require("@nestjs/platform-express");
 const pindto_1 = require("../DTO/pindto");
-const crypto = require("crypto-js");
 const bankpin_service_1 = require("../bankpin/bankpin.service");
 const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)();
@@ -293,9 +292,9 @@ let UserController = class UserController {
                 throw new common_1.NotFoundException("Wrong Pin");
             }
             console.log("2" + storedPin);
-            const pinDecode = await crypto.AES.decrypt(storedPin, process.env.SECRET).toString(crypto.enc.Utf8);
+            const pinDecode = await bcrypt.compare(bankPin, storedPin);
             console.log("3" + pinDecode);
-            if (bankPin !== pinDecode) {
+            if (!pinDecode) {
                 throw new common_1.UnauthorizedException("Invalid Pin");
             }
             return { statusCode: 201, message: "Pin is correct" };

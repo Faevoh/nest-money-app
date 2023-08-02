@@ -16,7 +16,7 @@ exports.BankpinService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const pinCreation_1 = require("../Entities/pinCreation");
-const crypto = require("crypto-js");
+const bcrypt = require("bcryptjs");
 const typeorm_2 = require("typeorm");
 const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)();
@@ -31,7 +31,8 @@ let BankpinService = class BankpinService {
             if (checkPin) {
                 throw new common_1.BadRequestException("You already have a Pin");
             }
-            const encrptPin = await crypto.AES.encrypt(bankPin, process.env.SECRET).toString();
+            const encrptPin = await bcrypt.hash(bankPin, 10);
+            const salt = bcrypt.getSalt(encrptPin);
             const newPin = new pinCreation_1.BankPin();
             newPin.bankPin = encrptPin;
             newPin.userId = user.id;

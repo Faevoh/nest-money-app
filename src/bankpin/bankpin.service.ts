@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserPinDto } from 'src/DTO/pindto';
 import { BankPin } from 'src/Entities/pinCreation';
 import { User } from 'src/Entities/userEntity.entity';
-import * as crypto from 'crypto-js'
+import * as bcrypt from 'bcryptjs'
 import { Repository } from 'typeorm';
 import { config } from 'dotenv';
 
@@ -20,7 +20,8 @@ export class BankpinService {
         if(checkPin) {
             throw new BadRequestException("You already have a Pin")
         }
-        const encrptPin = await crypto.AES.encrypt(bankPin, process.env.SECRET).toString();
+        const encrptPin = await bcrypt.hash(bankPin, 10);
+        const salt = bcrypt.getSalt(encrptPin)
 
         const newPin = new BankPin();
         newPin.bankPin = encrptPin;

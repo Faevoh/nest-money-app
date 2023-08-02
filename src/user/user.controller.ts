@@ -292,11 +292,11 @@ export class UserController {
             }
             console.log("2" + storedPin)
 
-            const pinDecode = await crypto.AES.decrypt(storedPin, process.env.SECRET).toString(crypto.enc.Utf8)
+            const pinDecode = await bcrypt.compare(bankPin, storedPin)
 
             console.log("3" + pinDecode)
 
-            if(bankPin !== pinDecode) {
+            if(!pinDecode) {
                 throw new UnauthorizedException("Invalid Pin")
             }
             return {statusCode: 201, message: "Pin is correct"}
