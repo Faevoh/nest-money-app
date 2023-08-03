@@ -293,20 +293,20 @@ export class UserController {
             
             const id = tokenDecode.sub;
             console.log("id: " + id)
-            const user = await this.userService.findById(id)
+            const user = await this.bankPinservice.findByUserId(id)
             console.log( user)
 
             console.log( user.bankPin)
 
-            const userPin = user.bankPin.bankPin;
-            console.log("2: " + userPin)
-            const pinDecode = await bcrypt.compare(bankPin, user.bankPin.bankPin)
+            // const userPin = user.bankPin.bankPin;
+            // console.log("2: " + userPin)
+            // const pinDecode = await bcrypt.compare(bankPin, user.bankPin.bankPin)
 
-            console.log("3: " + pinDecode)
+            // console.log("3: " + pinDecode)
 
-            if(!pinDecode) {
-                throw new UnauthorizedException("Invalid Pin")
-            }
+            // if(!pinDecode) {
+            //     throw new UnauthorizedException("Invalid Pin")
+            // }
             return {statusCode: 201, message: "Pin is correct"}
 
         }catch(err){

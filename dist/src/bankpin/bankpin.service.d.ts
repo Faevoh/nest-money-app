@@ -7,4 +7,5 @@ export declare class BankpinService {
     constructor(pinRepo: Repository<BankPin>);
     createPin(user: User, userPinDto: UserPinDto): Promise<BankPin>;
     findByPin(bankPin: string): Promise<BankPin>;
+    findByUserId(user: User): Promise<BankPin>;
 }
