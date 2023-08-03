@@ -49,6 +49,9 @@ let TransactionController = class TransactionController {
         transaction.userId = userData.id;
         const walletdata = await this.walletService.findByUserId(userId);
         console.log(walletdata);
+        walletdata.accountBalance += transaction.amount;
+        console.log("transAmount", transaction.amount);
+        console.log("wallBal", walletdata.accountBalance);
         return { message: "Well...?" };
     }
     async withdrawalTransaction(transaction, user, wallet, comp, id, walletid) {
