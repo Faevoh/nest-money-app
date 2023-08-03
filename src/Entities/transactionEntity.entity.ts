@@ -7,7 +7,7 @@ export class Transactions {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({nullable: true})
     accountNumber: string;
 
     @Column({ type: 'double', scale: 3, precision: 20, nullable: true })
@@ -22,10 +22,10 @@ export class Transactions {
     @Column({nullable: true})
     cardNumber: string;
 
-    @Column()
+    @Column({nullable: true})
     expiryDate: string;
 
-    @Column()
+    @Column({nullable: true})
     CVV: string;
 
     @Column()

@@ -20,7 +20,7 @@ __decorate([
     __metadata("design:type", Number)
 ], Transactions.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Transactions.prototype, "accountNumber", void 0);
 __decorate([
@@ -40,11 +40,11 @@ __decorate([
     __metadata("design:type", String)
 ], Transactions.prototype, "cardNumber", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Transactions.prototype, "expiryDate", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Transactions.prototype, "CVV", void 0);
 __decorate([
