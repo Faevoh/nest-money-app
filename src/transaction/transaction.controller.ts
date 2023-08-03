@@ -17,7 +17,7 @@ import { BankpinService } from 'src/bankpin/bankpin.service';
 export class TransactionController {
     constructor(private transactionService: TransactionService, private userService: UserService, private walletService: WalletService, private compService: ComplianceService, private jwtService: JwtService, private pinService: BankpinService) {}
 
-    @Post("/deposit")
+    @Post("/transfer")
     async depositTransaction(@Body(ValidationPipe) transferDto: TransferDto, @Body(ValidationPipe) userPinDto: UserPinDto, transaction: Transactions, @Query("access_token") access_token: string, payload) {
         const tokenDecode = this.jwtService.decode(access_token);
         if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
@@ -48,12 +48,10 @@ export class TransactionController {
         recieverdetails.accountBalance += transferDto.amount
 
         const savedWallet = await this.walletService.saveWallet(walletdata)
-        console.log(savedWallet)
-        console.log(recieverdetails)
+        const saveWallet = await this.walletService.saveWallet(recieverdetails)
 
-        // const maindata = await this.transactionService.credit(transaction, user, wallet)
-        return {message: "Well...?"}
-        // return{statusCode: 201, message: "Deposit has been made", data: maindata}
+        const maindata = await this.transactionService.credit(transferDto)
+        return{statusCode: 201, message: "Deposit has been made", data: maindata}
     }
 
     @Post("/withdrawal/:id/:walletid")

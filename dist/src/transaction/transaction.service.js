@@ -24,7 +24,7 @@ let TransactionService = class TransactionService {
         this.transRepo = transRepo;
         this.userService = userService;
     }
-    async credit(transferDto, user, wallet) {
+    async credit(transferDto) {
         const data = await this.transRepo.create(transferDto);
         const prefix = 'REF';
         const timestamp = Date.now().toString();

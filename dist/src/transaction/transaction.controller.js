@@ -61,9 +61,9 @@ let TransactionController = class TransactionController {
         const recieverdetails = await this.walletService.findByUserAcc(recieverAccount);
         recieverdetails.accountBalance += transferDto.amount;
         const savedWallet = await this.walletService.saveWallet(walletdata);
-        console.log(savedWallet);
-        console.log(recieverdetails);
-        return { message: "Well...?" };
+        const saveWallet = await this.walletService.saveWallet(recieverdetails);
+        const maindata = await this.transactionService.credit(transferDto);
+        return { statusCode: 201, message: "Deposit has been made", data: maindata };
     }
     async withdrawalTransaction(transaction, user, wallet, comp, id, walletid) {
         const userData = await this.userService.findById(id);
@@ -86,7 +86,7 @@ let TransactionController = class TransactionController {
     }
 };
 __decorate([
-    (0, common_1.Post)("/deposit"),
+    (0, common_1.Post)("/transfer"),
     __param(0, (0, common_1.Body)(common_1.ValidationPipe)),
     __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
     __param(3, (0, common_1.Query)("access_token")),

@@ -9,7 +9,7 @@ export declare class TransactionService {
     private transRepo;
     private userService;
     constructor(transRepo: Repository<Transactions>, userService: UserService);
-    credit(transferDto: TransferDto, user: User, wallet: Wallet): Promise<Transactions>;
+    credit(transferDto: TransferDto): Promise<Transactions>;
     debit(transaction: Transactions, user: User, wallet: Wallet, comp: Compliances): Promise<Transactions>;
     allTransactions(): Promise<Transactions[]>;
     findOneTransaction(id: number): Promise<Transactions>;
