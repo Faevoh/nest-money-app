@@ -49,8 +49,8 @@ let TransactionController = class TransactionController {
         const userData = await this.userService.findById(userId);
         const walletdata = await this.walletService.findByUserId(userId);
         console.log(walletdata);
-        walletdata.accountBalance += transaction.amount;
-        console.log("transAmount", transaction.amount);
+        walletdata.accountBalance += transferDto.amount;
+        console.log("transAmount", transferDto.amount);
         console.log("wallBal", walletdata.accountBalance);
         return { message: "Well...?" };
     }
