@@ -278,7 +278,7 @@ let UserController = class UserController {
             throw new common_1.UnauthorizedException("You already have a pin");
         }
     }
-    async confirmPin(access_token, body, payload) {
+    async confirmPin(access_token, pinDto, payload) {
         try {
             const tokenDecode = this.jwtService.decode(access_token);
             if (!tokenDecode) {
@@ -290,16 +290,18 @@ let UserController = class UserController {
             if (payload.exp && payload.exp < timeInSeconds) {
                 throw new common_1.UnauthorizedException("Token has expired");
             }
-            const { bankPin } = body;
-            console.log("1" + bankPin);
+            const { bankPin } = pinDto;
+            console.log("1: " + bankPin);
             const checkPin = await this.bankPinservice.findByPin(bankPin);
             const id = tokenDecode.sub;
             checkPin.userId = id;
             const user = await this.userService.findById(checkPin.userId);
+            console.log("User:" + user);
+            console.log("bankpin: " + user.bankPin);
             const userPin = user.bankPin.bankPin;
-            console.log("2" + userPin);
+            console.log("2: " + userPin);
             const pinDecode = await bcrypt.compare(bankPin, user.bankPin.bankPin);
-            console.log("3" + pinDecode);
+            console.log("3: " + pinDecode);
             if (!pinDecode) {
                 throw new common_1.UnauthorizedException("Invalid Pin");
             }
@@ -408,9 +410,9 @@ __decorate([
 __decorate([
     (0, common_1.Post)("/pin"),
     __param(0, (0, common_1.Query)("access_token")),
-    __param(1, (0, common_1.Body)()),
+    __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object, Object]),
+    __metadata("design:paramtypes", [String, pindto_1.UserPinDto, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "confirmPin", null);
 __decorate([

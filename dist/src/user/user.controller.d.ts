@@ -85,9 +85,7 @@ export declare class UserController {
         statusCode: number;
         message: string;
     }>;
-    confirmPin(access_token: string, body: {
-        bankPin: string;
-    }, payload: any): Promise<{
+    confirmPin(access_token: string, pinDto: UserPinDto, payload: any): Promise<{
         statusCode: number;
         message: string;
     }>;

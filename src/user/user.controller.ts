@@ -278,7 +278,7 @@ export class UserController {
     }
 
     @Post("/pin")
-    async confirmPin(@Query("access_token") access_token: string, @Body() body: {bankPin: string}, payload) {
+    async confirmPin(@Query("access_token") access_token: string, @Body(ValidationPipe) pinDto: UserPinDto, payload) {
         try{
             const tokenDecode = this.jwtService.decode(access_token);
             if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
@@ -288,20 +288,23 @@ export class UserController {
             throw new UnauthorizedException("Token has expired");
             }
 
-            const {bankPin} = body;
-            console.log("1" + bankPin)
+            const {bankPin} = pinDto;
+            console.log("1: " + bankPin)
 
             const checkPin = await this.bankPinservice.findByPin(bankPin)
-
+            
             const id = tokenDecode.sub;
             checkPin.userId = id;
             const user = await this.userService.findById(checkPin.userId)
+            console.log("User:" + user)
+
+            console.log("bankpin: " + user.bankPin)
 
             const userPin = user.bankPin.bankPin;
-            console.log("2" + userPin)
+            console.log("2: " + userPin)
             const pinDecode = await bcrypt.compare(bankPin, user.bankPin.bankPin)
 
-            console.log("3" + pinDecode)
+            console.log("3: " + pinDecode)
 
             if(!pinDecode) {
                 throw new UnauthorizedException("Invalid Pin")
