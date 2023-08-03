@@ -14,7 +14,7 @@ import { TransferDto } from 'src/DTO/transfer';
 export class TransactionService {
     constructor(@InjectRepository(Transactions) private transRepo: Repository<Transactions>,private userService: UserService) {}
 
-    async credit(transferDto: TransferDto) {
+    async credit(transferDto: TransferDto, user: User) {
         const data = await this.transRepo.create(transferDto)
         // console.log(user)
         const prefix = 'REF';
@@ -24,6 +24,8 @@ export class TransactionService {
         const result =  `${prefix}-${timestamp}-${randomNum}`
         // console.log(result)
         data.transactionRef =  result;
+        data.userId = user.id
+        console.log(data.userId)
         // const id = await this.userService.findById(user.id)
         // console.log(id)
         // data.userId = user.id

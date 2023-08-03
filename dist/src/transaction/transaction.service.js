@@ -24,7 +24,7 @@ let TransactionService = class TransactionService {
         this.transRepo = transRepo;
         this.userService = userService;
     }
-    async credit(transferDto) {
+    async credit(transferDto, user) {
         const data = await this.transRepo.create(transferDto);
         const prefix = 'REF';
         const timestamp = Date.now().toString();
@@ -32,6 +32,8 @@ let TransactionService = class TransactionService {
         const randomNum = Math.floor(Math.random() * 10000).toString().padStart(50, fillString);
         const result = `${prefix}-${timestamp}-${randomNum}`;
         data.transactionRef = result;
+        data.userId = user.id;
+        console.log(data.userId);
         return await this.transRepo.save(data);
     }
     async debit(transaction, user, wallet, comp) {

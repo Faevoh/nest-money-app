@@ -36,7 +36,7 @@ let TransactionController = class TransactionController {
         this.jwtService = jwtService;
         this.pinService = pinService;
     }
-    async transferTransaction(transferDto, userPinDto, transaction, access_token, payload) {
+    async transferTransaction(transferDto, userPinDto, users, access_token, payload) {
         const tokenDecode = this.jwtService.decode(access_token);
         if (!tokenDecode) {
             throw new common_1.NotFoundException("Invalid Token");
@@ -48,8 +48,6 @@ let TransactionController = class TransactionController {
             throw new common_1.UnauthorizedException("Token has expired");
         }
         const userId = tokenDecode.sub;
-        transaction.userId = userId;
-        console.log("userId", transaction.userId);
         const userData = await this.userService.findById(userId);
         const walletdata = await this.walletService.findByUserId(userId);
         const recieverAccount = transferDto.accountNumber;
@@ -64,7 +62,7 @@ let TransactionController = class TransactionController {
         recieverdetails.accountBalance += transferDto.amount;
         const savedWallet = await this.walletService.saveWallet(walletdata);
         const saveWallet = await this.walletService.saveWallet(recieverdetails);
-        const maindata = await this.transactionService.credit(transferDto);
+        const maindata = await this.transactionService.credit(transferDto, users);
         console.log(maindata);
         return { message: "Well...?" };
     }
@@ -94,7 +92,7 @@ __decorate([
     __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
     __param(3, (0, common_1.Query)("access_token")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [transfer_1.TransferDto, pindto_1.UserPinDto, transactionEntity_entity_1.Transactions, String, Object]),
+    __metadata("design:paramtypes", [transfer_1.TransferDto, pindto_1.UserPinDto, userEntity_entity_1.User, String, Object]),
     __metadata("design:returntype", Promise)
 ], TransactionController.prototype, "transferTransaction", null);
 __decorate([

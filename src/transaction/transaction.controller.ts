@@ -18,7 +18,7 @@ export class TransactionController {
     constructor(private transactionService: TransactionService, private userService: UserService, private walletService: WalletService, private compService: ComplianceService, private jwtService: JwtService, private pinService: BankpinService) {}
 
     @Post("/transfer")
-    async transferTransaction(@Body(ValidationPipe) transferDto: TransferDto, @Body(ValidationPipe) userPinDto: UserPinDto, transaction: Transactions, @Query("access_token") access_token: string, payload) {
+    async transferTransaction(@Body(ValidationPipe) transferDto: TransferDto, @Body(ValidationPipe) userPinDto: UserPinDto, users: User,@Query("access_token") access_token: string, payload) {
         const tokenDecode = this.jwtService.decode(access_token);
         if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
         payload = tokenDecode
@@ -28,8 +28,6 @@ export class TransactionController {
         }
         
         const userId = tokenDecode.sub;
-        transaction.userId = userId;
-        console.log("userId", transaction.userId)
 
         const userData = await this.userService.findById(userId)
 
@@ -52,7 +50,7 @@ export class TransactionController {
         const savedWallet = await this.walletService.saveWallet(walletdata)
         const saveWallet = await this.walletService.saveWallet(recieverdetails)
 
-        const maindata = await this.transactionService.credit(transferDto)
+        const maindata = await this.transactionService.credit(transferDto, users)
         console.log(maindata)
         return {message: "Well...?"}
         // return{statusCode: 201, message: "Deposit has been made", data: maindata}
