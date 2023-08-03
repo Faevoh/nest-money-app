@@ -60,8 +60,6 @@ let TransactionController = class TransactionController {
         const recieverAccount = transferDto.accountNumber;
         await this.walletService.findByUserAcc(recieverAccount);
         console.log(recieverAccount);
-        const savedWallet = await this.walletService.saveWallet(walletdata);
-        console.log(savedWallet);
         console.log(userData);
         return { message: "Well...?" };
     }
