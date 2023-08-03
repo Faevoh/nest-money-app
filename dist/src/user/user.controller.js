@@ -295,8 +295,8 @@ let UserController = class UserController {
             const id = tokenDecode.sub;
             console.log("id: " + id);
             const user = await this.userService.findById(id);
-            console.log("User:" + user);
-            console.log("bankpin: " + user.bankPin);
+            console.log(user);
+            console.log(user.bankPin);
             const userPin = user.bankPin.bankPin;
             console.log("2: " + userPin);
             const pinDecode = await bcrypt.compare(bankPin, user.bankPin.bankPin);
