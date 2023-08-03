@@ -297,9 +297,11 @@ export class UserController {
             checkPin.userId = id;
             const user = await this.userService.findById(checkPin.userId)
 
+            const userPin = user.bankPin.bankPin;
+            console.log("2" + userPin)
             const pinDecode = await bcrypt.compare(bankPin, user.bankPin.bankPin)
 
-            console.log("2" + pinDecode)
+            console.log("3" + pinDecode)
 
             if(!pinDecode) {
                 throw new UnauthorizedException("Invalid Pin")
