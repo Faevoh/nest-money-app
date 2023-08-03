@@ -28,12 +28,18 @@ export class TransactionController {
         }
         
         const userId = tokenDecode.sub;
-        console.log(userId)
 
         const userData = await this.userService.findById(userId)
 
         const walletdata = await this.walletService.findByUserId(userId)
-        console.log(walletdata)
+        
+        const {bankPin} = userPinDto;
+        const user = await this.pinService.findByUserId(userId)
+        const pinDecode = await bcrypt.compare(bankPin, user.bankPin)
+        if(!pinDecode) {
+            throw new UnauthorizedException("Invalid Pin")
+        }
+
 
         walletdata.accountBalance += transferDto.amount
         console.log("transAmount",transferDto.amount)
@@ -42,13 +48,7 @@ export class TransactionController {
         const savedWallet = await this.walletService.saveWallet(walletdata)
         console.log(savedWallet)
 
-        const {bankPin} = userPinDto;
-        const user = await this.pinService.findByUserId(userId)
-        const pinDecode = await bcrypt.compare(bankPin, user.bankPin)
-        if(!pinDecode) {
-            throw new UnauthorizedException("Invalid Pin")
-        }
-
+       
         console.log(userData)
         // const maindata = await this.transactionService.credit(transaction, user, wallet)
         return {message: "Well...?"}

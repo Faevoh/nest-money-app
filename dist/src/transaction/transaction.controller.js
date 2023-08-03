@@ -48,21 +48,19 @@ let TransactionController = class TransactionController {
             throw new common_1.UnauthorizedException("Token has expired");
         }
         const userId = tokenDecode.sub;
-        console.log(userId);
         const userData = await this.userService.findById(userId);
         const walletdata = await this.walletService.findByUserId(userId);
-        console.log(walletdata);
-        walletdata.accountBalance += transferDto.amount;
-        console.log("transAmount", transferDto.amount);
-        console.log("wallBal", walletdata.accountBalance);
-        const savedWallet = await this.walletService.saveWallet(walletdata);
-        console.log(savedWallet);
         const { bankPin } = userPinDto;
         const user = await this.pinService.findByUserId(userId);
         const pinDecode = await bcrypt.compare(bankPin, user.bankPin);
         if (!pinDecode) {
             throw new common_1.UnauthorizedException("Invalid Pin");
         }
+        walletdata.accountBalance += transferDto.amount;
+        console.log("transAmount", transferDto.amount);
+        console.log("wallBal", walletdata.accountBalance);
+        const savedWallet = await this.walletService.saveWallet(walletdata);
+        console.log(savedWallet);
         console.log(userData);
         return { message: "Well...?" };
     }
