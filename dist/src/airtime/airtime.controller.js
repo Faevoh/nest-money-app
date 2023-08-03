@@ -41,7 +41,7 @@ let AirtimeController = class AirtimeController {
         const userId = tokenDecode.sub;
         const walletData = await this.walletService.findByUserId(userId);
         if (walletData.accountBalance === 0 || walletData.accountBalance < 0 || walletData.accountBalance < createAirtimeDto.amount) {
-            throw new common_1.InternalServerErrorException("Insufficient Balance, Can't process Airtime");
+            throw new common_1.UnauthorizedException("Insufficient Balance, Can't process Airtime");
         }
         walletData.accountBalance -= createAirtimeDto.amount;
         await this.walletService.saveWallet(walletData);

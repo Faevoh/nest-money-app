@@ -27,7 +27,7 @@ export class AirtimeController {
 
         if(walletData.accountBalance === 0|| walletData.accountBalance < 0 || walletData.accountBalance < createAirtimeDto.amount){
 
-            throw new InternalServerErrorException("Insufficient Balance, Can't process Airtime")
+            throw new UnauthorizedException("Insufficient Balance, Can't process Airtime")
         }
 
         walletData.accountBalance -= createAirtimeDto.amount
