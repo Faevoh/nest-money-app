@@ -15,9 +15,6 @@ export class AirtimeController {
 
     @Post("/airtime-recharge")
     async recharge(@Body(ValidationPipe) createAirtimeDto: CreateAirtimeDto,@Body(ValidationPipe) userPinDto: UserPinDto, wallet:Wallet,@Query("access_token") access_token: string, payload) {
-        console.log(createAirtimeDto)
-        console.log(userPinDto)
-
         const tokenDecode = this.jwtService.decode(access_token);
         if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
         payload = tokenDecode
@@ -27,8 +24,6 @@ export class AirtimeController {
         }
         
         const userId = tokenDecode.sub;
-        console.log(userId)
-
         const walletData = await this.walletService.findByUserId(userId)
 
         const {amount} = createAirtimeDto
@@ -43,7 +38,6 @@ export class AirtimeController {
 
         const {bankPin} = userPinDto;
         const user = await this.pinService.findByUserId(userId)
-        console.log(user)
         const pinDecode = await bcrypt.compare(bankPin, user.bankPin)
         if(!pinDecode) {
             throw new UnauthorizedException("Invalid Pin")

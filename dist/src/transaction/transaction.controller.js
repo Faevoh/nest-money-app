@@ -22,6 +22,7 @@ const walletEntity_entity_1 = require("../Entities/walletEntity.entity");
 const wallet_service_1 = require("../wallet/wallet.service");
 const compEntity_entity_1 = require("../Entities/compEntity.entity");
 const compliance_service_1 = require("../compliance/compliance.service");
+const pindto_1 = require("../DTO/pindto");
 const jwt_1 = require("@nestjs/jwt");
 let TransactionController = class TransactionController {
     constructor(transactionService, userService, walletService, compService, jwtService) {
@@ -31,9 +32,7 @@ let TransactionController = class TransactionController {
         this.compService = compService;
         this.jwtService = jwtService;
     }
-    async depositTransaction(requestBody, user, wallet, access_token, payload, id, walletid) {
-        const transaction = requestBody.transaction;
-        const userPinDto = requestBody.userPinDto;
+    async depositTransaction(transaction, UserPinDto, user, wallet, access_token, payload) {
         const tokenDecode = this.jwtService.decode(access_token);
         if (!tokenDecode) {
             throw new common_1.NotFoundException("Invalid Token");
@@ -46,14 +45,11 @@ let TransactionController = class TransactionController {
         }
         const userId = tokenDecode.sub;
         console.log(userId);
-        const userData = await this.userService.findById(id);
+        const userData = await this.userService.findById(userId);
         transaction.userId = userData.id;
-        const walletdata = await this.walletService.findById(walletid);
-        walletdata.accountBalance += transaction.amount;
-        console.log(walletdata.accountBalance);
-        const savedWallet = await this.walletService.saveWallet(walletdata);
-        const maindata = await this.transactionService.credit(transaction, user, wallet);
-        return { statusCode: 201, message: "Deposit has been made", data: maindata };
+        const walletdata = await this.walletService.findByUserId(userId);
+        console.log(walletdata);
+        return { message: "Well...?" };
     }
     async withdrawalTransaction(transaction, user, wallet, comp, id, walletid) {
         const userData = await this.userService.findById(id);
@@ -82,13 +78,12 @@ let TransactionController = class TransactionController {
     }
 };
 __decorate([
-    (0, common_1.Post)("/deposit/:id/:walletid"),
+    (0, common_1.Post)("/deposit"),
     __param(0, (0, common_1.Body)(common_1.ValidationPipe)),
-    __param(3, (0, common_1.Query)("access_token")),
-    __param(5, (0, common_1.Param)("id", common_1.ParseIntPipe)),
-    __param(6, (0, common_1.Param)("walletid", common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
+    __param(4, (0, common_1.Query)("access_token")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, userEntity_entity_1.User, walletEntity_entity_1.Wallet, String, Object, Number, Number]),
+    __metadata("design:paramtypes", [transactionEntity_entity_1.Transactions, pindto_1.UserPinDto, userEntity_entity_1.User, walletEntity_entity_1.Wallet, String, Object]),
     __metadata("design:returntype", Promise)
 ], TransactionController.prototype, "depositTransaction", null);
 __decorate([

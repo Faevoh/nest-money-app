@@ -6,6 +6,7 @@ import { Wallet } from 'src/Entities/walletEntity.entity';
 import { WalletService } from 'src/wallet/wallet.service';
 import { Compliances } from 'src/Entities/compEntity.entity';
 import { ComplianceService } from 'src/compliance/compliance.service';
+import { UserPinDto } from 'src/DTO/pindto';
 import { JwtService } from '@nestjs/jwt';
 export declare class TransactionController {
     private transactionService;
@@ -14,10 +15,8 @@ export declare class TransactionController {
     private compService;
     private jwtService;
     constructor(transactionService: TransactionService, userService: UserService, walletService: WalletService, compService: ComplianceService, jwtService: JwtService);
-    depositTransaction(requestBody: any, user: User, wallet: Wallet, access_token: string, payload: any, id: number, walletid: number): Promise<{
-        statusCode: number;
+    depositTransaction(transaction: Transactions, UserPinDto: UserPinDto, user: User, wallet: Wallet, access_token: string, payload: any): Promise<{
         message: string;
-        data: Transactions;
     }>;
     withdrawalTransaction(transaction: Transactions, user: User, wallet: Wallet, comp: Compliances, id: number, walletid: number): Promise<{
         statusCode: number;

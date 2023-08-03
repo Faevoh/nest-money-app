@@ -30,8 +30,6 @@ let AirtimeController = class AirtimeController {
         this.jwtService = jwtService;
     }
     async recharge(createAirtimeDto, userPinDto, wallet, access_token, payload) {
-        console.log(createAirtimeDto);
-        console.log(userPinDto);
         const tokenDecode = this.jwtService.decode(access_token);
         if (!tokenDecode) {
             throw new common_1.NotFoundException("Invalid Token");
@@ -43,7 +41,6 @@ let AirtimeController = class AirtimeController {
             throw new common_1.UnauthorizedException("Token has expired");
         }
         const userId = tokenDecode.sub;
-        console.log(userId);
         const walletData = await this.walletService.findByUserId(userId);
         const { amount } = createAirtimeDto;
         if (walletData.accountBalance === 0 || walletData.accountBalance < 0 || walletData.accountBalance < amount) {
@@ -53,7 +50,6 @@ let AirtimeController = class AirtimeController {
         await this.walletService.saveWallet(walletData);
         const { bankPin } = userPinDto;
         const user = await this.pinService.findByUserId(userId);
-        console.log(user);
         const pinDecode = await bcrypt.compare(bankPin, user.bankPin);
         if (!pinDecode) {
             throw new common_1.UnauthorizedException("Invalid Pin");

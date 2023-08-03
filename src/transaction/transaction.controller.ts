@@ -14,11 +14,8 @@ import { JwtService } from '@nestjs/jwt';
 export class TransactionController {
     constructor(private transactionService: TransactionService, private userService: UserService, private walletService: WalletService, private compService: ComplianceService, private jwtService: JwtService) {}
 
-    @Post("/deposit/:id/:walletid")
-    async depositTransaction(@Body(ValidationPipe) requestBody, user: User, wallet: Wallet , @Query("access_token") access_token: string, payload,@Param("id", ParseIntPipe) id: number, @Param("walletid", ParseIntPipe) walletid: number) {
-        const transaction = requestBody.transaction as Transactions;
-        const userPinDto = requestBody.userPinDto as UserPinDto;
-       
+    @Post("/deposit")
+    async depositTransaction(@Body(ValidationPipe) transaction: Transactions, @Body(ValidationPipe) UserPinDto: UserPinDto, user: User, wallet: Wallet , @Query("access_token") access_token: string, payload) {
         const tokenDecode = this.jwtService.decode(access_token);
         if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
         payload = tokenDecode
@@ -30,22 +27,22 @@ export class TransactionController {
         const userId = tokenDecode.sub;
         console.log(userId)
 
-        const userData = await this.userService.findById(id)
+        const userData = await this.userService.findById(userId)
         transaction.userId = userData.id
 
-        const walletdata = await this.walletService.findById(walletid)
-        // console.log(walletdata)
+        const walletdata = await this.walletService.findByUserId(userId)
+        console.log(walletdata)
 
-        walletdata.accountBalance += transaction.amount
-        console.log(walletdata.accountBalance)
+        // walletdata.accountBalance += transaction.amount
+        // console.log(walletdata.accountBalance)
 
-        const savedWallet = await this.walletService.saveWallet(walletdata)
+        // const savedWallet = await this.walletService.saveWallet(walletdata)
         // console.log(savedWallet)
 
         // console.log(userData)
-        const maindata = await this.transactionService.credit(transaction, user, wallet)
-
-        return{statusCode: 201, message: "Deposit has been made", data: maindata}
+        // const maindata = await this.transactionService.credit(transaction, user, wallet)
+        return {message: "Well...?"}
+        // return{statusCode: 201, message: "Deposit has been made", data: maindata}
     }
 
     @Post("/withdrawal/:id/:walletid")
