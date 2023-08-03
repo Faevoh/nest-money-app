@@ -44,8 +44,9 @@ export class TransactionController {
         walletdata.accountBalance -= transferDto.amount
 
         const recieverAccount = transferDto.accountNumber
-        await this.walletService.findByUserAcc(recieverAccount)
-        console.log(recieverAccount)
+        const details = await this.walletService.findByUserAcc(recieverAccount)
+        console.log(details)
+
 
         // const savedWallet = await this.walletService.saveWallet(walletdata)
         // console.log(savedWallet)
