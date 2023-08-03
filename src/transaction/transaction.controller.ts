@@ -29,8 +29,6 @@ export class TransactionController {
         console.log(userId)
 
         const userData = await this.userService.findById(userId)
-          
-        userData.id = transaction.userId;
 
         const walletdata = await this.walletService.findByUserId(userId)
         console.log(walletdata)

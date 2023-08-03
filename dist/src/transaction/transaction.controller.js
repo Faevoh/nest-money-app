@@ -47,7 +47,6 @@ let TransactionController = class TransactionController {
         const userId = tokenDecode.sub;
         console.log(userId);
         const userData = await this.userService.findById(userId);
-        userData.id = transaction.userId;
         const walletdata = await this.walletService.findByUserId(userId);
         console.log(walletdata);
         return { message: "Well...?" };
