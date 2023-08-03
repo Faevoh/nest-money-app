@@ -31,6 +31,10 @@ export class WalletService {
         return await this.walletRepo.findOneBy({userId})
     }
 
+    async findByUserAcc(accountNumber: string) {
+        return await this.walletRepo.findOneBy({accountNumber})
+    }
+
     async findById (id: number) {
         return await this.walletRepo.findOneBy({id})
     }

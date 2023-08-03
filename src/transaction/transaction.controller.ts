@@ -41,9 +41,11 @@ export class TransactionController {
         }
 
 
-        walletdata.accountBalance += transferDto.amount
-        console.log("transAmount",transferDto.amount)
-        console.log("wallBal",walletdata.accountBalance)
+        walletdata.accountBalance -= transferDto.amount
+
+        const recieverAccount = transferDto.accountNumber
+        await this.walletService.findByUserAcc(recieverAccount)
+        console.log(recieverAccount)
 
         const savedWallet = await this.walletService.saveWallet(walletdata)
         console.log(savedWallet)
@@ -107,4 +109,39 @@ export class TransactionController {
 
         return {statusCode: 200, message: "Success", data: data}
     }
+
+    // async depositTransaction(@Body(ValidationPipe) transferDto: TransferDto, @Body(ValidationPipe) userPinDto: UserPinDto, transaction: Transactions, @Query("access_token") access_token: string, payload) {
+    //     const tokenDecode = this.jwtService.decode(access_token);
+    //     if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
+    //     payload = tokenDecode
+    //     const timeInSeconds = Math.floor(Date.now() / 1000); 
+    //     if (payload.exp && payload.exp < timeInSeconds) {
+    //     throw new UnauthorizedException("Token has expired");
+    //     }
+        
+    //     const userId = tokenDecode.sub;
+
+    //     const userData = await this.userService.findById(userId)
+
+    //     const walletdata = await this.walletService.findByUserId(userId)
+        
+    //     const {bankPin} = userPinDto;
+    //     const user = await this.pinService.findByUserId(userId)
+    //     const pinDecode = await bcrypt.compare(bankPin, user.bankPin)
+    //     if(!pinDecode) {
+    //         throw new UnauthorizedException("Invalid Pin")
+    //     }
+
+
+    //     walletdata.accountBalance += transferDto.amount
+
+    //     const savedWallet = await this.walletService.saveWallet(walletdata)
+    //     console.log(savedWallet)
+
+       
+    //     console.log(userData)
+    //     // const maindata = await this.transactionService.credit(transaction, user, wallet)
+    //     return {message: "Well...?"}
+    //     // return{statusCode: 201, message: "Deposit has been made", data: maindata}
+    // }
 }

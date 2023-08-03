@@ -40,6 +40,9 @@ let WalletService = class WalletService {
     async findByUserId(userId) {
         return await this.walletRepo.findOneBy({ userId });
     }
+    async findByUserAcc(accountNumber) {
+        return await this.walletRepo.findOneBy({ accountNumber });
+    }
     async findById(id) {
         return await this.walletRepo.findOneBy({ id });
     }

@@ -9,6 +9,7 @@ export declare class WalletService {
     newWallet(user: User): Promise<Wallet>;
     getWallet(): Promise<Wallet[]>;
     findByUserId(userId: number): Promise<Wallet>;
+    findByUserAcc(accountNumber: string): Promise<Wallet>;
     findById(id: number): Promise<Wallet>;
     saveWallet(wallet: Wallet): Promise<Wallet>;
 }

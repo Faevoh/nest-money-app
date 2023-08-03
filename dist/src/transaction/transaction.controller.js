@@ -56,9 +56,10 @@ let TransactionController = class TransactionController {
         if (!pinDecode) {
             throw new common_1.UnauthorizedException("Invalid Pin");
         }
-        walletdata.accountBalance += transferDto.amount;
-        console.log("transAmount", transferDto.amount);
-        console.log("wallBal", walletdata.accountBalance);
+        walletdata.accountBalance -= transferDto.amount;
+        const recieverAccount = transferDto.accountNumber;
+        await this.walletService.findByUserAcc(recieverAccount);
+        console.log(recieverAccount);
         const savedWallet = await this.walletService.saveWallet(walletdata);
         console.log(savedWallet);
         console.log(userData);
