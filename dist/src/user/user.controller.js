@@ -275,7 +275,7 @@ let UserController = class UserController {
             if (err instanceof common_1.BadRequestException) {
                 throw new common_1.BadRequestException(err.message);
             }
-            throw new common_1.UnauthorizedException(err.message);
+            throw new common_1.UnauthorizedException("You already have a pin");
         }
     }
     async confirmPin(access_token, body, payload) {
