@@ -304,9 +304,9 @@ export class UserController {
 
             // console.log("3: " + pinDecode)
 
-            // if(!pinDecode) {
-            //     throw new UnauthorizedException("Invalid Pin")
-            // }
+            if(!user.bankPin) {
+                throw new UnauthorizedException("Invalid Pin")
+            }
             return {statusCode: 201, message: "Pin is correct"}
 
         }catch(err){
