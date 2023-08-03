@@ -14,13 +14,9 @@ export class AirtimeController {
     constructor(private airtimeService: AirtimeService, private walletService: WalletService, private pinService: BankpinService, private jwtService: JwtService) {}
 
     @Post("/airtime-recharge")
-    async recharge(@Body(ValidationPipe) requestBody, wallet:Wallet,@Query("access_token") access_token: string, payload) {
-        console.log("requestBody",requestBody)
-        const createAirtimeDto = requestBody.createAirtimeDto as CreateAirtimeDto;
-        console.log(requestBody.createAirtimeDto)
-        const userPinDto = requestBody.userPinDto as UserPinDto;
-        console.log(requestBody.userPinDto)
-
+    async recharge(@Body(ValidationPipe) createAirtimeDto: CreateAirtimeDto,@Body(ValidationPipe) userPinDto: UserPinDto, wallet:Wallet,@Query("access_token") access_token: string, payload) {
+        console.log(createAirtimeDto)
+        console.log(userPinDto)
 
         const tokenDecode = this.jwtService.decode(access_token);
         if(!tokenDecode) {throw new NotFoundException("Invalid Token")};

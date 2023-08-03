@@ -15,11 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AirtimeController = void 0;
 const common_1 = require("@nestjs/common");
 const airtime_service_1 = require("./airtime.service");
+const createAirtime_1 = require("../DTO/createAirtime");
 const walletEntity_entity_1 = require("../Entities/walletEntity.entity");
 const wallet_service_1 = require("../wallet/wallet.service");
 const bankpin_service_1 = require("../bankpin/bankpin.service");
 const jwt_1 = require("@nestjs/jwt");
 const bcrypt = require("bcryptjs");
+const pindto_1 = require("../DTO/pindto");
 let AirtimeController = class AirtimeController {
     constructor(airtimeService, walletService, pinService, jwtService) {
         this.airtimeService = airtimeService;
@@ -27,12 +29,9 @@ let AirtimeController = class AirtimeController {
         this.pinService = pinService;
         this.jwtService = jwtService;
     }
-    async recharge(requestBody, wallet, access_token, payload) {
-        console.log("requestBody", requestBody);
-        const createAirtimeDto = requestBody.createAirtimeDto;
-        console.log(requestBody.createAirtimeDto);
-        const userPinDto = requestBody.userPinDto;
-        console.log(requestBody.userPinDto);
+    async recharge(createAirtimeDto, userPinDto, wallet, access_token, payload) {
+        console.log(createAirtimeDto);
+        console.log(userPinDto);
         const tokenDecode = this.jwtService.decode(access_token);
         if (!tokenDecode) {
             throw new common_1.NotFoundException("Invalid Token");
@@ -73,9 +72,10 @@ let AirtimeController = class AirtimeController {
 __decorate([
     (0, common_1.Post)("/airtime-recharge"),
     __param(0, (0, common_1.Body)(common_1.ValidationPipe)),
-    __param(2, (0, common_1.Query)("access_token")),
+    __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
+    __param(3, (0, common_1.Query)("access_token")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, walletEntity_entity_1.Wallet, String, Object]),
+    __metadata("design:paramtypes", [createAirtime_1.CreateAirtimeDto, pindto_1.UserPinDto, walletEntity_entity_1.Wallet, String, Object]),
     __metadata("design:returntype", Promise)
 ], AirtimeController.prototype, "recharge", null);
 __decorate([
