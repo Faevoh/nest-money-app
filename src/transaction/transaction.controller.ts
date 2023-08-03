@@ -29,10 +29,11 @@ export class TransactionController {
         console.log(userId)
 
         const userData = await this.userService.findById(userId)
-        transaction.userId = userData.id
-        console.log(transaction.userId)
-        // const walletdata = await this.walletService.findByUserId(userId)
-        // console.log(walletdata)
+          
+        userData.id = transaction.userId;
+
+        const walletdata = await this.walletService.findByUserId(userId)
+        console.log(walletdata)
 
         // walletdata.accountBalance += transaction.amount
         // console.log("transAmount",transaction.amount)
