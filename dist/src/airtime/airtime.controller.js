@@ -30,8 +30,9 @@ let AirtimeController = class AirtimeController {
     async recharge(requestBody, wallet, access_token, payload) {
         console.log("requestBody", requestBody);
         const createAirtimeDto = requestBody.createAirtimeDto;
-        console.log(createAirtimeDto);
+        console.log(requestBody.createAirtimeDto);
         const userPinDto = requestBody.userPinDto;
+        console.log(requestBody.userPinDto);
         const tokenDecode = this.jwtService.decode(access_token);
         if (!tokenDecode) {
             throw new common_1.NotFoundException("Invalid Token");

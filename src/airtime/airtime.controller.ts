@@ -17,8 +17,10 @@ export class AirtimeController {
     async recharge(@Body(ValidationPipe) requestBody, wallet:Wallet,@Query("access_token") access_token: string, payload) {
         console.log("requestBody",requestBody)
         const createAirtimeDto = requestBody.createAirtimeDto as CreateAirtimeDto;
-        console.log(createAirtimeDto)
+        console.log(requestBody.createAirtimeDto)
         const userPinDto = requestBody.userPinDto as UserPinDto;
+        console.log(requestBody.userPinDto)
+
 
         const tokenDecode = this.jwtService.decode(access_token);
         if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
