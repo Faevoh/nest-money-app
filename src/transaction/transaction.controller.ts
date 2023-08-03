@@ -9,13 +9,14 @@ import { Compliances } from 'src/Entities/compEntity.entity';
 import { ComplianceService } from 'src/compliance/compliance.service';
 import { UserPinDto } from 'src/DTO/pindto';
 import { JwtService } from '@nestjs/jwt';
+import { TransferDto } from 'src/DTO/transfer';
 
 @Controller('transaction')
 export class TransactionController {
     constructor(private transactionService: TransactionService, private userService: UserService, private walletService: WalletService, private compService: ComplianceService, private jwtService: JwtService) {}
 
     @Post("/deposit")
-    async depositTransaction(@Body(ValidationPipe) transaction: Transactions, @Body(ValidationPipe) UserPinDto: UserPinDto, user: User, wallet: Wallet , @Query("access_token") access_token: string, payload) {
+    async depositTransaction(@Body(ValidationPipe) transferDto: TransferDto, @Body(ValidationPipe) UserPinDto: UserPinDto, transaction: Transactions, @Query("access_token") access_token: string, payload) {
         const tokenDecode = this.jwtService.decode(access_token);
         if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
         payload = tokenDecode
@@ -80,16 +81,16 @@ export class TransactionController {
 
     @Get("/dashboard/:userId")
     async DashBoard(@Param("userId", ParseIntPipe) userId: number) {
-        const walletdata = await this.walletService.findByUserId(userId)
-        const accountBalance = walletdata.accountBalance;
+        // const walletdata = await this.walletService.findByUserId(userId)
+        // const accountBalance = walletdata.accountBalance;
 
-        const deposits = await this.transactionService.findTransaction("deposit")
+        // const deposits = await this.transactionService.findTransaction("deposit")
 
-        const withdrawals = await this.transactionService.findTransaction("withdrawal")
+        // const withdrawals = await this.transactionService.findTransaction("withdrawal")
 
-        const totalTransactions = await this.transactionService.allTransactions()
+        // const totalTransactions = await this.transactionService.allTransactions()
 
-        return{accountBalance, totalTransactions , deposits, withdrawals}
+        // return{accountBalance, totalTransactions , deposits, withdrawals}
     }
 
     @Get("/:id")

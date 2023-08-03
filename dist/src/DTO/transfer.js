@@ -9,27 +9,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DepositDto = void 0;
+exports.TransferDto = void 0;
 const class_validator_1 = require("class-validator");
-class DepositDto {
+class TransferDto {
 }
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.Length)(16, 16),
     __metadata("design:type", String)
-], DepositDto.prototype, "cardNumber", void 0);
+], TransferDto.prototype, "accountNumber", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
-], DepositDto.prototype, "amount", void 0);
-__decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], DepositDto.prototype, "expiryDate", void 0);
-__decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.Length)(3, 3),
-    __metadata("design:type", String)
-], DepositDto.prototype, "CVV", void 0);
-exports.DepositDto = DepositDto;
-//# sourceMappingURL=deposit.js.map
+], TransferDto.prototype, "amount", void 0);
+exports.TransferDto = TransferDto;
+//# sourceMappingURL=transfer.js.map

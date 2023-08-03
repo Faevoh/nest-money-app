@@ -1,5 +1,6 @@
 export declare class DepositDto {
-    currency: string;
-    amount: string;
-    type: string;
+    cardNumber: string;
+    amount: number;
+    expiryDate: string;
+    CVV: string;
 }

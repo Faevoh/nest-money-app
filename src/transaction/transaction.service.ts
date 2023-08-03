@@ -8,13 +8,14 @@ import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 import { Wallet } from 'src/Entities/walletEntity.entity';
 import { Compliances } from 'src/Entities/compEntity.entity';
+import { TransferDto } from 'src/DTO/transfer';
 
 @Injectable()
 export class TransactionService {
     constructor(@InjectRepository(Transactions) private transRepo: Repository<Transactions>,private userService: UserService) {}
 
-    async credit(transaction: Transactions, user: User, wallet: Wallet) {
-        const data = await this.transRepo.create(transaction)
+    async credit(transferDto: TransferDto, user: User, wallet: Wallet) {
+        const data = await this.transRepo.create(transferDto)
         // console.log(user)
         const prefix = 'REF';
         const timestamp = Date.now().toString();
@@ -51,10 +52,6 @@ export class TransactionService {
         return await this.transRepo.find();
     }
 
-    async findTransaction(transactionType: string ) {
-        return await this.transRepo.findBy({transactionType})
-    }
-    
     async findOneTransaction(id: number) {
         return await this.transRepo.findOneBy({id})
     }

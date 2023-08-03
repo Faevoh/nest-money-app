@@ -1,12 +1,17 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty, Length } from "class-validator";
 
 export class DepositDto {
     @IsNotEmpty()
-    currency: string;
+    @Length(16, 16)
+    cardNumber: string;
 
     @IsNotEmpty()
-    amount: string;
+    amount: number;
     
     @IsNotEmpty()
-    type: string;
+    expiryDate: string;
+
+    @IsNotEmpty()
+    @Length(3,3)
+    CVV: string;
 }

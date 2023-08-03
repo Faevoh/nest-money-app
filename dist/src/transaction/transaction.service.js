@@ -24,8 +24,8 @@ let TransactionService = class TransactionService {
         this.transRepo = transRepo;
         this.userService = userService;
     }
-    async credit(transaction, user, wallet) {
-        const data = await this.transRepo.create(transaction);
+    async credit(transferDto, user, wallet) {
+        const data = await this.transRepo.create(transferDto);
         const prefix = 'REF';
         const timestamp = Date.now().toString();
         const fillString = (0, uuid_1.v4)();
@@ -46,9 +46,6 @@ let TransactionService = class TransactionService {
     }
     async allTransactions() {
         return await this.transRepo.find();
-    }
-    async findTransaction(transactionType) {
-        return await this.transRepo.findBy({ transactionType });
     }
     async findOneTransaction(id) {
         return await this.transRepo.findOneBy({ id });

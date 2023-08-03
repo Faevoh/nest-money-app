@@ -8,6 +8,7 @@ import { Compliances } from 'src/Entities/compEntity.entity';
 import { ComplianceService } from 'src/compliance/compliance.service';
 import { UserPinDto } from 'src/DTO/pindto';
 import { JwtService } from '@nestjs/jwt';
+import { TransferDto } from 'src/DTO/transfer';
 export declare class TransactionController {
     private transactionService;
     private userService;
@@ -15,7 +16,7 @@ export declare class TransactionController {
     private compService;
     private jwtService;
     constructor(transactionService: TransactionService, userService: UserService, walletService: WalletService, compService: ComplianceService, jwtService: JwtService);
-    depositTransaction(transaction: Transactions, UserPinDto: UserPinDto, user: User, wallet: Wallet, access_token: string, payload: any): Promise<{
+    depositTransaction(transferDto: TransferDto, UserPinDto: UserPinDto, transaction: Transactions, access_token: string, payload: any): Promise<{
         message: string;
     }>;
     withdrawalTransaction(transaction: Transactions, user: User, wallet: Wallet, comp: Compliances, id: number, walletid: number): Promise<{
@@ -23,12 +24,7 @@ export declare class TransactionController {
         message: string;
         data: Transactions;
     }>;
-    DashBoard(userId: number): Promise<{
-        accountBalance: number;
-        totalTransactions: Transactions[];
-        deposits: Transactions[];
-        withdrawals: Transactions[];
-    }>;
+    DashBoard(userId: number): Promise<void>;
     singleTransaction(id: number): Promise<{
         statusCode: number;
         message: string;

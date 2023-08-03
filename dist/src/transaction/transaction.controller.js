@@ -24,6 +24,7 @@ const compEntity_entity_1 = require("../Entities/compEntity.entity");
 const compliance_service_1 = require("../compliance/compliance.service");
 const pindto_1 = require("../DTO/pindto");
 const jwt_1 = require("@nestjs/jwt");
+const transfer_1 = require("../DTO/transfer");
 let TransactionController = class TransactionController {
     constructor(transactionService, userService, walletService, compService, jwtService) {
         this.transactionService = transactionService;
@@ -32,7 +33,7 @@ let TransactionController = class TransactionController {
         this.compService = compService;
         this.jwtService = jwtService;
     }
-    async depositTransaction(transaction, UserPinDto, user, wallet, access_token, payload) {
+    async depositTransaction(transferDto, UserPinDto, transaction, access_token, payload) {
         const tokenDecode = this.jwtService.decode(access_token);
         if (!tokenDecode) {
             throw new common_1.NotFoundException("Invalid Token");
@@ -70,12 +71,6 @@ let TransactionController = class TransactionController {
         return { statusCode: 201, message: "success, Withdrawal Made", data: maindata };
     }
     async DashBoard(userId) {
-        const walletdata = await this.walletService.findByUserId(userId);
-        const accountBalance = walletdata.accountBalance;
-        const deposits = await this.transactionService.findTransaction("deposit");
-        const withdrawals = await this.transactionService.findTransaction("withdrawal");
-        const totalTransactions = await this.transactionService.allTransactions();
-        return { accountBalance, totalTransactions, deposits, withdrawals };
     }
     async singleTransaction(id) {
         const data = await this.transactionService.findOneTransaction(id);
@@ -86,9 +81,9 @@ __decorate([
     (0, common_1.Post)("/deposit"),
     __param(0, (0, common_1.Body)(common_1.ValidationPipe)),
     __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
-    __param(4, (0, common_1.Query)("access_token")),
+    __param(3, (0, common_1.Query)("access_token")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [transactionEntity_entity_1.Transactions, pindto_1.UserPinDto, userEntity_entity_1.User, walletEntity_entity_1.Wallet, String, Object]),
+    __metadata("design:paramtypes", [transfer_1.TransferDto, pindto_1.UserPinDto, transactionEntity_entity_1.Transactions, String, Object]),
     __metadata("design:returntype", Promise)
 ], TransactionController.prototype, "depositTransaction", null);
 __decorate([

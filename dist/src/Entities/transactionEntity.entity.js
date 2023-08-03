@@ -22,23 +22,31 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Transactions.prototype, "currency", void 0);
+], Transactions.prototype, "accountNumber", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'double', scale: 3, precision: 20, nullable: true }),
     __metadata("design:type", Number)
 ], Transactions.prototype, "amount", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
-], Transactions.prototype, "transactionType", void 0);
+], Transactions.prototype, "narration", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Transactions.prototype, "transactionRef", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Transactions.prototype, "transactionPin", void 0);
+], Transactions.prototype, "cardNumber", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Transactions.prototype, "expiryDate", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Transactions.prototype, "CVV", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)

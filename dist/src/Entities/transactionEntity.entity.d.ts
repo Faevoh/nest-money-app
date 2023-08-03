@@ -2,11 +2,13 @@ import { User } from "./userEntity.entity";
 import { Wallet } from "./walletEntity.entity";
 export declare class Transactions {
     id: number;
-    currency: string;
+    accountNumber: string;
     amount: number;
-    transactionType: string;
+    narration: string;
     transactionRef: string;
-    transactionPin: string;
+    cardNumber: string;
+    expiryDate: string;
+    CVV: string;
     userId: number;
     user: User;
     wallet: Wallet;

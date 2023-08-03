@@ -8,19 +8,25 @@ export class Transactions {
     id: number;
 
     @Column()
-    currency: string;
+    accountNumber: string;
 
     @Column({ type: 'double', scale: 3, precision: 20, nullable: true })
     amount: number;
 
-    @Column()
-    transactionType: string;
+    @Column({nullable: true})
+    narration: string;
 
     @Column()
     transactionRef: string;
 
-    @Column({nullable: true})
-    transactionPin: string
+    @Column()
+    cardNumber: string;
+
+    @Column()
+    expiryDate: string;
+
+    @Column()
+    CVV: string;
 
     @Column()
     userId: number;
