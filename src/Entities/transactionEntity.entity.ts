@@ -19,7 +19,7 @@ export class Transactions {
     @Column()
     transactionRef: string;
 
-    @Column()
+    @Column({nullable: true})
     cardNumber: string;
 
     @Column()

@@ -50,6 +50,8 @@ let TransactionController = class TransactionController {
         const userId = tokenDecode.sub;
         const userData = await this.userService.findById(userId);
         const walletdata = await this.walletService.findByUserId(userId);
+        const recieverAccount = transferDto.accountNumber;
+        const recieverdetails = await this.walletService.findByUserAcc(recieverAccount);
         const { bankPin } = userPinDto;
         const user = await this.pinService.findByUserId(userId);
         const pinDecode = await bcrypt.compare(bankPin, user.bankPin);
@@ -57,8 +59,6 @@ let TransactionController = class TransactionController {
             throw new common_1.UnauthorizedException("Invalid Pin");
         }
         walletdata.accountBalance -= transferDto.amount;
-        const recieverAccount = transferDto.accountNumber;
-        const recieverdetails = await this.walletService.findByUserAcc(recieverAccount);
         recieverdetails.accountBalance += transferDto.amount;
         const savedWallet = await this.walletService.saveWallet(walletdata);
         const saveWallet = await this.walletService.saveWallet(recieverdetails);
