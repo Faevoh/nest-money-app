@@ -22,14 +22,30 @@ const walletEntity_entity_1 = require("../Entities/walletEntity.entity");
 const wallet_service_1 = require("../wallet/wallet.service");
 const compEntity_entity_1 = require("../Entities/compEntity.entity");
 const compliance_service_1 = require("../compliance/compliance.service");
+const jwt_1 = require("@nestjs/jwt");
 let TransactionController = class TransactionController {
-    constructor(transactionService, userService, walletService, compService) {
+    constructor(transactionService, userService, walletService, compService, jwtService) {
         this.transactionService = transactionService;
         this.userService = userService;
         this.walletService = walletService;
         this.compService = compService;
+        this.jwtService = jwtService;
     }
-    async depositTransaction(transaction, user, wallet, id, walletid) {
+    async depositTransaction(requestBody, user, wallet, access_token, payload, id, walletid) {
+        const transaction = requestBody.transaction;
+        const userPinDto = requestBody.userPinDto;
+        const tokenDecode = this.jwtService.decode(access_token);
+        if (!tokenDecode) {
+            throw new common_1.NotFoundException("Invalid Token");
+        }
+        ;
+        payload = tokenDecode;
+        const timeInSeconds = Math.floor(Date.now() / 1000);
+        if (payload.exp && payload.exp < timeInSeconds) {
+            throw new common_1.UnauthorizedException("Token has expired");
+        }
+        const userId = tokenDecode.sub;
+        console.log(userId);
         const userData = await this.userService.findById(id);
         transaction.userId = userData.id;
         const walletdata = await this.walletService.findById(walletid);
@@ -68,10 +84,11 @@ let TransactionController = class TransactionController {
 __decorate([
     (0, common_1.Post)("/deposit/:id/:walletid"),
     __param(0, (0, common_1.Body)(common_1.ValidationPipe)),
-    __param(3, (0, common_1.Param)("id", common_1.ParseIntPipe)),
-    __param(4, (0, common_1.Param)("walletid", common_1.ParseIntPipe)),
+    __param(3, (0, common_1.Query)("access_token")),
+    __param(5, (0, common_1.Param)("id", common_1.ParseIntPipe)),
+    __param(6, (0, common_1.Param)("walletid", common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [transactionEntity_entity_1.Transactions, userEntity_entity_1.User, walletEntity_entity_1.Wallet, Number, Number]),
+    __metadata("design:paramtypes", [Object, userEntity_entity_1.User, walletEntity_entity_1.Wallet, String, Object, Number, Number]),
     __metadata("design:returntype", Promise)
 ], TransactionController.prototype, "depositTransaction", null);
 __decorate([
@@ -99,7 +116,7 @@ __decorate([
 ], TransactionController.prototype, "singleTransaction", null);
 TransactionController = __decorate([
     (0, common_1.Controller)('transaction'),
-    __metadata("design:paramtypes", [transaction_service_1.TransactionService, user_service_1.UserService, wallet_service_1.WalletService, compliance_service_1.ComplianceService])
+    __metadata("design:paramtypes", [transaction_service_1.TransactionService, user_service_1.UserService, wallet_service_1.WalletService, compliance_service_1.ComplianceService, jwt_1.JwtService])
 ], TransactionController);
 exports.TransactionController = TransactionController;
 //# sourceMappingURL=transaction.controller.js.map

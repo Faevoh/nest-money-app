@@ -1,4 +1,4 @@
-import { Body, Controller, Get, InternalServerErrorException, Param, ParseIntPipe, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, InternalServerErrorException, NotFoundException, Param, ParseIntPipe, Post, Query, UnauthorizedException, ValidationPipe } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { User } from 'src/Entities/userEntity.entity';
 import { Transactions } from 'src/Entities/transactionEntity.entity';
@@ -7,13 +7,29 @@ import { Wallet } from 'src/Entities/walletEntity.entity';
 import { WalletService } from 'src/wallet/wallet.service';
 import { Compliances } from 'src/Entities/compEntity.entity';
 import { ComplianceService } from 'src/compliance/compliance.service';
+import { UserPinDto } from 'src/DTO/pindto';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller('transaction')
 export class TransactionController {
-    constructor(private transactionService: TransactionService, private userService: UserService, private walletService: WalletService, private compService: ComplianceService) {}
+    constructor(private transactionService: TransactionService, private userService: UserService, private walletService: WalletService, private compService: ComplianceService, private jwtService: JwtService) {}
 
     @Post("/deposit/:id/:walletid")
-    async depositTransaction(@Body(ValidationPipe) transaction: Transactions, user: User, wallet: Wallet , @Param("id", ParseIntPipe) id: number, @Param("walletid", ParseIntPipe) walletid: number) {
+    async depositTransaction(@Body(ValidationPipe) requestBody, user: User, wallet: Wallet , @Query("access_token") access_token: string, payload,@Param("id", ParseIntPipe) id: number, @Param("walletid", ParseIntPipe) walletid: number) {
+        const transaction = requestBody.transaction as Transactions;
+        const userPinDto = requestBody.userPinDto as UserPinDto;
+       
+        const tokenDecode = this.jwtService.decode(access_token);
+        if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
+        payload = tokenDecode
+        const timeInSeconds = Math.floor(Date.now() / 1000); 
+        if (payload.exp && payload.exp < timeInSeconds) {
+        throw new UnauthorizedException("Token has expired");
+        }
+        
+        const userId = tokenDecode.sub;
+        console.log(userId)
+
         const userData = await this.userService.findById(id)
         transaction.userId = userData.id
 

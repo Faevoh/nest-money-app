@@ -43,9 +43,12 @@ let AirtimeController = class AirtimeController {
         const userId = tokenDecode.sub;
         console.log(userId);
         const walletData = await this.walletService.findByUserId(userId);
-        if (walletData.accountBalance === 0 || walletData.accountBalance < 0 || walletData.accountBalance < createAirtimeDto.amount) {
+        const { amount } = createAirtimeDto;
+        if (walletData.accountBalance === 0 || walletData.accountBalance < 0 || walletData.accountBalance < amount) {
             throw new common_1.UnauthorizedException("Insufficient Balance, Can't process Airtime");
         }
+        walletData.accountBalance -= createAirtimeDto.amount;
+        await this.walletService.saveWallet(walletData);
         const { bankPin } = userPinDto;
         const user = await this.pinService.findByUserId(userId);
         console.log(user);
@@ -53,8 +56,6 @@ let AirtimeController = class AirtimeController {
         if (!pinDecode) {
             throw new common_1.UnauthorizedException("Invalid Pin");
         }
-        walletData.accountBalance -= createAirtimeDto.amount;
-        await this.walletService.saveWallet(walletData);
         const newRecharge = await this.airtimeService.recharge(createAirtimeDto, wallet);
         return { statusCode: 201, message: "Success", data: newRecharge };
     }
