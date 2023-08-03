@@ -300,11 +300,11 @@ export class UserController {
 
             // const userPin = user.bankPin.bankPin;
             // console.log("2: " + userPin)
-            // const pinDecode = await bcrypt.compare(bankPin, user.bankPin.bankPin)
+            const pinDecode = await bcrypt.compare(bankPin, user.bankPin)
 
-            // console.log("3: " + pinDecode)
+            console.log("3: " + pinDecode)
 
-            if(!user.bankPin) {
+            if(!pinDecode) {
                 throw new UnauthorizedException("Invalid Pin")
             }
             return {statusCode: 201, message: "Pin is correct"}

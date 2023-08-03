@@ -297,7 +297,9 @@ let UserController = class UserController {
             const user = await this.bankPinservice.findByUserId(id);
             console.log(user);
             console.log(user.bankPin);
-            if (!user.bankPin) {
+            const pinDecode = await bcrypt.compare(bankPin, user.bankPin);
+            console.log("3: " + pinDecode);
+            if (!pinDecode) {
                 throw new common_1.UnauthorizedException("Invalid Pin");
             }
             return { statusCode: 201, message: "Pin is correct" };
