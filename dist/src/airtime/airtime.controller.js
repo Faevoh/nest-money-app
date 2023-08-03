@@ -19,6 +19,7 @@ const walletEntity_entity_1 = require("../Entities/walletEntity.entity");
 const wallet_service_1 = require("../wallet/wallet.service");
 const bankpin_service_1 = require("../bankpin/bankpin.service");
 const jwt_1 = require("@nestjs/jwt");
+const bcrypt = require("bcryptjs");
 let AirtimeController = class AirtimeController {
     constructor(airtimeService, walletService, pinService, jwtService) {
         this.airtimeService = airtimeService;
@@ -44,6 +45,13 @@ let AirtimeController = class AirtimeController {
         const walletData = await this.walletService.findByUserId(userId);
         if (walletData.accountBalance === 0 || walletData.accountBalance < 0 || walletData.accountBalance < createAirtimeDto.amount) {
             throw new common_1.UnauthorizedException("Insufficient Balance, Can't process Airtime");
+        }
+        const { bankPin } = userPinDto;
+        const user = await this.pinService.findByUserId(userId);
+        console.log(user);
+        const pinDecode = await bcrypt.compare(bankPin, user.bankPin);
+        if (!pinDecode) {
+            throw new common_1.UnauthorizedException("Invalid Pin");
         }
         walletData.accountBalance -= createAirtimeDto.amount;
         await this.walletService.saveWallet(walletData);
