@@ -24,16 +24,19 @@ const compEntity_entity_1 = require("../Entities/compEntity.entity");
 const compliance_service_1 = require("../compliance/compliance.service");
 const pindto_1 = require("../DTO/pindto");
 const jwt_1 = require("@nestjs/jwt");
+const bcrypt = require("bcryptjs");
 const transfer_1 = require("../DTO/transfer");
+const bankpin_service_1 = require("../bankpin/bankpin.service");
 let TransactionController = class TransactionController {
-    constructor(transactionService, userService, walletService, compService, jwtService) {
+    constructor(transactionService, userService, walletService, compService, jwtService, pinService) {
         this.transactionService = transactionService;
         this.userService = userService;
         this.walletService = walletService;
         this.compService = compService;
         this.jwtService = jwtService;
+        this.pinService = pinService;
     }
-    async depositTransaction(transferDto, UserPinDto, transaction, access_token, payload) {
+    async depositTransaction(transferDto, userPinDto, transaction, access_token, payload) {
         const tokenDecode = this.jwtService.decode(access_token);
         if (!tokenDecode) {
             throw new common_1.NotFoundException("Invalid Token");
@@ -52,6 +55,15 @@ let TransactionController = class TransactionController {
         walletdata.accountBalance += transferDto.amount;
         console.log("transAmount", transferDto.amount);
         console.log("wallBal", walletdata.accountBalance);
+        const savedWallet = await this.walletService.saveWallet(walletdata);
+        console.log(savedWallet);
+        const { bankPin } = userPinDto;
+        const user = await this.pinService.findByUserId(userId);
+        const pinDecode = await bcrypt.compare(bankPin, user.bankPin);
+        if (!pinDecode) {
+            throw new common_1.UnauthorizedException("Invalid Pin");
+        }
+        console.log(userData);
         return { message: "Well...?" };
     }
     async withdrawalTransaction(transaction, user, wallet, comp, id, walletid) {
@@ -108,7 +120,7 @@ __decorate([
 ], TransactionController.prototype, "singleTransaction", null);
 TransactionController = __decorate([
     (0, common_1.Controller)('transaction'),
-    __metadata("design:paramtypes", [transaction_service_1.TransactionService, user_service_1.UserService, wallet_service_1.WalletService, compliance_service_1.ComplianceService, jwt_1.JwtService])
+    __metadata("design:paramtypes", [transaction_service_1.TransactionService, user_service_1.UserService, wallet_service_1.WalletService, compliance_service_1.ComplianceService, jwt_1.JwtService, bankpin_service_1.BankpinService])
 ], TransactionController);
 exports.TransactionController = TransactionController;
 //# sourceMappingURL=transaction.controller.js.map

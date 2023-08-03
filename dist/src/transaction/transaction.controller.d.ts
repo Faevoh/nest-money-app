@@ -9,14 +9,16 @@ import { ComplianceService } from 'src/compliance/compliance.service';
 import { UserPinDto } from 'src/DTO/pindto';
 import { JwtService } from '@nestjs/jwt';
 import { TransferDto } from 'src/DTO/transfer';
+import { BankpinService } from 'src/bankpin/bankpin.service';
 export declare class TransactionController {
     private transactionService;
     private userService;
     private walletService;
     private compService;
     private jwtService;
-    constructor(transactionService: TransactionService, userService: UserService, walletService: WalletService, compService: ComplianceService, jwtService: JwtService);
-    depositTransaction(transferDto: TransferDto, UserPinDto: UserPinDto, transaction: Transactions, access_token: string, payload: any): Promise<{
+    private pinService;
+    constructor(transactionService: TransactionService, userService: UserService, walletService: WalletService, compService: ComplianceService, jwtService: JwtService, pinService: BankpinService);
+    depositTransaction(transferDto: TransferDto, userPinDto: UserPinDto, transaction: Transactions, access_token: string, payload: any): Promise<{
         message: string;
     }>;
     withdrawalTransaction(transaction: Transactions, user: User, wallet: Wallet, comp: Compliances, id: number, walletid: number): Promise<{

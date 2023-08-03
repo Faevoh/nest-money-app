@@ -7,10 +7,12 @@ import { UserModule } from 'src/user/user.module';
 import { WalletModule } from 'src/wallet/wallet.module';
 import { ComplianceModule } from 'src/compliance/compliance.module';
 import { JwtService } from '@nestjs/jwt';
+import { BankpinService } from 'src/bankpin/bankpin.service';
+import { BankPin } from 'src/Entities/pinCreation';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Transactions]), UserModule, WalletModule, ComplianceModule],
+  imports: [TypeOrmModule.forFeature([Transactions, BankPin]), UserModule, WalletModule, ComplianceModule],
   controllers: [TransactionController],
-  providers: [TransactionService, JwtService]
+  providers: [TransactionService, JwtService, BankpinService]
 })
 export class TransactionModule {}

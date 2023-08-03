@@ -9,14 +9,16 @@ import { Compliances } from 'src/Entities/compEntity.entity';
 import { ComplianceService } from 'src/compliance/compliance.service';
 import { UserPinDto } from 'src/DTO/pindto';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcryptjs'
 import { TransferDto } from 'src/DTO/transfer';
+import { BankpinService } from 'src/bankpin/bankpin.service';
 
 @Controller('transaction')
 export class TransactionController {
-    constructor(private transactionService: TransactionService, private userService: UserService, private walletService: WalletService, private compService: ComplianceService, private jwtService: JwtService) {}
+    constructor(private transactionService: TransactionService, private userService: UserService, private walletService: WalletService, private compService: ComplianceService, private jwtService: JwtService, private pinService: BankpinService) {}
 
     @Post("/deposit")
-    async depositTransaction(@Body(ValidationPipe) transferDto: TransferDto, @Body(ValidationPipe) UserPinDto: UserPinDto, transaction: Transactions, @Query("access_token") access_token: string, payload) {
+    async depositTransaction(@Body(ValidationPipe) transferDto: TransferDto, @Body(ValidationPipe) userPinDto: UserPinDto, transaction: Transactions, @Query("access_token") access_token: string, payload) {
         const tokenDecode = this.jwtService.decode(access_token);
         if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
         payload = tokenDecode
@@ -37,10 +39,17 @@ export class TransactionController {
         console.log("transAmount",transferDto.amount)
         console.log("wallBal",walletdata.accountBalance)
 
-        // const savedWallet = await this.walletService.saveWallet(walletdata)
-        // console.log(savedWallet)
+        const savedWallet = await this.walletService.saveWallet(walletdata)
+        console.log(savedWallet)
 
-        // console.log(userData)
+        const {bankPin} = userPinDto;
+        const user = await this.pinService.findByUserId(userId)
+        const pinDecode = await bcrypt.compare(bankPin, user.bankPin)
+        if(!pinDecode) {
+            throw new UnauthorizedException("Invalid Pin")
+        }
+
+        console.log(userData)
         // const maindata = await this.transactionService.credit(transaction, user, wallet)
         return {message: "Well...?"}
         // return{statusCode: 201, message: "Deposit has been made", data: maindata}
