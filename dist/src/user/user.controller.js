@@ -291,14 +291,9 @@ let UserController = class UserController {
                 throw new common_1.UnauthorizedException("Token has expired");
             }
             const { bankPin } = pinDto;
-            console.log("1: " + bankPin);
             const id = tokenDecode.sub;
-            console.log("id: " + id);
             const user = await this.bankPinservice.findByUserId(id);
-            console.log(user);
-            console.log(user.bankPin);
             const pinDecode = await bcrypt.compare(bankPin, user.bankPin);
-            console.log("3: " + pinDecode);
             if (!pinDecode) {
                 throw new common_1.UnauthorizedException("Invalid Pin");
             }
