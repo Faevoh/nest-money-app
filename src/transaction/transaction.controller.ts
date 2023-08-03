@@ -30,16 +30,16 @@ export class TransactionController {
 
         const userData = await this.userService.findById(userId)
         transaction.userId = userData.id
+        console.log(transaction.userId)
+        // const walletdata = await this.walletService.findByUserId(userId)
+        // console.log(walletdata)
 
-        const walletdata = await this.walletService.findByUserId(userId)
-        console.log(walletdata)
+        // walletdata.accountBalance += transaction.amount
+        // console.log("transAmount",transaction.amount)
+        // console.log("wallBal",walletdata.accountBalance)
 
-        walletdata.accountBalance += transaction.amount
-        console.log("transAmount",transaction.amount)
-        console.log("wallBal",walletdata.accountBalance)
-
-        const savedWallet = await this.walletService.saveWallet(walletdata)
-        console.log(savedWallet)
+        // const savedWallet = await this.walletService.saveWallet(walletdata)
+        // console.log(savedWallet)
 
         // console.log(userData)
         // const maindata = await this.transactionService.credit(transaction, user, wallet)
