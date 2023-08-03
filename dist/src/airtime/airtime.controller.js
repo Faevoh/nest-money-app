@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AirtimeController = void 0;
 const common_1 = require("@nestjs/common");
 const airtime_service_1 = require("./airtime.service");
-const createAirtime_1 = require("../DTO/createAirtime");
 const walletEntity_entity_1 = require("../Entities/walletEntity.entity");
 const wallet_service_1 = require("../wallet/wallet.service");
 const bankpin_service_1 = require("../bankpin/bankpin.service");
@@ -27,7 +26,9 @@ let AirtimeController = class AirtimeController {
         this.pinService = pinService;
         this.jwtService = jwtService;
     }
-    async recharge(createAirtimeDto, wallet, access_token, payload) {
+    async recharge(requestBody, wallet, access_token, payload) {
+        const createAirtimeDto = requestBody.createAirtimeDto;
+        const userPinDto = requestBody.userPinDto;
         const tokenDecode = this.jwtService.decode(access_token);
         if (!tokenDecode) {
             throw new common_1.NotFoundException("Invalid Token");
@@ -39,6 +40,7 @@ let AirtimeController = class AirtimeController {
             throw new common_1.UnauthorizedException("Token has expired");
         }
         const userId = tokenDecode.sub;
+        console.log(userId);
         const walletData = await this.walletService.findByUserId(userId);
         if (walletData.accountBalance === 0 || walletData.accountBalance < 0 || walletData.accountBalance < createAirtimeDto.amount) {
             throw new common_1.UnauthorizedException("Insufficient Balance, Can't process Airtime");
@@ -61,7 +63,7 @@ __decorate([
     __param(0, (0, common_1.Body)(common_1.ValidationPipe)),
     __param(2, (0, common_1.Query)("access_token")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [createAirtime_1.CreateAirtimeDto, walletEntity_entity_1.Wallet, String, Object]),
+    __metadata("design:paramtypes", [Object, walletEntity_entity_1.Wallet, String, Object]),
     __metadata("design:returntype", Promise)
 ], AirtimeController.prototype, "recharge", null);
 __decorate([

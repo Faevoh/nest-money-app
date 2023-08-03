@@ -6,13 +6,17 @@ import { Wallet } from 'src/Entities/walletEntity.entity';
 import { WalletService } from 'src/wallet/wallet.service';
 import { BankpinService } from 'src/bankpin/bankpin.service';
 import { JwtService } from '@nestjs/jwt';
+import { UserPinDto } from 'src/DTO/pindto';
 
 @Controller('airtime')
 export class AirtimeController {
     constructor(private airtimeService: AirtimeService, private walletService: WalletService, private pinService: BankpinService, private jwtService: JwtService) {}
 
     @Post("/airtime-recharge")
-    async recharge(@Body(ValidationPipe) createAirtimeDto: CreateAirtimeDto, wallet:Wallet,@Query("access_token") access_token: string, payload) {
+    async recharge(@Body(ValidationPipe) requestBody, wallet:Wallet,@Query("access_token") access_token: string, payload) {
+        const createAirtimeDto = requestBody.createAirtimeDto as CreateAirtimeDto;
+        const userPinDto = requestBody.userPinDto as UserPinDto;
+
         const tokenDecode = this.jwtService.decode(access_token);
         if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
         payload = tokenDecode
@@ -22,6 +26,7 @@ export class AirtimeController {
         }
         
         const userId = tokenDecode.sub;
+        console.log(userId)
 
         const walletData = await this.walletService.findByUserId(userId)
 
@@ -29,6 +34,8 @@ export class AirtimeController {
 
             throw new UnauthorizedException("Insufficient Balance, Can't process Airtime")
         }
+
+        // const pin
 
         walletData.accountBalance -= createAirtimeDto.amount
         await this.walletService.saveWallet(walletData)
