@@ -292,13 +292,9 @@ let UserController = class UserController {
             }
             const { bankPin } = pinDto;
             console.log("1: " + bankPin);
-            const checkPin = await this.bankPinservice.findByPin(bankPin);
-            console.log("checkpin: " + checkPin);
             const id = tokenDecode.sub;
-            checkPin.userId = id;
-            console.log("checkpinid: " + checkPin.userId);
             console.log("id: " + id);
-            const user = await this.userService.findById(checkPin.userId);
+            const user = await this.userService.findById(id);
             console.log("User:" + user);
             console.log("bankpin: " + user.bankPin);
             const userPin = user.bankPin.bankPin;
