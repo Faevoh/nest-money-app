@@ -29,6 +29,7 @@ let AirtimeController = class AirtimeController {
     }
     async recharge(requestBody, wallet, access_token, payload) {
         const createAirtimeDto = requestBody.createAirtimeDto;
+        console.log(createAirtimeDto);
         const userPinDto = requestBody.userPinDto;
         const tokenDecode = this.jwtService.decode(access_token);
         if (!tokenDecode) {
