@@ -18,10 +18,8 @@ export declare class TransactionController {
     private jwtService;
     private pinService;
     constructor(transactionService: TransactionService, userService: UserService, walletService: WalletService, compService: ComplianceService, jwtService: JwtService, pinService: BankpinService);
-    depositTransaction(transferDto: TransferDto, userPinDto: UserPinDto, transaction: Transactions, access_token: string, payload: any): Promise<{
-        statusCode: number;
+    transferTransaction(transferDto: TransferDto, userPinDto: UserPinDto, transaction: Transactions, access_token: string, payload: any): Promise<{
         message: string;
-        data: Transactions;
     }>;
     withdrawalTransaction(transaction: Transactions, user: User, wallet: Wallet, comp: Compliances, id: number, walletid: number): Promise<{
         statusCode: number;

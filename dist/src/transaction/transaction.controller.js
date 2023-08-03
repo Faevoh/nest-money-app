@@ -36,7 +36,7 @@ let TransactionController = class TransactionController {
         this.jwtService = jwtService;
         this.pinService = pinService;
     }
-    async depositTransaction(transferDto, userPinDto, transaction, access_token, payload) {
+    async transferTransaction(transferDto, userPinDto, transaction, access_token, payload) {
         const tokenDecode = this.jwtService.decode(access_token);
         if (!tokenDecode) {
             throw new common_1.NotFoundException("Invalid Token");
@@ -63,7 +63,8 @@ let TransactionController = class TransactionController {
         const savedWallet = await this.walletService.saveWallet(walletdata);
         const saveWallet = await this.walletService.saveWallet(recieverdetails);
         const maindata = await this.transactionService.credit(transferDto);
-        return { statusCode: 201, message: "Deposit has been made", data: maindata };
+        console.log(maindata);
+        return { message: "Well...?" };
     }
     async withdrawalTransaction(transaction, user, wallet, comp, id, walletid) {
         const userData = await this.userService.findById(id);
@@ -93,7 +94,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [transfer_1.TransferDto, pindto_1.UserPinDto, transactionEntity_entity_1.Transactions, String, Object]),
     __metadata("design:returntype", Promise)
-], TransactionController.prototype, "depositTransaction", null);
+], TransactionController.prototype, "transferTransaction", null);
 __decorate([
     (0, common_1.Post)("/withdrawal/:id/:walletid"),
     __param(0, (0, common_1.Body)(common_1.ValidationPipe)),
