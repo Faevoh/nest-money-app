@@ -295,6 +295,8 @@ let UserController = class UserController {
             const checkPin = await this.bankPinservice.findByPin(bankPin);
             const id = tokenDecode.sub;
             checkPin.userId = id;
+            console.log("checkpinid: " + checkPin.userId);
+            console.log("id: " + id);
             const user = await this.userService.findById(checkPin.userId);
             console.log("User:" + user);
             console.log("bankpin: " + user.bankPin);

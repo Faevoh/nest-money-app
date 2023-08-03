@@ -295,6 +295,8 @@ export class UserController {
             
             const id = tokenDecode.sub;
             checkPin.userId = id;
+            console.log("checkpinid: " + checkPin.userId)
+            console.log("id: " + id)
             const user = await this.userService.findById(checkPin.userId)
             console.log("User:" + user)
 
