@@ -48,6 +48,8 @@ let TransactionController = class TransactionController {
             throw new common_1.UnauthorizedException("Token has expired");
         }
         const userId = tokenDecode.sub;
+        transaction.userId = userId;
+        console.log("userId", transaction.userId);
         const userData = await this.userService.findById(userId);
         const walletdata = await this.walletService.findByUserId(userId);
         const recieverAccount = transferDto.accountNumber;

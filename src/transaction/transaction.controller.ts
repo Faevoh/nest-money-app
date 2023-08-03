@@ -28,6 +28,8 @@ export class TransactionController {
         }
         
         const userId = tokenDecode.sub;
+        transaction.userId = userId;
+        console.log("userId", transaction.userId)
 
         const userData = await this.userService.findById(userId)
 
