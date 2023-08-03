@@ -37,8 +37,8 @@ export class TransactionController {
         console.log("transAmount",transaction.amount)
         console.log("wallBal",walletdata.accountBalance)
 
-        // const savedWallet = await this.walletService.saveWallet(walletdata)
-        // console.log(savedWallet)
+        const savedWallet = await this.walletService.saveWallet(walletdata)
+        console.log(savedWallet)
 
         // console.log(userData)
         // const maindata = await this.transactionService.credit(transaction, user, wallet)

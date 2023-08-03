@@ -52,6 +52,8 @@ let TransactionController = class TransactionController {
         walletdata.accountBalance += transaction.amount;
         console.log("transAmount", transaction.amount);
         console.log("wallBal", walletdata.accountBalance);
+        const savedWallet = await this.walletService.saveWallet(walletdata);
+        console.log(savedWallet);
         return { message: "Well...?" };
     }
     async withdrawalTransaction(transaction, user, wallet, comp, id, walletid) {
