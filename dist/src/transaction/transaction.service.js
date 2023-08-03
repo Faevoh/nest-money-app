@@ -32,6 +32,7 @@ let TransactionService = class TransactionService {
         const randomNum = Math.floor(Math.random() * 10000).toString().padStart(50, fillString);
         const result = `${prefix}-${timestamp}-${randomNum}`;
         data.transactionRef = result;
+        console.log(user);
         data.userId = user.id;
         console.log(data.userId);
         return await this.transRepo.save(data);

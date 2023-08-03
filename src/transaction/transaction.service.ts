@@ -24,6 +24,7 @@ export class TransactionService {
         const result =  `${prefix}-${timestamp}-${randomNum}`
         // console.log(result)
         data.transactionRef =  result;
+        console.log(user)
         data.userId = user.id
         console.log(data.userId)
         // const id = await this.userService.findById(user.id)

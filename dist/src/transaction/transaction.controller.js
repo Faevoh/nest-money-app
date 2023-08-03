@@ -47,6 +47,7 @@ let TransactionController = class TransactionController {
         if (payload.exp && payload.exp < timeInSeconds) {
             throw new common_1.UnauthorizedException("Token has expired");
         }
+        console.log("users:", users);
         const userId = tokenDecode.sub;
         const userData = await this.userService.findById(userId);
         const walletdata = await this.walletService.findByUserId(userId);
