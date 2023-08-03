@@ -44,15 +44,13 @@ export class TransactionController {
         walletdata.accountBalance -= transferDto.amount
 
         const recieverAccount = transferDto.accountNumber
-        const details = await this.walletService.findByUserAcc(recieverAccount)
-        console.log(details)
+        const recieverdetails = await this.walletService.findByUserAcc(recieverAccount)
+        recieverdetails.accountBalance += transferDto.amount
 
+        const savedWallet = await this.walletService.saveWallet(walletdata)
+        console.log(savedWallet)
+        console.log(recieverdetails)
 
-        // const savedWallet = await this.walletService.saveWallet(walletdata)
-        // console.log(savedWallet)
-
-       
-        console.log(userData)
         // const maindata = await this.transactionService.credit(transaction, user, wallet)
         return {message: "Well...?"}
         // return{statusCode: 201, message: "Deposit has been made", data: maindata}

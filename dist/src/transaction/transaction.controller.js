@@ -58,9 +58,11 @@ let TransactionController = class TransactionController {
         }
         walletdata.accountBalance -= transferDto.amount;
         const recieverAccount = transferDto.accountNumber;
-        const details = await this.walletService.findByUserAcc(recieverAccount);
-        console.log(details);
-        console.log(userData);
+        const recieverdetails = await this.walletService.findByUserAcc(recieverAccount);
+        recieverdetails.accountBalance += transferDto.amount;
+        const savedWallet = await this.walletService.saveWallet(walletdata);
+        console.log(savedWallet);
+        console.log(recieverdetails);
         return { message: "Well...?" };
     }
     async withdrawalTransaction(transaction, user, wallet, comp, id, walletid) {
