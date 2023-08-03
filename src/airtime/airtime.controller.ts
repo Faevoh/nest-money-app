@@ -15,6 +15,7 @@ export class AirtimeController {
 
     @Post("/airtime-recharge")
     async recharge(@Body(ValidationPipe) requestBody, wallet:Wallet,@Query("access_token") access_token: string, payload) {
+        console.log("requestBody",requestBody)
         const createAirtimeDto = requestBody.createAirtimeDto as CreateAirtimeDto;
         console.log(createAirtimeDto)
         const userPinDto = requestBody.userPinDto as UserPinDto;
