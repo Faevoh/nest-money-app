@@ -18,21 +18,22 @@ export class TransactionController {
     constructor(private transactionService: TransactionService, private userService: UserService, private walletService: WalletService, private compService: ComplianceService, private jwtService: JwtService, private pinService: BankpinService) {}
 
     @Post("/transfer")
-    async transferTransaction(@Body(ValidationPipe) transferDto: TransferDto, @Body(ValidationPipe) userPinDto: UserPinDto, transaction: Transactions , users: User,@Query("access_token") access_token: string, payload) {
+    async transferTransaction(@Body(ValidationPipe) transferDto: TransferDto, @Body(ValidationPipe) userPinDto: UserPinDto, users: User,@Query("access_token") access_token: string, payload) {
         const tokenDecode = this.jwtService.decode(access_token);
         if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
         payload = tokenDecode
         const timeInSeconds = Math.floor(Date.now() / 1000); 
         if (payload.exp && payload.exp < timeInSeconds) {
         throw new UnauthorizedException("Token has expired");
-        }
-
-        console.log("users:", users)        
+        }      
         const userId = tokenDecode.sub;
-
-        console.log("transaction", transaction)
+        console.log("userId,user",userId)
 
         const userData = await this.userService.findById(userId)
+        console.log("userdata", userData)
+
+        const userTransactionDetails = await this.transactionService.findByUserId(userId)
+        console.log("userTransactionDetails",userTransactionDetails)
 
         const walletdata = await this.walletService.findByUserId(userId)
         

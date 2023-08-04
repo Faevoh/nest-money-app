@@ -12,5 +12,6 @@ export declare class TransactionService {
     credit(transferDto: TransferDto, user: User): Promise<Transactions>;
     debit(transaction: Transactions, user: User, wallet: Wallet, comp: Compliances): Promise<Transactions>;
     allTransactions(): Promise<Transactions[]>;
+    findByUserId(userId: number): Promise<Transactions>;
     findOneTransaction(id: number): Promise<Transactions>;
 }
