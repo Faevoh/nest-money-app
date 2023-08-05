@@ -43,7 +43,6 @@ export class TransactionController {
         }
 
         const walletdata = await this.walletService.findByUserId(userid)
-        console.log("1", walletdata)
         if(walletdata.accountBalance === 0|| walletdata.accountBalance < 0 || walletdata.accountBalance <transferDto.amount){
             throw new BadRequestException("Insufficient Balance can't make transfer")
         }
@@ -52,7 +51,6 @@ export class TransactionController {
         const recieverdetails = await this.walletService.findByUserAcc(recieverAccount)
 
         walletdata.accountBalance -= transferDto.amount
-        console.log("2",walletdata.accountBalance)
         recieverdetails.accountBalance += transferDto.amount
 
         const savedWallet = await this.walletService.saveWallet(walletdata)
@@ -71,7 +69,6 @@ export class TransactionController {
         if(err instanceof BadRequestException) {
             throw new BadRequestException(err.message)
         }
-        console.log(err.message)
         throw new BadRequestException("Could not Process Transfer")
        }
     }
