@@ -93,7 +93,7 @@ __decorate([
     __metadata("design:type", pinCreation_1.BankPin)
 ], User.prototype, "bankPin", void 0);
 __decorate([
-    (0, typeorm_1.OneToOne)(() => airtimeEntity_entity_1.Airtime, (airtime) => airtime.user),
+    (0, typeorm_1.OneToMany)(() => airtimeEntity_entity_1.Airtime, (airtime) => airtime.user),
     __metadata("design:type", airtimeEntity_entity_1.Airtime)
 ], User.prototype, "airtime", void 0);
 __decorate([

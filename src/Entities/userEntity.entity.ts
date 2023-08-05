@@ -63,7 +63,7 @@ export class User {
   @OneToOne( () => BankPin, (bankpin) => bankpin.user)
   bankPin: BankPin;
 
-  @OneToOne( () => Airtime, (airtime) => airtime.user)
+  @OneToMany( () => Airtime, (airtime) => airtime.user)
   airtime: Airtime;
 
   @OneToOne( () => Compliances, (compliance) => compliance.user, {onDelete: "CASCADE"})

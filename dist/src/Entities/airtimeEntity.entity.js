@@ -35,7 +35,7 @@ __decorate([
     __metadata("design:type", Number)
 ], Airtime.prototype, "userId", void 0);
 __decorate([
-    (0, typeorm_1.OneToOne)(() => userEntity_entity_1.User, (user) => user.airtime),
+    (0, typeorm_1.ManyToOne)(() => userEntity_entity_1.User, (user) => user.airtime),
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", userEntity_entity_1.User)
 ], Airtime.prototype, "user", void 0);

@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./userEntity.entity";
 
 @Entity()
@@ -18,7 +18,7 @@ export class Airtime {
     @Column()
     userId: number;
 
-    @OneToOne( () => User, (user) => user.airtime)
+    @ManyToOne ( () => User, (user) => user.airtime)
     @JoinColumn()
     user: User;
 }
