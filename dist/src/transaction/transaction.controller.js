@@ -46,24 +46,25 @@ let TransactionController = class TransactionController {
             }
             const userid = tokenDecode.sub;
             const transferdata = Object.assign(Object.assign({}, transferDto), { userId: userid });
+            console.log(transferdata);
+            const walletdata = await this.walletService.findByUserId(userid);
+            const recieverAccount = transferDto.accountNumber;
+            const recieverdetails = await this.walletService.findByUserAcc(recieverAccount);
             const { bankPin } = userPinDto;
             const user = await this.pinService.findByUserId(userid);
             const pinDecode = await bcrypt.compare(bankPin, user.bankPin);
             if (!pinDecode) {
                 throw new common_1.UnauthorizedException("Invalid Pin");
             }
-            const walletdata = await this.walletService.findByUserId(userid);
-            const recieverAccount = transferDto.accountNumber;
-            const recieverdetails = await this.walletService.findByUserAcc(recieverAccount);
             if (walletdata && recieverdetails) {
                 walletdata.accountBalance -= transferDto.amount;
                 recieverdetails.accountBalance += transferDto.amount;
                 const savedWallet = await this.walletService.saveWallet(walletdata);
                 const saveWallet = await this.walletService.saveWallet(recieverdetails);
+                const maindata = await this.transactionService.transaction(transferdata);
+                console.log(maindata);
+                return { statusCode: 201, message: "Deposit has been made", data: maindata };
             }
-            const maindata = await this.transactionService.transaction(transferdata);
-            console.log(maindata);
-            return { statusCode: 201, message: "Deposit has been made", data: maindata };
         }
         catch (err) {
             throw new common_1.BadRequestException("Could not Process Transfer");
