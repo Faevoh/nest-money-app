@@ -23,6 +23,7 @@ const jwt_1 = require("@nestjs/jwt");
 const bcrypt = require("bcryptjs");
 const transfer_1 = require("../DTO/transfer");
 const bankpin_service_1 = require("../bankpin/bankpin.service");
+const deposit_1 = require("../DTO/deposit");
 let TransactionController = class TransactionController {
     constructor(transactionService, userService, walletService, compService, jwtService, pinService) {
         this.transactionService = transactionService;
@@ -52,32 +53,60 @@ let TransactionController = class TransactionController {
                 throw new common_1.UnauthorizedException("Invalid Pin");
             }
             const transferdata = Object.assign(Object.assign({}, transferDto), { userId: userid });
-            console.log("1", transferdata);
-            console.log("4", transferDto.amount);
             const walletdata = await this.walletService.findByUserId(userid);
-            console.log("2", walletdata);
+            if (walletdata.accountBalance === 0 || walletdata.accountBalance < 0 || walletdata.accountBalance < transferDto.amount) {
+                throw new common_1.BadRequestException("Insufficient Balance can't make transfer");
+            }
             const recieverAccount = transferDto.accountNumber;
             const recieverdetails = await this.walletService.findByUserAcc(recieverAccount);
-            console.log("3", recieverdetails);
             walletdata.accountBalance -= transferDto.amount;
             recieverdetails.accountBalance += transferDto.amount;
             const savedWallet = await this.walletService.saveWallet(walletdata);
-            console.log("5", savedWallet);
             const saveWallet = await this.walletService.saveWallet(recieverdetails);
-            console.log("5", saveWallet);
             const maindata = await this.transactionService.transaction(transferdata);
-            console.log("6", maindata);
             return { statusCode: 201, message: "Deposit has been made", data: maindata };
         }
         catch (err) {
-            console.log(err.message);
             if (err instanceof common_1.UnauthorizedException) {
                 throw new common_1.UnauthorizedException(err.message);
             }
             if (err instanceof common_1.NotFoundException) {
                 throw new common_1.NotFoundException(err.message);
             }
+            if (err instanceof common_1.BadRequestException) {
+                throw new common_1.BadRequestException(err.message);
+            }
             throw new common_1.BadRequestException("Could not Process Transfer");
+        }
+    }
+    async depositTransaction(depositDto, access_token, payload) {
+        try {
+            const tokenDecode = this.jwtService.decode(access_token);
+            if (!tokenDecode) {
+                throw new common_1.NotFoundException("Invalid Token");
+            }
+            ;
+            payload = tokenDecode;
+            const timeInSeconds = Math.floor(Date.now() / 1000);
+            if (payload.exp && payload.exp < timeInSeconds) {
+                throw new common_1.UnauthorizedException("Token has expired");
+            }
+            const userid = tokenDecode.sub;
+            const depositdata = Object.assign(Object.assign({}, depositDto), { userId: userid });
+            const walletdata = await this.walletService.findByUserId(userid);
+            walletdata.accountBalance += depositDto.amount;
+            const savedWallet = await this.walletService.saveWallet(walletdata);
+            const maindata = await this.transactionService.transaction(depositdata);
+            return { statusCode: 201, message: "Deposit has been made", data: maindata };
+        }
+        catch (err) {
+            if (err instanceof common_1.UnauthorizedException) {
+                throw new common_1.UnauthorizedException(err.message);
+            }
+            if (err instanceof common_1.NotFoundException) {
+                throw new common_1.NotFoundException(err.message);
+            }
+            throw new common_1.BadRequestException("Could not Process Deposit");
         }
     }
     async DashBoard(userId) {
@@ -96,6 +125,14 @@ __decorate([
     __metadata("design:paramtypes", [transfer_1.TransferDto, pindto_1.UserPinDto, String, Object]),
     __metadata("design:returntype", Promise)
 ], TransactionController.prototype, "transferTransaction", null);
+__decorate([
+    (0, common_1.Post)("/deposit"),
+    __param(0, (0, common_1.Body)(common_1.ValidationPipe)),
+    __param(1, (0, common_1.Query)("access_token")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [deposit_1.DepositDto, String, Object]),
+    __metadata("design:returntype", Promise)
+], TransactionController.prototype, "depositTransaction", null);
 __decorate([
     (0, common_1.Get)("/dashboard/:userId"),
     __param(0, (0, common_1.Param)("userId", common_1.ParseIntPipe)),

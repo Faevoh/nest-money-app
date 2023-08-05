@@ -12,6 +12,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs'
 import { TransferDto } from 'src/DTO/transfer';
 import { BankpinService } from 'src/bankpin/bankpin.service';
+import { DepositDto } from 'src/DTO/deposit';
 
 @Controller('transaction')
 export class TransactionController {
@@ -40,36 +41,72 @@ export class TransactionController {
             ...transferDto,
             userId: userid
         }
-        console.log("1",transferdata)
-        console.log("4", transferDto.amount)
 
         const walletdata = await this.walletService.findByUserId(userid)
-        console.log("2",walletdata)
+        if(walletdata.accountBalance === 0|| walletdata.accountBalance < 0 || walletdata.accountBalance <transferDto.amount){
+            throw new BadRequestException("Insufficient Balance can't make transfer")
+        }
+
         const recieverAccount = transferDto.accountNumber
         const recieverdetails = await this.walletService.findByUserAcc(recieverAccount)
-        console.log("3", recieverdetails)
 
         walletdata.accountBalance -= transferDto.amount
         recieverdetails.accountBalance += transferDto.amount
 
         const savedWallet = await this.walletService.saveWallet(walletdata)
-        console.log("5",savedWallet)
         const saveWallet = await this.walletService.saveWallet(recieverdetails)
-        console.log("5",saveWallet)
 
         const maindata = await this.transactionService.transaction(transferdata)
-        console.log("6",maindata)
         return{statusCode: 201, message: "Deposit has been made", data: maindata}
         
        }catch(err){
-        console.log(err.message)
         if(err instanceof UnauthorizedException) {
             throw new UnauthorizedException(err.message)
         }
         if(err instanceof NotFoundException) {
             throw new NotFoundException(err.message)
         }
+        if(err instanceof BadRequestException) {
+            throw new BadRequestException(err.message)
+        }
         throw new BadRequestException("Could not Process Transfer")
+       }
+    }
+
+    @Post("/deposit")
+    async depositTransaction(@Body(ValidationPipe) depositDto: DepositDto, @Query("access_token") access_token: string, payload) {
+       try{
+        const tokenDecode = this.jwtService.decode(access_token);
+        if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
+        payload = tokenDecode
+        const timeInSeconds = Math.floor(Date.now() / 1000); 
+        if (payload.exp && payload.exp < timeInSeconds) {
+        throw new UnauthorizedException("Token has expired");
+        }      
+        const userid = tokenDecode.sub;
+
+        const depositdata ={
+            ...depositDto,
+            userId: userid
+        }
+
+        const walletdata = await this.walletService.findByUserId(userid)
+
+        walletdata.accountBalance += depositDto.amount
+
+        const savedWallet = await this.walletService.saveWallet(walletdata)
+
+        const maindata = await this.transactionService.transaction(depositdata)
+        return{statusCode: 201, message: "Deposit has been made", data: maindata}
+        
+       }catch(err){
+        if(err instanceof UnauthorizedException) {
+            throw new UnauthorizedException(err.message)
+        }
+        if(err instanceof NotFoundException) {
+            throw new NotFoundException(err.message)
+        }
+        throw new BadRequestException("Could not Process Deposit")
        }
     }
 
