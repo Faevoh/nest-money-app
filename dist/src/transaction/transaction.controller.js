@@ -47,24 +47,27 @@ let TransactionController = class TransactionController {
             const userid = tokenDecode.sub;
             const transferdata = Object.assign(Object.assign({}, transferDto), { userId: userid });
             console.log("1", transferdata);
-            const walletdata = await this.walletService.findByUserId(userid);
-            console.log("2", walletdata);
-            const recieverAccount = transferDto.accountNumber;
-            const recieverdetails = await this.walletService.findByUserAcc(recieverAccount);
-            console.log("3", recieverdetails);
+            console.log("4", transferDto.amount);
             const { bankPin } = userPinDto;
             const user = await this.pinService.findByUserId(userid);
             const pinDecode = await bcrypt.compare(bankPin, user.bankPin);
             if (!pinDecode) {
                 throw new common_1.UnauthorizedException("Invalid Pin");
             }
+            const walletdata = await this.walletService.findByUserId(userid);
+            console.log("2", walletdata);
+            const recieverAccount = transferDto.accountNumber;
+            const recieverdetails = await this.walletService.findByUserAcc(recieverAccount);
+            console.log("3", recieverdetails);
             if (walletdata && recieverdetails) {
                 walletdata.accountBalance -= transferDto.amount;
                 recieverdetails.accountBalance += transferDto.amount;
                 const savedWallet = await this.walletService.saveWallet(walletdata);
+                console.log("5", savedWallet);
                 const saveWallet = await this.walletService.saveWallet(recieverdetails);
+                console.log("5", saveWallet);
                 const maindata = await this.transactionService.transaction(transferdata);
-                console.log(maindata);
+                console.log("6", maindata);
                 return { statusCode: 201, message: "Deposit has been made", data: maindata };
             }
         }

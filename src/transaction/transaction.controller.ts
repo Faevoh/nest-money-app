@@ -34,12 +34,7 @@ export class TransactionController {
             userId: userid
         }
         console.log("1",transferdata)
-
-        const walletdata = await this.walletService.findByUserId(userid)
-        console.log("2",walletdata)
-        const recieverAccount = transferDto.accountNumber
-        const recieverdetails = await this.walletService.findByUserAcc(recieverAccount)
-        console.log("3", recieverdetails)
+        console.log("4", transferDto.amount)
 
         const {bankPin} = userPinDto;
         const user = await this.pinService.findByUserId(userid)
@@ -48,15 +43,24 @@ export class TransactionController {
             throw new UnauthorizedException("Invalid Pin")
         }
 
+        const walletdata = await this.walletService.findByUserId(userid)
+        console.log("2",walletdata)
+        const recieverAccount = transferDto.accountNumber
+        const recieverdetails = await this.walletService.findByUserAcc(recieverAccount)
+        console.log("3", recieverdetails)
+
         if(walletdata && recieverdetails){
             walletdata.accountBalance -= transferDto.amount
             recieverdetails.accountBalance += transferDto.amount
 
             const savedWallet = await this.walletService.saveWallet(walletdata)
+            console.log("5",savedWallet)
             const saveWallet = await this.walletService.saveWallet(recieverdetails)
+            console.log("5",saveWallet)
+
 
             const maindata = await this.transactionService.transaction(transferdata)
-            console.log(maindata)
+            console.log("6",maindata)
             return{statusCode: 201, message: "Deposit has been made", data: maindata}
         }
        }catch(err){
