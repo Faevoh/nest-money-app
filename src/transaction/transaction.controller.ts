@@ -100,6 +100,7 @@ export class TransactionController {
         return{statusCode: 201, message: "Deposit has been made", data: maindata}
         
        }catch(err){
+        console.log(err.message)
         if(err instanceof UnauthorizedException) {
             throw new UnauthorizedException(err.message)
         }
