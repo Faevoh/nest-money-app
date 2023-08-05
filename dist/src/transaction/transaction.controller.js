@@ -76,6 +76,7 @@ let TransactionController = class TransactionController {
             if (err instanceof common_1.BadRequestException) {
                 throw new common_1.BadRequestException(err.message);
             }
+            console.log(err.message);
             throw new common_1.BadRequestException("Could not Process Transfer");
         }
     }

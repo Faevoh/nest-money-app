@@ -69,6 +69,7 @@ export class TransactionController {
         if(err instanceof BadRequestException) {
             throw new BadRequestException(err.message)
         }
+        console.log(err.message)
         throw new BadRequestException("Could not Process Transfer")
        }
     }
