@@ -36,9 +36,10 @@ export class TransactionController {
         console.log("1",transferdata)
 
         const walletdata = await this.walletService.findByUserId(userid)
-        
+        console.log("2",walletdata)
         const recieverAccount = transferDto.accountNumber
         const recieverdetails = await this.walletService.findByUserAcc(recieverAccount)
+        console.log("3", recieverdetails)
 
         const {bankPin} = userPinDto;
         const user = await this.pinService.findByUserId(userid)
@@ -59,7 +60,12 @@ export class TransactionController {
             return{statusCode: 201, message: "Deposit has been made", data: maindata}
         }
        }catch(err){
-        err.message
+        if(err instanceof UnauthorizedException) {
+            throw new UnauthorizedException(err.message)
+        }
+        if(err instanceof NotFoundException) {
+            throw new NotFoundException(err.message)
+        }
         throw new BadRequestException("Could not Process Transfer")
        }
     }

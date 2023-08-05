@@ -48,8 +48,10 @@ let TransactionController = class TransactionController {
             const transferdata = Object.assign(Object.assign({}, transferDto), { userId: userid });
             console.log("1", transferdata);
             const walletdata = await this.walletService.findByUserId(userid);
+            console.log("2", walletdata);
             const recieverAccount = transferDto.accountNumber;
             const recieverdetails = await this.walletService.findByUserAcc(recieverAccount);
+            console.log("3", recieverdetails);
             const { bankPin } = userPinDto;
             const user = await this.pinService.findByUserId(userid);
             const pinDecode = await bcrypt.compare(bankPin, user.bankPin);
@@ -67,7 +69,12 @@ let TransactionController = class TransactionController {
             }
         }
         catch (err) {
-            err.message;
+            if (err instanceof common_1.UnauthorizedException) {
+                throw new common_1.UnauthorizedException(err.message);
+            }
+            if (err instanceof common_1.NotFoundException) {
+                throw new common_1.NotFoundException(err.message);
+            }
             throw new common_1.BadRequestException("Could not Process Transfer");
         }
     }
