@@ -24,34 +24,14 @@ let TransactionService = class TransactionService {
         this.transRepo = transRepo;
         this.userService = userService;
     }
-    async credit(transferDto, user) {
-        const prefix = 'REF';
-        const timestamp = Date.now().toString();
-        const fillString = (0, uuid_1.v4)();
-        const randomNum = Math.floor(Math.random() * 10000).toString().padStart(50, fillString);
-        const result = `${prefix}-${timestamp}-${randomNum}`;
-        const { accountNumber, narration, amount } = transferDto;
-        const newData = new transactionEntity_entity_1.Transactions();
-        newData.accountNumber = accountNumber;
-        newData.narration = narration;
-        newData.amount = amount;
-        newData.transactionRef = result;
-        newData.user = user;
-        console.log("user", user);
-        newData.userId = user.id;
-        console.log("userid", user.id);
-        const data = await this.transRepo.create(newData);
-        return await this.transRepo.save(data);
-    }
-    async debit(transaction, user, wallet, comp) {
-        const data = await this.transRepo.create(transaction);
+    async transaction(data) {
         const prefix = 'REF';
         const timestamp = Date.now().toString();
         const fillString = (0, uuid_1.v4)();
         const randomNum = Math.floor(Math.random() * 10000).toString().padStart(50, fillString);
         const result = `${prefix}-${timestamp}-${randomNum}`;
         data.transactionRef = result;
-        return await this.transRepo.save(data);
+        return this.transRepo.save(data);
     }
     async allTransactions() {
         return await this.transRepo.find();

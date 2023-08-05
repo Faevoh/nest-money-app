@@ -1,16 +1,11 @@
 import { Transactions } from 'src/Entities/transactionEntity.entity';
-import { User } from 'src/Entities/userEntity.entity';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
-import { Wallet } from 'src/Entities/walletEntity.entity';
-import { Compliances } from 'src/Entities/compEntity.entity';
-import { TransferDto } from 'src/DTO/transfer';
 export declare class TransactionService {
     private transRepo;
     private userService;
     constructor(transRepo: Repository<Transactions>, userService: UserService);
-    credit(transferDto: TransferDto, user: User): Promise<Transactions>;
-    debit(transaction: Transactions, user: User, wallet: Wallet, comp: Compliances): Promise<Transactions>;
+    transaction(data: Partial<Transactions>): Promise<Partial<Transactions> & Transactions>;
     allTransactions(): Promise<Transactions[]>;
     findByUserId(userId: number): Promise<Transactions>;
     findOneTransaction(id: number): Promise<Transactions>;

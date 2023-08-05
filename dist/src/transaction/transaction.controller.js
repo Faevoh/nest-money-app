@@ -15,12 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TransactionController = void 0;
 const common_1 = require("@nestjs/common");
 const transaction_service_1 = require("./transaction.service");
-const userEntity_entity_1 = require("../Entities/userEntity.entity");
-const transactionEntity_entity_1 = require("../Entities/transactionEntity.entity");
 const user_service_1 = require("../user/user.service");
-const walletEntity_entity_1 = require("../Entities/walletEntity.entity");
 const wallet_service_1 = require("../wallet/wallet.service");
-const compEntity_entity_1 = require("../Entities/compEntity.entity");
 const compliance_service_1 = require("../compliance/compliance.service");
 const pindto_1 = require("../DTO/pindto");
 const jwt_1 = require("@nestjs/jwt");
@@ -36,52 +32,42 @@ let TransactionController = class TransactionController {
         this.jwtService = jwtService;
         this.pinService = pinService;
     }
-    async transferTransaction(transferDto, userPinDto, users, access_token, payload) {
-        const tokenDecode = this.jwtService.decode(access_token);
-        if (!tokenDecode) {
-            throw new common_1.NotFoundException("Invalid Token");
+    async transferTransaction(transferDto, userPinDto, access_token, payload) {
+        try {
+            const tokenDecode = this.jwtService.decode(access_token);
+            if (!tokenDecode) {
+                throw new common_1.NotFoundException("Invalid Token");
+            }
+            ;
+            payload = tokenDecode;
+            const timeInSeconds = Math.floor(Date.now() / 1000);
+            if (payload.exp && payload.exp < timeInSeconds) {
+                throw new common_1.UnauthorizedException("Token has expired");
+            }
+            const userid = tokenDecode.sub;
+            const transferdata = Object.assign(Object.assign({}, transferDto), { userId: userid });
+            const { bankPin } = userPinDto;
+            const user = await this.pinService.findByUserId(userid);
+            const pinDecode = await bcrypt.compare(bankPin, user.bankPin);
+            if (!pinDecode) {
+                throw new common_1.UnauthorizedException("Invalid Pin");
+            }
+            const walletdata = await this.walletService.findByUserId(userid);
+            const recieverAccount = transferDto.accountNumber;
+            const recieverdetails = await this.walletService.findByUserAcc(recieverAccount);
+            if (walletdata && recieverdetails) {
+                walletdata.accountBalance -= transferDto.amount;
+                recieverdetails.accountBalance += transferDto.amount;
+                const savedWallet = await this.walletService.saveWallet(walletdata);
+                const saveWallet = await this.walletService.saveWallet(recieverdetails);
+            }
+            const maindata = await this.transactionService.transaction(transferdata);
+            console.log(maindata);
+            return { statusCode: 201, message: "Deposit has been made", data: maindata };
         }
-        ;
-        payload = tokenDecode;
-        const timeInSeconds = Math.floor(Date.now() / 1000);
-        if (payload.exp && payload.exp < timeInSeconds) {
-            throw new common_1.UnauthorizedException("Token has expired");
+        catch (err) {
+            throw new common_1.BadRequestException("Could not Process Transfer");
         }
-        const userId = tokenDecode.sub;
-        console.log("userId,user", userId);
-        const userData = await this.userService.findById(userId);
-        console.log("userdata", userData);
-        const userTransactionDetails = await this.transactionService.findByUserId(userId);
-        console.log("userTransactionDetails", userTransactionDetails);
-        const walletdata = await this.walletService.findByUserId(userId);
-        const recieverAccount = transferDto.accountNumber;
-        const recieverdetails = await this.walletService.findByUserAcc(recieverAccount);
-        const { bankPin } = userPinDto;
-        const user = await this.pinService.findByUserId(userId);
-        const pinDecode = await bcrypt.compare(bankPin, user.bankPin);
-        if (!pinDecode) {
-            throw new common_1.UnauthorizedException("Invalid Pin");
-        }
-        walletdata.accountBalance -= transferDto.amount;
-        recieverdetails.accountBalance += transferDto.amount;
-        const savedWallet = await this.walletService.saveWallet(walletdata);
-        const saveWallet = await this.walletService.saveWallet(recieverdetails);
-        const maindata = await this.transactionService.credit(transferDto, users);
-        console.log(maindata);
-        return { message: "Well...?" };
-    }
-    async withdrawalTransaction(transaction, user, wallet, comp, id, walletid) {
-        const userData = await this.userService.findById(id);
-        transaction.userId = userData.id;
-        const walletdata = await this.walletService.findById(walletid);
-        if (walletdata.accountBalance === 0 || walletdata.accountBalance < 0 || walletdata.accountBalance < transaction.amount) {
-            throw new common_1.InternalServerErrorException("Insufficient Balance");
-        }
-        walletdata.accountBalance -= transaction.amount;
-        await this.walletService.saveWallet(walletdata);
-        const compData = await this.compService.findByUserId(id);
-        const maindata = await this.transactionService.debit(transaction, user, wallet, comp);
-        return { statusCode: 201, message: "success, Withdrawal Made", data: maindata };
     }
     async DashBoard(userId) {
     }
@@ -94,20 +80,11 @@ __decorate([
     (0, common_1.Post)("/transfer"),
     __param(0, (0, common_1.Body)(common_1.ValidationPipe)),
     __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
-    __param(3, (0, common_1.Query)("access_token")),
+    __param(2, (0, common_1.Query)("access_token")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [transfer_1.TransferDto, pindto_1.UserPinDto, userEntity_entity_1.User, String, Object]),
+    __metadata("design:paramtypes", [transfer_1.TransferDto, pindto_1.UserPinDto, String, Object]),
     __metadata("design:returntype", Promise)
 ], TransactionController.prototype, "transferTransaction", null);
-__decorate([
-    (0, common_1.Post)("/withdrawal/:id/:walletid"),
-    __param(0, (0, common_1.Body)(common_1.ValidationPipe)),
-    __param(4, (0, common_1.Param)("id", common_1.ParseIntPipe)),
-    __param(5, (0, common_1.Param)("walletid", common_1.ParseIntPipe)),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [transactionEntity_entity_1.Transactions, userEntity_entity_1.User, walletEntity_entity_1.Wallet, compEntity_entity_1.Compliances, Number, Number]),
-    __metadata("design:returntype", Promise)
-], TransactionController.prototype, "withdrawalTransaction", null);
 __decorate([
     (0, common_1.Get)("/dashboard/:userId"),
     __param(0, (0, common_1.Param)("userId", common_1.ParseIntPipe)),

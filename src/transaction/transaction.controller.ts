@@ -1,4 +1,4 @@
-import { Body, Controller, Get, InternalServerErrorException, NotFoundException, Param, ParseIntPipe, Post, Query, UnauthorizedException, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, InternalServerErrorException, NotFoundException, Param, ParseIntPipe, Post, Query, UnauthorizedException, ValidationPipe } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { User } from 'src/Entities/userEntity.entity';
 import { Transactions } from 'src/Entities/transactionEntity.entity';
@@ -18,7 +18,8 @@ export class TransactionController {
     constructor(private transactionService: TransactionService, private userService: UserService, private walletService: WalletService, private compService: ComplianceService, private jwtService: JwtService, private pinService: BankpinService) {}
 
     @Post("/transfer")
-    async transferTransaction(@Body(ValidationPipe) transferDto: TransferDto, @Body(ValidationPipe) userPinDto: UserPinDto, users: User,@Query("access_token") access_token: string, payload) {
+    async transferTransaction(@Body(ValidationPipe) transferDto: TransferDto, @Body(ValidationPipe) userPinDto: UserPinDto, @Query("access_token") access_token: string, payload) {
+       try{
         const tokenDecode = this.jwtService.decode(access_token);
         if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
         payload = tokenDecode
@@ -26,71 +27,72 @@ export class TransactionController {
         if (payload.exp && payload.exp < timeInSeconds) {
         throw new UnauthorizedException("Token has expired");
         }      
-        const userId = tokenDecode.sub;
-        console.log("userId,user",userId)
+        const userid = tokenDecode.sub;
 
-        const userData = await this.userService.findById(userId)
-        console.log("userdata", userData)
-
-        const userTransactionDetails = await this.transactionService.findByUserId(userId)
-        console.log("userTransactionDetails",userTransactionDetails)
-
-        const walletdata = await this.walletService.findByUserId(userId)
-        
-        const recieverAccount = transferDto.accountNumber
-        const recieverdetails = await this.walletService.findByUserAcc(recieverAccount)
+        const transferdata ={
+            ...transferDto,
+            userId: userid
+        }
 
         const {bankPin} = userPinDto;
-        const user = await this.pinService.findByUserId(userId)
+        const user = await this.pinService.findByUserId(userid)
         const pinDecode = await bcrypt.compare(bankPin, user.bankPin)
         if(!pinDecode) {
             throw new UnauthorizedException("Invalid Pin")
         }
 
+        const walletdata = await this.walletService.findByUserId(userid)
+        
+        const recieverAccount = transferDto.accountNumber
+        const recieverdetails = await this.walletService.findByUserAcc(recieverAccount)
 
-        walletdata.accountBalance -= transferDto.amount
-        recieverdetails.accountBalance += transferDto.amount
+        if(walletdata && recieverdetails){
+            walletdata.accountBalance -= transferDto.amount
+            recieverdetails.accountBalance += transferDto.amount
 
-        const savedWallet = await this.walletService.saveWallet(walletdata)
-        const saveWallet = await this.walletService.saveWallet(recieverdetails)
-
-        const maindata = await this.transactionService.credit(transferDto, users)
-        console.log(maindata)
-        return {message: "Well...?"}
-        // return{statusCode: 201, message: "Deposit has been made", data: maindata}
-    }
-
-    @Post("/withdrawal/:id/:walletid")
-    async withdrawalTransaction(@Body(ValidationPipe) transaction: Transactions, user: User, wallet: Wallet , comp:Compliances, @Param("id", ParseIntPipe) id: number, @Param("walletid", ParseIntPipe) walletid: number) {
-        const userData = await this.userService.findById(id)
-        transaction.userId = userData.id
-
-        const walletdata = await this.walletService.findById(walletid)
-        // console.log(walletdata)
-
-        if(walletdata.accountBalance === 0|| walletdata.accountBalance < 0 || walletdata.accountBalance <transaction.amount){
-
-            throw new InternalServerErrorException("Insufficient Balance")
+            const savedWallet = await this.walletService.saveWallet(walletdata)
+            const saveWallet = await this.walletService.saveWallet(recieverdetails)
         }
 
-        walletdata.accountBalance -= transaction.amount
-        // console.log(walletdata.accountBalance)
+        const maindata = await this.transactionService.transaction(transferdata)
+        console.log(maindata)
+        return{statusCode: 201, message: "Deposit has been made", data: maindata}
+       }catch(err){
+        throw new BadRequestException("Could not Process Transfer")
+       }
+    }
 
-        await this.walletService.saveWallet(walletdata)
+    // @Post("/withdrawal/:id/:walletid")
+    // async withdrawalTransaction(@Body(ValidationPipe) transaction: Transactions, user: User, wallet: Wallet , comp:Compliances, @Param("id", ParseIntPipe) id: number, @Param("walletid", ParseIntPipe) walletid: number) {
+    //     const userData = await this.userService.findById(id)
+    //     transaction.userId = userData.id
 
-        const compData = await this.compService.findByUserId(id)
-        // console.log(compData)
+    //     const walletdata = await this.walletService.findById(walletid)
+    //     // console.log(walletdata)
 
-        const maindata = await this.transactionService.debit(transaction, user, wallet, comp)
+    //     if(walletdata.accountBalance === 0|| walletdata.accountBalance < 0 || walletdata.accountBalance <transaction.amount){
 
-        // if(compData.bankCode === transaction.transactionPin){
-        //     await maindata
-        // }
+    //         throw new InternalServerErrorException("Insufficient Balance")
+    //     }
 
-        return {statusCode: 201, message: "success, Withdrawal Made", data: maindata}
-        // console.log(userData)
+    //     walletdata.accountBalance -= transaction.amount
+    //     // console.log(walletdata.accountBalance)
+
+    //     await this.walletService.saveWallet(walletdata)
+
+    //     const compData = await this.compService.findByUserId(id)
+    //     // console.log(compData)
+
+    //     const maindata = await this.transactionService.debit(transaction, user, wallet, comp)
+
+    //     // if(compData.bankCode === transaction.transactionPin){
+    //     //     await maindata
+    //     // }
+
+    //     return {statusCode: 201, message: "success, Withdrawal Made", data: maindata}
+    //     // console.log(userData)
         
-    }    
+    // }    
 
     @Get("/dashboard/:userId")
     async DashBoard(@Param("userId", ParseIntPipe) userId: number) {
