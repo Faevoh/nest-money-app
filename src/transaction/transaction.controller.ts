@@ -33,7 +33,7 @@ export class TransactionController {
             ...transferDto,
             userId: userid
         }
-        console.log(transferdata)
+        console.log("1",transferdata)
 
         const walletdata = await this.walletService.findByUserId(userid)
         
@@ -59,6 +59,7 @@ export class TransactionController {
             return{statusCode: 201, message: "Deposit has been made", data: maindata}
         }
        }catch(err){
+        err.message
         throw new BadRequestException("Could not Process Transfer")
        }
     }

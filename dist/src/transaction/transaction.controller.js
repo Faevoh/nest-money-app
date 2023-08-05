@@ -46,7 +46,7 @@ let TransactionController = class TransactionController {
             }
             const userid = tokenDecode.sub;
             const transferdata = Object.assign(Object.assign({}, transferDto), { userId: userid });
-            console.log(transferdata);
+            console.log("1", transferdata);
             const walletdata = await this.walletService.findByUserId(userid);
             const recieverAccount = transferDto.accountNumber;
             const recieverdetails = await this.walletService.findByUserAcc(recieverAccount);
@@ -67,6 +67,7 @@ let TransactionController = class TransactionController {
             }
         }
         catch (err) {
+            err.message;
             throw new common_1.BadRequestException("Could not Process Transfer");
         }
     }
