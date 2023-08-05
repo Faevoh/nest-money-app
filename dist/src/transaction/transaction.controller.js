@@ -54,12 +54,14 @@ let TransactionController = class TransactionController {
             }
             const transferdata = Object.assign(Object.assign({}, transferDto), { userId: userid });
             const walletdata = await this.walletService.findByUserId(userid);
+            console.log("1", walletdata);
             if (walletdata.accountBalance === 0 || walletdata.accountBalance < 0 || walletdata.accountBalance < transferDto.amount) {
                 throw new common_1.BadRequestException("Insufficient Balance can't make transfer");
             }
             const recieverAccount = transferDto.accountNumber;
             const recieverdetails = await this.walletService.findByUserAcc(recieverAccount);
             walletdata.accountBalance -= transferDto.amount;
+            console.log("2", walletdata.accountBalance);
             recieverdetails.accountBalance += transferDto.amount;
             const savedWallet = await this.walletService.saveWallet(walletdata);
             const saveWallet = await this.walletService.saveWallet(recieverdetails);
