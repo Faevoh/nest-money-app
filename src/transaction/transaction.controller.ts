@@ -57,7 +57,7 @@ export class TransactionController {
         const saveWallet = await this.walletService.saveWallet(recieverdetails)
 
         const maindata = await this.transactionService.transaction(transferdata)
-        return{statusCode: 201, message: "Deposit has been made", data: maindata}
+        return{statusCode: 201, message: "Transfer has been made", data: maindata}
         
        }catch(err){
         if(err instanceof UnauthorizedException) {
@@ -143,59 +143,43 @@ export class TransactionController {
         
     // }    
 
-    @Get("/dashboard/:userId")
-    async DashBoard(@Param("userId", ParseIntPipe) userId: number) {
-        // const walletdata = await this.walletService.findByUserId(userId)
-        // const accountBalance = walletdata.accountBalance;
-
-        // const deposits = await this.transactionService.findTransaction("deposit")
-
-        // const withdrawals = await this.transactionService.findTransaction("withdrawal")
-
-        // const totalTransactions = await this.transactionService.allTransactions()
-
-        // return{accountBalance, totalTransactions , deposits, withdrawals}
-    }
-
-    @Get("/:id")
-    async singleTransaction(@Param("id", ParseIntPipe) id: number) {
-        const data = await this.transactionService.findOneTransaction(id)
-
-        return {statusCode: 200, message: "Success", data: data}
-    }
-
-    // async depositTransaction(@Body(ValidationPipe) transferDto: TransferDto, @Body(ValidationPipe) userPinDto: UserPinDto, transaction: Transactions, @Query("access_token") access_token: string, payload) {
+    // @Get("/dashboard")
+    // async DashBoard(@Query("access_token") access_token: string, payload) {
     //     const tokenDecode = this.jwtService.decode(access_token);
     //     if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
     //     payload = tokenDecode
     //     const timeInSeconds = Math.floor(Date.now() / 1000); 
     //     if (payload.exp && payload.exp < timeInSeconds) {
     //     throw new UnauthorizedException("Token has expired");
-    //     }
-        
-    //     const userId = tokenDecode.sub;
+    //     }      
+    //     const userid = tokenDecode.sub;
 
-    //     const userData = await this.userService.findById(userId)
+    //     const walletdata = await this.walletService.findByUserId(userid)
+    //     const accountBalance = walletdata.accountBalance;
 
-    //     const walletdata = await this.walletService.findByUserId(userId)
-        
-    //     const {bankPin} = userPinDto;
-    //     const user = await this.pinService.findByUserId(userId)
-    //     const pinDecode = await bcrypt.compare(bankPin, user.bankPin)
-    //     if(!pinDecode) {
-    //         throw new UnauthorizedException("Invalid Pin")
-    //     }
+    //     const deposits = await this.transactionService.findTransaction("deposit")
 
+    //     const withdrawals = await this.transactionService.findTransaction("withdrawal")
 
-    //     walletdata.accountBalance += transferDto.amount
+    //     const totalTransactions = await this.transactionService.allTransactions()
 
-    //     const savedWallet = await this.walletService.saveWallet(walletdata)
-    //     console.log(savedWallet)
-
-       
-    //     console.log(userData)
-    //     // const maindata = await this.transactionService.credit(transaction, user, wallet)
-    //     return {message: "Well...?"}
-    //     // return{statusCode: 201, message: "Deposit has been made", data: maindata}
+    //     return{accountBalance, totalTransactions , deposits, withdrawals}
     // }
+
+    @Get()
+    async singleTransaction(@Query("access_token") access_token: string, payload) {
+
+        const tokenDecode = this.jwtService.decode(access_token);
+        if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
+        payload = tokenDecode
+        const timeInSeconds = Math.floor(Date.now() / 1000); 
+        if (payload.exp && payload.exp < timeInSeconds) {
+        throw new UnauthorizedException("Token has expired");
+        }      
+        const userid = tokenDecode.sub;
+        const data = await this.transactionService.findByUserId(userid)
+
+        return {statusCode: 200, message: "Success", data: data}
+    }
+    
 }

@@ -39,9 +39,6 @@ let TransactionService = class TransactionService {
     async findByUserId(userId) {
         return await this.transRepo.findOneBy({ userId });
     }
-    async findOneTransaction(id) {
-        return await this.transRepo.findOneBy({ id });
-    }
 };
 TransactionService = __decorate([
     (0, common_1.Injectable)(),

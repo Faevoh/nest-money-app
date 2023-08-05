@@ -64,7 +64,7 @@ let TransactionController = class TransactionController {
             const savedWallet = await this.walletService.saveWallet(walletdata);
             const saveWallet = await this.walletService.saveWallet(recieverdetails);
             const maindata = await this.transactionService.transaction(transferdata);
-            return { statusCode: 201, message: "Deposit has been made", data: maindata };
+            return { statusCode: 201, message: "Transfer has been made", data: maindata };
         }
         catch (err) {
             if (err instanceof common_1.UnauthorizedException) {
@@ -110,10 +110,19 @@ let TransactionController = class TransactionController {
             throw new common_1.BadRequestException("Could not Process Deposit");
         }
     }
-    async DashBoard(userId) {
-    }
-    async singleTransaction(id) {
-        const data = await this.transactionService.findOneTransaction(id);
+    async singleTransaction(access_token, payload) {
+        const tokenDecode = this.jwtService.decode(access_token);
+        if (!tokenDecode) {
+            throw new common_1.NotFoundException("Invalid Token");
+        }
+        ;
+        payload = tokenDecode;
+        const timeInSeconds = Math.floor(Date.now() / 1000);
+        if (payload.exp && payload.exp < timeInSeconds) {
+            throw new common_1.UnauthorizedException("Token has expired");
+        }
+        const userid = tokenDecode.sub;
+        const data = await this.transactionService.findByUserId(userid);
         return { statusCode: 200, message: "Success", data: data };
     }
 };
@@ -135,17 +144,10 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], TransactionController.prototype, "depositTransaction", null);
 __decorate([
-    (0, common_1.Get)("/dashboard/:userId"),
-    __param(0, (0, common_1.Param)("userId", common_1.ParseIntPipe)),
+    (0, common_1.Get)(),
+    __param(0, (0, common_1.Query)("access_token")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", Promise)
-], TransactionController.prototype, "DashBoard", null);
-__decorate([
-    (0, common_1.Get)("/:id"),
-    __param(0, (0, common_1.Param)("id", common_1.ParseIntPipe)),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], TransactionController.prototype, "singleTransaction", null);
 TransactionController = __decorate([

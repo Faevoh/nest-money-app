@@ -8,5 +8,4 @@ export declare class TransactionService {
     transaction(data: Partial<Transactions>): Promise<Partial<Transactions> & Transactions>;
     allTransactions(): Promise<Transactions[]>;
     findByUserId(userId: number): Promise<Transactions>;
-    findOneTransaction(id: number): Promise<Transactions>;
 }

@@ -26,8 +26,7 @@ export declare class TransactionController {
         message: string;
         data: Partial<Transactions> & Transactions;
     }>;
-    DashBoard(userId: number): Promise<void>;
-    singleTransaction(id: number): Promise<{
+    singleTransaction(access_token: string, payload: any): Promise<{
         statusCode: number;
         message: string;
         data: Transactions;
