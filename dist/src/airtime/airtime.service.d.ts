@@ -6,5 +6,5 @@ export declare class AirtimeService {
     private airtimeRepo;
     constructor(airtimeRepo: Repository<Airtime>);
     recharge(createAirtimeDto: CreateAirtimeDto, wallet: Wallet): Promise<Airtime>;
-    allRecharge(): Promise<Airtime[]>;
+    allRecharge(userId: number): Promise<Airtime>;
 }

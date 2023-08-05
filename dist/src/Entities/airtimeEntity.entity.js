@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Airtime = void 0;
 const typeorm_1 = require("typeorm");
+const userEntity_entity_1 = require("./userEntity.entity");
 let Airtime = class Airtime {
 };
 __decorate([
@@ -29,6 +30,15 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Airtime.prototype, "serviceNetwork", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], Airtime.prototype, "userId", void 0);
+__decorate([
+    (0, typeorm_1.OneToOne)(() => userEntity_entity_1.User, (user) => user.airtime),
+    (0, typeorm_1.JoinColumn)(),
+    __metadata("design:type", userEntity_entity_1.User)
+], Airtime.prototype, "user", void 0);
 Airtime = __decorate([
     (0, typeorm_1.Entity)()
 ], Airtime);

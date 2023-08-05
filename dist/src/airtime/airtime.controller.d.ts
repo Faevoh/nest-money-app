@@ -16,13 +16,4 @@ export declare class AirtimeController {
         message: string;
         data: import("../Entities/airtimeEntity.entity").Airtime;
     }>;
-    getAll(): Promise<{
-        statusCode: number;
-        message: string;
-        data?: undefined;
-    } | {
-        statusCode: number;
-        message: string;
-        data: import("../Entities/airtimeEntity.entity").Airtime[];
-    }>;
 }

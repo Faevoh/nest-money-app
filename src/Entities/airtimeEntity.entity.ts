@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "./userEntity.entity";
 
 @Entity()
 export class Airtime {
@@ -13,4 +14,11 @@ export class Airtime {
 
     @Column()
     serviceNetwork: string;
+
+    @Column()
+    userId: number;
+
+    @OneToOne( () => User, (user) => user.airtime)
+    @JoinColumn()
+    user: User;
 }

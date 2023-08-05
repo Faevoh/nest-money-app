@@ -30,8 +30,8 @@ let AirtimeService = class AirtimeService {
             throw new common_1.InternalServerErrorException("Something went wrong, Airtime Recharge couldn't process");
         }
     }
-    async allRecharge() {
-        return await this.airtimeRepo.find();
+    async allRecharge(userId) {
+        return await this.airtimeRepo.findOneBy({ userId });
     }
 };
 AirtimeService = __decorate([

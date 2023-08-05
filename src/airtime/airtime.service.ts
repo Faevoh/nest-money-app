@@ -18,7 +18,7 @@ export class AirtimeService {
         }
     }
 
-    async allRecharge ():Promise<Airtime[]> {
-        return  await this.airtimeRepo.find()
+    async allRecharge (userId: number) {
+        return await this.airtimeRepo.findOneBy({userId})
     }
 }

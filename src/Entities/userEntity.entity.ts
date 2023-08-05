@@ -3,6 +3,7 @@ import { Compliances } from "./compEntity.entity";
 import { Wallet } from "./walletEntity.entity";
 import { Transactions } from "./transactionEntity.entity";
 import { BankPin } from "./pinCreation";
+import { Airtime } from "./airtimeEntity.entity";
 
 @Entity("users")
 export class User {
@@ -61,6 +62,9 @@ export class User {
 
   @OneToOne( () => BankPin, (bankpin) => bankpin.user)
   bankPin: BankPin;
+
+  @OneToOne( () => Airtime, (airtime) => airtime.user)
+  airtime: Airtime;
 
   @OneToOne( () => Compliances, (compliance) => compliance.user, {onDelete: "CASCADE"})
   compliance: Compliances;

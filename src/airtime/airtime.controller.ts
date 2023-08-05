@@ -24,6 +24,12 @@ export class AirtimeController {
         }
         
         const userId = tokenDecode.sub;
+
+        const airtimedata ={
+            ...createAirtimeDto,
+            userId: userId
+        }
+
         const walletData = await this.walletService.findByUserId(userId)
 
         const {amount} = createAirtimeDto
@@ -42,17 +48,9 @@ export class AirtimeController {
         if(!pinDecode) {
             throw new UnauthorizedException("Invalid Pin")
         }
-        const newRecharge = await this.airtimeService.recharge(createAirtimeDto, wallet)
+        const newRecharge = await this.airtimeService.recharge(airtimedata, wallet)
 
         return {statusCode: 201, message: "Success", data: newRecharge }
-    }
-
-    @Get()
-    async getAll() {
-        const allRecharge = await this.airtimeService.allRecharge()
-        if(allRecharge.length === 0){ return {statusCode: 404, message: "No Recharge transaction has been made"}}
-        
-        return {statusCode: 200, message: "Success", data: allRecharge}
     }
     
 }

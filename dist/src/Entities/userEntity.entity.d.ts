@@ -2,6 +2,7 @@ import { Compliances } from "./compEntity.entity";
 import { Wallet } from "./walletEntity.entity";
 import { Transactions } from "./transactionEntity.entity";
 import { BankPin } from "./pinCreation";
+import { Airtime } from "./airtimeEntity.entity";
 export declare class User {
     id: number;
     firstName: string;
@@ -21,6 +22,7 @@ export declare class User {
     resetToken: string;
     resetTokenExpiry: Date;
     bankPin: BankPin;
+    airtime: Airtime;
     compliance: Compliances;
     wallet: Wallet;
     transaction: Transactions;

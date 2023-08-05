@@ -15,6 +15,7 @@ const compEntity_entity_1 = require("./compEntity.entity");
 const walletEntity_entity_1 = require("./walletEntity.entity");
 const transactionEntity_entity_1 = require("./transactionEntity.entity");
 const pinCreation_1 = require("./pinCreation");
+const airtimeEntity_entity_1 = require("./airtimeEntity.entity");
 let User = class User {
 };
 __decorate([
@@ -91,6 +92,10 @@ __decorate([
     (0, typeorm_1.OneToOne)(() => pinCreation_1.BankPin, (bankpin) => bankpin.user),
     __metadata("design:type", pinCreation_1.BankPin)
 ], User.prototype, "bankPin", void 0);
+__decorate([
+    (0, typeorm_1.OneToOne)(() => airtimeEntity_entity_1.Airtime, (airtime) => airtime.user),
+    __metadata("design:type", airtimeEntity_entity_1.Airtime)
+], User.prototype, "airtime", void 0);
 __decorate([
     (0, typeorm_1.OneToOne)(() => compEntity_entity_1.Compliances, (compliance) => compliance.user, { onDelete: "CASCADE" }),
     __metadata("design:type", compEntity_entity_1.Compliances)

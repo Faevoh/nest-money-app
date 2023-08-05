@@ -41,6 +41,7 @@ let AirtimeController = class AirtimeController {
             throw new common_1.UnauthorizedException("Token has expired");
         }
         const userId = tokenDecode.sub;
+        const airtimedata = Object.assign(Object.assign({}, createAirtimeDto), { userId: userId });
         const walletData = await this.walletService.findByUserId(userId);
         const { amount } = createAirtimeDto;
         if (walletData.accountBalance === 0 || walletData.accountBalance < 0 || walletData.accountBalance < amount) {
@@ -54,15 +55,8 @@ let AirtimeController = class AirtimeController {
         if (!pinDecode) {
             throw new common_1.UnauthorizedException("Invalid Pin");
         }
-        const newRecharge = await this.airtimeService.recharge(createAirtimeDto, wallet);
+        const newRecharge = await this.airtimeService.recharge(airtimedata, wallet);
         return { statusCode: 201, message: "Success", data: newRecharge };
-    }
-    async getAll() {
-        const allRecharge = await this.airtimeService.allRecharge();
-        if (allRecharge.length === 0) {
-            return { statusCode: 404, message: "No Recharge transaction has been made" };
-        }
-        return { statusCode: 200, message: "Success", data: allRecharge };
     }
 };
 __decorate([
@@ -74,12 +68,6 @@ __decorate([
     __metadata("design:paramtypes", [createAirtime_1.CreateAirtimeDto, pindto_1.UserPinDto, walletEntity_entity_1.Wallet, String, Object]),
     __metadata("design:returntype", Promise)
 ], AirtimeController.prototype, "recharge", null);
-__decorate([
-    (0, common_1.Get)(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], AirtimeController.prototype, "getAll", null);
 AirtimeController = __decorate([
     (0, common_1.Controller)('airtime'),
     __metadata("design:paramtypes", [airtime_service_1.AirtimeService, wallet_service_1.WalletService, bankpin_service_1.BankpinService, jwt_1.JwtService])

@@ -53,6 +53,7 @@ export declare class UserController {
             createDate: Date;
             updateDate: Date;
             bankPin: import("../Entities/pinCreation").BankPin;
+            airtime: import("../Entities/airtimeEntity.entity").Airtime;
             compliance: import("../Entities/compEntity.entity").Compliances;
             wallet: import("../Entities/walletEntity.entity").Wallet;
             transaction: import("../Entities/transactionEntity.entity").Transactions;
