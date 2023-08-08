@@ -19,12 +19,10 @@ export declare class TransactionController {
     transferTransaction(transferDto: TransferDto, userPinDto: UserPinDto, access_token: string, payload: any): Promise<{
         statusCode: number;
         message: string;
-        data: Partial<Transactions> & Transactions;
     }>;
     depositTransaction(depositDto: DepositDto, access_token: string, payload: any): Promise<{
         statusCode: number;
         message: string;
-        data: Partial<Transactions> & Transactions;
     }>;
     singleTransaction(access_token: string, payload: any): Promise<{
         statusCode: number;

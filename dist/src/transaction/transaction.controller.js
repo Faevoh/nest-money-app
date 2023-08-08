@@ -64,7 +64,7 @@ let TransactionController = class TransactionController {
             const savedWallet = await this.walletService.saveWallet(walletdata);
             const saveWallet = await this.walletService.saveWallet(recieverdetails);
             const maindata = await this.transactionService.transaction(transferdata);
-            return { statusCode: 201, message: "Transfer has been made", data: maindata };
+            return { statusCode: 201, message: "Transfer successful" };
         }
         catch (err) {
             if (err instanceof common_1.UnauthorizedException) {
@@ -97,7 +97,7 @@ let TransactionController = class TransactionController {
             walletdata.accountBalance += depositDto.amount;
             const savedWallet = await this.walletService.saveWallet(walletdata);
             const maindata = await this.transactionService.transaction(depositdata);
-            return { statusCode: 201, message: "Deposit has been made", data: maindata };
+            return { statusCode: 201, message: "Deposit successful" };
         }
         catch (err) {
             console.log(err.message);
