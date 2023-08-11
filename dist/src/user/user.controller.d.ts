@@ -35,7 +35,16 @@ export declare class UserController {
         access_token: string;
     }>;
     getAll(): Promise<import("../Entities/userEntity.entity").User[]>;
-    getUser(access_token: string, payload: any): Promise<void>;
+    getUser(access_token: string, payload: any): Promise<{
+        statusCode: number;
+        message: string;
+        data: {
+            id: number;
+            compliance: import("../Entities/compEntity.entity").Compliances;
+            wallet: import("../Entities/walletEntity.entity").Wallet;
+            transaction: void;
+        };
+    }>;
     updateUser(access_token: string, updateUserDto: UpdateUserDto, payload: any, file: Express.Multer.File): Promise<{
         statusCode: number;
         message: string;

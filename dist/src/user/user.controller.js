@@ -81,6 +81,7 @@ let UserController = class UserController {
             }
             const id = tokenDecode.sub;
             const userObject = await this.userService.findIdWithRelations(id);
+            return { statusCode: 200, message: `success, id ${id}`, data: userObject };
         }
         catch (err) {
             if (err instanceof common_1.NotFoundException) {
