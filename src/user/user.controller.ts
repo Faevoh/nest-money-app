@@ -87,7 +87,8 @@ export class UserController {
             }
 
             const{resetToken,resetTokenExpiry, verifyToken,password, ...others} = userObject
-            return {statusCode: 200, message: `success, id ${id}`, data: others}
+            const data = {userObject,trans}
+            return {statusCode: 200, message: `success, id ${id}`, data: data}
        }catch(err){
         if(err instanceof NotFoundException){
             throw new NotFoundException(err.message)

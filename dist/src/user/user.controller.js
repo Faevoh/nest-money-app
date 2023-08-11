@@ -103,7 +103,8 @@ let UserController = class UserController {
                 delete trans.serviceNetwork;
             }
             const { resetToken, resetTokenExpiry, verifyToken, password } = userObject, others = __rest(userObject, ["resetToken", "resetTokenExpiry", "verifyToken", "password"]);
-            return { statusCode: 200, message: `success, id ${id}`, data: others };
+            const data = { userObject, trans };
+            return { statusCode: 200, message: `success, id ${id}`, data: data };
         }
         catch (err) {
             if (err instanceof common_1.NotFoundException) {
