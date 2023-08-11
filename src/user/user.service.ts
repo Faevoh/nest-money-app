@@ -97,8 +97,8 @@ export class UserService {
         
 
         const usrDto = {
-            user: user.map(user => {
-                const{resetToken,resetTokenExpiry, verifyToken,password, ...others} = user
+            user: user.map(User => {
+                const{resetToken,resetTokenExpiry, verifyToken,password, compliance, wallet, transaction, ...others} = User
                 return others
             }),
             compliance: user.compliance,
