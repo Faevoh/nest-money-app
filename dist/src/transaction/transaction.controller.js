@@ -160,6 +160,7 @@ let TransactionController = class TransactionController {
             return { statusCode: 201, message: "Successful Recharge", data: newRecharge };
         }
         catch (err) {
+            console.log(err);
             if (err instanceof common_1.UnauthorizedException) {
                 throw new common_1.UnauthorizedException(err.message);
             }
