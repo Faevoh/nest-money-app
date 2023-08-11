@@ -21,7 +21,7 @@ export declare class UserService {
     login(email: string): Promise<User>;
     findById(id: number): Promise<User>;
     findIdWithRelations(id: number): Promise<{
-        user: User;
+        user: void;
         compliance: import("../Entities/compEntity.entity").Compliances;
         wallet: Wallet;
         transaction: void;
