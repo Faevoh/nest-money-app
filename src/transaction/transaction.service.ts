@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DepositDto } from 'src/DTO/deposit';
 import { Transactions } from 'src/Entities/transactionEntity.entity';
@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { Wallet } from 'src/Entities/walletEntity.entity';
 import { Compliances } from 'src/Entities/compEntity.entity';
 import { TransferDto } from 'src/DTO/transfer';
+import { CreateAirtimeDto } from 'src/DTO/createAirtime';
 
 @Injectable()
 export class TransactionService {
@@ -24,6 +25,23 @@ export class TransactionService {
         data.transactionRef = result;
         return this.transRepo.save(data);
     }
+
+    async recharge (data: Partial<Transactions>) {
+        try{
+            const airtimeRecharge = this.transRepo.create(data)
+            const prefix = 'REF';
+            const timestamp = Date.now().toString();
+            const fillString = uuidv4();
+            const randomNum = Math.floor(Math.random() * 10000).toString().padStart(50, fillString);
+            const result =  `${prefix}-${timestamp}-${randomNum}`
+
+            data.transactionRef = result;
+            return await this.transRepo.save(airtimeRecharge)
+        }catch(err){
+            throw new InternalServerErrorException("Something went wrong, Airtime Recharge couldn't process")
+        }
+    }
+
 
     async allTransactions() {
         return await this.transRepo.find();

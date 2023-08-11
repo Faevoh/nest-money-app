@@ -6,7 +6,6 @@ import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ComplianceModule } from './compliance/compliance.module';
-import { AirtimeModule } from './airtime/airtime.module';
 import { MailModule } from './mail/mail.module';
 import { WalletModule } from './wallet/wallet.module';
 import { TransactionModule } from './transaction/transaction.module';
@@ -22,7 +21,7 @@ import { BankpinModule } from './bankpin/bankpin.module';
     envFilePath: [".env"],
     isGlobal: true
   }),TypeOrmModule.forRoot(hostDataSourceOptions),
-  UserModule, AuthModule, ComplianceModule, AirtimeModule, MailModule, ConfigModule.forRoot({ 
+  UserModule, AuthModule, ComplianceModule, MailModule, ConfigModule.forRoot({ 
     isGlobal: true,
     cache: true,
     load: [

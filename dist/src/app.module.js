@@ -15,7 +15,6 @@ const config_1 = require("@nestjs/config");
 const user_module_1 = require("./user/user.module");
 const auth_module_1 = require("./auth/auth.module");
 const compliance_module_1 = require("./compliance/compliance.module");
-const airtime_module_1 = require("./airtime/airtime.module");
 const mail_module_1 = require("./mail/mail.module");
 const wallet_module_1 = require("./wallet/wallet.module");
 const transaction_module_1 = require("./transaction/transaction.module");
@@ -33,7 +32,7 @@ AppModule = __decorate([
                 envFilePath: [".env"],
                 isGlobal: true
             }), typeorm_1.TypeOrmModule.forRoot(host_data_source_1.hostDataSourceOptions),
-            user_module_1.UserModule, auth_module_1.AuthModule, compliance_module_1.ComplianceModule, airtime_module_1.AirtimeModule, mail_module_1.MailModule, config_1.ConfigModule.forRoot({
+            user_module_1.UserModule, auth_module_1.AuthModule, compliance_module_1.ComplianceModule, mail_module_1.MailModule, config_1.ConfigModule.forRoot({
                 isGlobal: true,
                 cache: true,
                 load: [

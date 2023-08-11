@@ -1,22 +1,17 @@
 import { BadRequestException, Body, Controller, Get, InternalServerErrorException, NotFoundException, Param, ParseIntPipe, Post, Query, UnauthorizedException, ValidationPipe } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
-import { User } from 'src/Entities/userEntity.entity';
-import { Transactions } from 'src/Entities/transactionEntity.entity';
-import { UserService } from 'src/user/user.service';
-import { Wallet } from 'src/Entities/walletEntity.entity';
 import { WalletService } from 'src/wallet/wallet.service';
-import { Compliances } from 'src/Entities/compEntity.entity';
-import { ComplianceService } from 'src/compliance/compliance.service';
 import { UserPinDto } from 'src/DTO/pindto';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs'
 import { TransferDto } from 'src/DTO/transfer';
 import { BankpinService } from 'src/bankpin/bankpin.service';
 import { DepositDto } from 'src/DTO/deposit';
+import { CreateAirtimeDto } from 'src/DTO/createAirtime';
 
 @Controller('transaction')
 export class TransactionController {
-    constructor(private transactionService: TransactionService, private userService: UserService, private walletService: WalletService, private compService: ComplianceService, private jwtService: JwtService, private pinService: BankpinService) {}
+    constructor(private transactionService: TransactionService, private walletService: WalletService, private jwtService: JwtService, private pinService: BankpinService) {}
 
     @Post("/transfer")
     async transferTransaction(@Body(ValidationPipe) transferDto: TransferDto, @Body(ValidationPipe) userPinDto: UserPinDto, @Query("access_token") access_token: string, payload) {
@@ -39,7 +34,9 @@ export class TransactionController {
 
         const transferdata ={
             ...transferDto,
-            userId: userid
+            userId: userid,
+            status: "success",
+            payMethod: "transfer"
         }
 
         const walletdata = await this.walletService.findByUserId(userid)
@@ -57,6 +54,13 @@ export class TransactionController {
         const saveWallet = await this.walletService.saveWallet(recieverdetails)
 
         const maindata = await this.transactionService.transaction(transferdata)
+
+        delete maindata.CVV
+        delete maindata.cardNumber
+        delete maindata.expiryDate
+        delete maindata.phoneNumber
+        delete maindata.serviceNetwork
+
         return{statusCode: 201, message: "Transfer successful"}
         
        }catch(err){
@@ -87,7 +91,9 @@ export class TransactionController {
 
         const depositdata ={
             ...depositDto,
-            userId: userid
+            userId: userid,
+            status: "success",
+            payMethod: "deposit"
         }
 
         const walletdata = await this.walletService.findByUserId(userid)
@@ -97,10 +103,19 @@ export class TransactionController {
         const savedWallet = await this.walletService.saveWallet(walletdata)
 
         const maindata = await this.transactionService.transaction(depositdata)
+
+        delete maindata.accountNumber
+        delete maindata.narration
+        delete maindata.CVV
+        delete maindata.cardNumber
+        delete maindata.expiryDate
+        delete maindata.phoneNumber
+        delete maindata.serviceNetwork
+
         return{statusCode: 201, message: "Deposit successful"}
         
        }catch(err){
-        console.log(err.message)
+        // console.log(err.message)
         if(err instanceof UnauthorizedException) {
             throw new UnauthorizedException(err.message)
         }
@@ -109,62 +124,66 @@ export class TransactionController {
         }
         throw new BadRequestException("Could not Process Deposit")
        }
+    } 
+
+    @Post("/airtime-recharge")
+    async recharge(@Body(ValidationPipe) createAirtimeDto: CreateAirtimeDto,@Body(ValidationPipe) userPinDto: UserPinDto, @Query("access_token") access_token: string, payload) {
+        try{
+            const tokenDecode = this.jwtService.decode(access_token);
+            if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
+            payload = tokenDecode
+            const timeInSeconds = Math.floor(Date.now() / 1000); 
+            if (payload.exp && payload.exp < timeInSeconds) {
+            throw new UnauthorizedException("Token has expired");
+            }
+            
+            const userId = tokenDecode.sub;
+
+            const airtimedata ={
+                ...createAirtimeDto,
+                userId: userId,
+                status: "success"
+            }
+
+            const walletData = await this.walletService.findByUserId(userId)
+
+            const {amount} = createAirtimeDto
+
+            if(walletData.accountBalance === 0|| walletData.accountBalance < 0 || walletData.accountBalance < amount){
+
+                throw new UnauthorizedException("Insufficient Balance, Can't process Airtime")
+            }
+
+            walletData.accountBalance -= createAirtimeDto.amount
+            await this.walletService.saveWallet(walletData)
+
+            const {bankPin} = userPinDto;
+            const user = await this.pinService.findByUserId(userId)
+            const pinDecode = await bcrypt.compare(bankPin, user.bankPin)
+            if(!pinDecode) {
+                throw new UnauthorizedException("Invalid Pin")
+            }
+            const newRecharge = await this.transactionService.recharge(airtimedata)
+
+            delete newRecharge.accountNumber
+            delete newRecharge.narration
+            delete newRecharge.CVV
+            delete newRecharge.cardNumber
+            delete newRecharge.expiryDate
+            delete newRecharge.payMethod
+            delete newRecharge.narration
+
+            return {statusCode: 201, message: "Successful Recharge"}
+        }catch(err){
+            if(err instanceof UnauthorizedException) {
+            throw new UnauthorizedException(err.message)
+            }
+            if(err instanceof NotFoundException) {
+                throw new NotFoundException(err.message)
+            }
+            throw new BadRequestException("Could not Process Airtime")
+        }
     }
-
-    // @Post("/withdrawal/:id/:walletid")
-    // async withdrawalTransaction(@Body(ValidationPipe) transaction: Transactions, user: User, wallet: Wallet , comp:Compliances, @Param("id", ParseIntPipe) id: number, @Param("walletid", ParseIntPipe) walletid: number) {
-    //     const userData = await this.userService.findById(id)
-    //     transaction.userId = userData.id
-
-    //     const walletdata = await this.walletService.findById(walletid)
-    //     // console.log(walletdata)
-
-    //     if(walletdata.accountBalance === 0|| walletdata.accountBalance < 0 || walletdata.accountBalance <transaction.amount){
-
-    //         throw new InternalServerErrorException("Insufficient Balance")
-    //     }
-
-    //     walletdata.accountBalance -= transaction.amount
-    //     // console.log(walletdata.accountBalance)
-
-    //     await this.walletService.saveWallet(walletdata)
-
-    //     const compData = await this.compService.findByUserId(id)
-    //     // console.log(compData)
-
-    //     const maindata = await this.transactionService.debit(transaction, user, wallet, comp)
-
-    //     // if(compData.bankCode === transaction.transactionPin){
-    //     //     await maindata
-    //     // }
-
-    //     return {statusCode: 201, message: "success, Withdrawal Made", data: maindata}
-    //     // console.log(userData)
-        
-    // }    
-
-    // @Get("/dashboard")
-    // async DashBoard(@Query("access_token") access_token: string, payload) {
-    //     const tokenDecode = this.jwtService.decode(access_token);
-    //     if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
-    //     payload = tokenDecode
-    //     const timeInSeconds = Math.floor(Date.now() / 1000); 
-    //     if (payload.exp && payload.exp < timeInSeconds) {
-    //     throw new UnauthorizedException("Token has expired");
-    //     }      
-    //     const userid = tokenDecode.sub;
-
-    //     const walletdata = await this.walletService.findByUserId(userid)
-    //     const accountBalance = walletdata.accountBalance;
-
-    //     const deposits = await this.transactionService.findTransaction("deposit")
-
-    //     const withdrawals = await this.transactionService.findTransaction("withdrawal")
-
-    //     const totalTransactions = await this.transactionService.allTransactions()
-
-    //     return{accountBalance, totalTransactions , deposits, withdrawals}
-    // }
 
     @Get()
     async singleTransaction(@Query("access_token") access_token: string, payload) {

@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { User } from "./userEntity.entity";
 import { Wallet } from "./walletEntity.entity";
 
@@ -27,6 +27,26 @@ export class Transactions {
 
     @Column({nullable: true})
     CVV: string;
+
+    @Column({nullable: true})
+    phoneNumber: string;
+
+    @Column({nullable: true})
+    serviceNetwork: string;
+
+    @Column({nullable: true})
+    status: string;
+
+    @Column({nullable: true})
+    payMethod: string;
+
+    @Column()
+    @CreateDateColumn()
+    createDate: Date;
+
+    @Column()
+    @UpdateDateColumn()
+    updateDate: Date;
 
     @Column()
     userId: number;

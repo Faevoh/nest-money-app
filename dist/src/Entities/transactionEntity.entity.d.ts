@@ -9,6 +9,12 @@ export declare class Transactions {
     cardNumber: string;
     expiryDate: string;
     CVV: string;
+    phoneNumber: string;
+    serviceNetwork: string;
+    status: string;
+    payMethod: string;
+    createDate: Date;
+    updateDate: Date;
     userId: number;
     user: User;
     wallet: Wallet;

@@ -48,6 +48,32 @@ __decorate([
     __metadata("design:type", String)
 ], Transactions.prototype, "CVV", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Transactions.prototype, "phoneNumber", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Transactions.prototype, "serviceNetwork", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Transactions.prototype, "status", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Transactions.prototype, "payMethod", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], Transactions.prototype, "createDate", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], Transactions.prototype, "updateDate", void 0);
+__decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Transactions.prototype, "userId", void 0);
