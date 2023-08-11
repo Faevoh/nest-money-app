@@ -101,10 +101,7 @@ let UserService = class UserService {
             relations: ["compliance", "wallet", "transaction", "bankPin"]
         });
         const usrDto = {
-            user: user.map(User => {
-                const { resetToken, resetTokenExpiry, verifyToken, password } = User, others = __rest(User, ["resetToken", "resetTokenExpiry", "verifyToken", "password"]);
-                return others;
-            }),
+            user: user,
             compliance: user.compliance,
             wallet: user.wallet,
             transaction: user.transaction.map(Transaction => {

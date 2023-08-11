@@ -97,10 +97,7 @@ export class UserService {
         
 
         const usrDto = {
-            user: user.map(User => {
-                const {resetToken,resetTokenExpiry, verifyToken,password, ...others} = User
-                return others
-            }),
+            user: user,
             compliance: user.compliance,
             wallet: user.wallet,
             transaction: user.transaction.map(Transaction => {
@@ -108,6 +105,7 @@ export class UserService {
                 return others
             })
         }
+       
         return usrDto
     }
 
