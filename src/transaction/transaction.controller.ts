@@ -65,6 +65,8 @@ export class TransactionController {
         delete maindata.phoneNumber
         delete maindata.serviceNetwork
 
+        recieverData.transaction = maindata;
+
         return{statusCode: 201, message: "Transfer successful", data: maindata}
         
        }catch(err){
@@ -179,7 +181,6 @@ export class TransactionController {
 
             return {statusCode: 201, message: "Successful Recharge", data: newRecharge}
         }catch(err){
-            console.log(err)
             if(err instanceof UnauthorizedException) {
             throw new UnauthorizedException(err.message)
             }

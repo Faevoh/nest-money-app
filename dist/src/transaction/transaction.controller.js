@@ -70,6 +70,7 @@ let TransactionController = class TransactionController {
             delete maindata.expiryDate;
             delete maindata.phoneNumber;
             delete maindata.serviceNetwork;
+            recieverData.transaction = maindata;
             return { statusCode: 201, message: "Transfer successful", data: maindata };
         }
         catch (err) {
@@ -159,7 +160,6 @@ let TransactionController = class TransactionController {
             return { statusCode: 201, message: "Successful Recharge", data: newRecharge };
         }
         catch (err) {
-            console.log(err);
             if (err instanceof common_1.UnauthorizedException) {
                 throw new common_1.UnauthorizedException(err.message);
             }
