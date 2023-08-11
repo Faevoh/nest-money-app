@@ -72,9 +72,9 @@ export class UserController {
             // console.log(tokenDecode);
             const id = tokenDecode.sub;
             // console.log(id);
-            const [userObject] = await this.userService.findIdWithRelations(id);
-            const{resetToken,resetTokenExpiry, verifyToken,password, ...others} = userObject
-            return {statusCode: 200, message: `success, id ${id}`, data: others}
+            const userObject = await this.userService.findIdWithRelations(id);
+            // const{resetToken,resetTokenExpiry, verifyToken,password, ...others} = userObject
+            // return {statusCode: 200, message: `success, id ${id}`, data: others}
        }catch(err){
         if(err instanceof NotFoundException){
             throw new NotFoundException(err.message)

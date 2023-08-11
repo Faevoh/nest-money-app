@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/DTO/createUser';
 import { User } from 'src/Entities/userEntity.entity';
 import { UpdateUserDto } from 'src/DTO/updateUser';
+import { Wallet } from 'src/Entities/walletEntity.entity';
 import { WalletService } from 'src/wallet/wallet.service';
 import { accountGenerator } from "../auth/generator.service";
 import { MailService } from 'src/mail/mail.service';
@@ -19,7 +20,12 @@ export declare class UserService {
     }>;
     login(email: string): Promise<User>;
     findById(id: number): Promise<User>;
-    findIdWithRelations(id: number): Promise<User[]>;
+    findIdWithRelations(id: number): Promise<{
+        id: number;
+        compliance: import("../Entities/compEntity.entity").Compliances;
+        wallet: Wallet;
+        transaction: void;
+    }>;
     findByAccountType(accountType: any): Promise<User>;
     findByEmail(email: string): Promise<User>;
     saveUser(user: User): Promise<User>;

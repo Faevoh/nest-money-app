@@ -70,7 +70,6 @@ let TransactionController = class TransactionController {
             delete maindata.expiryDate;
             delete maindata.phoneNumber;
             delete maindata.serviceNetwork;
-            recieverData.transaction = maindata;
             return { statusCode: 201, message: "Transfer successful", data: maindata };
         }
         catch (err) {

@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Transaction } from 'typeorm';
 import * as bcrypt from 'bcryptjs'
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/DTO/createUser';
@@ -90,10 +90,21 @@ export class UserService {
     }
 
     async findIdWithRelations(id: number) {
-        return await this.userRepo.find({
+        const user =  await this.userRepo.findOne({
             where:{id},
             relations: ["compliance", "wallet", "transaction", "bankPin"]
         })
+
+        const usrDto = {
+            id: user.id,
+            compliance: user.compliance,
+            wallet: user.wallet,
+            transaction: user.transaction.map(Transaction => {
+                const {CVV, accountNumber, cardNumber, expiryDate, phoneNumber, serviceNetwork, ...others} = Transaction
+                return others
+            })
+        }
+        return usrDto
     }
 
     async findByAccountType(accountType) {

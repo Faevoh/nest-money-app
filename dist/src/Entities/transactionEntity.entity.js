@@ -14,6 +14,9 @@ const typeorm_1 = require("typeorm");
 const userEntity_entity_1 = require("./userEntity.entity");
 const walletEntity_entity_1 = require("./walletEntity.entity");
 let Transactions = class Transactions {
+    map(arg0) {
+        throw new Error('Method not implemented.');
+    }
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),

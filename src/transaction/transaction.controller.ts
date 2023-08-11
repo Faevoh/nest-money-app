@@ -65,8 +65,6 @@ export class TransactionController {
         delete maindata.phoneNumber
         delete maindata.serviceNetwork
 
-        recieverData.transaction = maindata;
-
         return{statusCode: 201, message: "Transfer successful", data: maindata}
         
        }catch(err){

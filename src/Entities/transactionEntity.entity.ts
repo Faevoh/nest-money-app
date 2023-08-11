@@ -4,6 +4,9 @@ import { Wallet } from "./walletEntity.entity";
 
 @Entity()
 export class Transactions {
+    map(arg0: (Transaction: any) => void) {
+        throw new Error('Method not implemented.');
+    }
     @PrimaryGeneratedColumn()
     id: number;
 

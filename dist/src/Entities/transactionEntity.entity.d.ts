@@ -1,6 +1,7 @@
 import { User } from "./userEntity.entity";
 import { Wallet } from "./walletEntity.entity";
 export declare class Transactions {
+    map(arg0: (Transaction: any) => void): void;
     id: number;
     accountNumber: string;
     amount: number;
