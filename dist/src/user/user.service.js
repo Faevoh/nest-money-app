@@ -98,7 +98,6 @@ let UserService = class UserService {
     async findIdWithRelations(id) {
         const user = await this.userRepo.findOne({
             where: { id },
-            relations: ["compliance", "wallet", "transaction", "bankPin"]
         });
         const usrDto = {
             user: user,

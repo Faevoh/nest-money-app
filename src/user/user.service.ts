@@ -92,7 +92,7 @@ export class UserService {
     async findIdWithRelations(id: number) {
         const user =  await this.userRepo.findOne({
             where:{id},
-            relations: ["compliance", "wallet", "transaction", "bankPin"]
+            // relations: ["compliance", "wallet", "transaction", "bankPin"]
         })
         
 
