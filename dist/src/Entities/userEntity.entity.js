@@ -16,6 +16,9 @@ const walletEntity_entity_1 = require("./walletEntity.entity");
 const transactionEntity_entity_1 = require("./transactionEntity.entity");
 const pinCreation_1 = require("./pinCreation");
 let User = class User {
+    map(arg0) {
+        throw new Error('Method not implemented.');
+    }
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),

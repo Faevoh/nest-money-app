@@ -6,6 +6,9 @@ import { BankPin } from "./pinCreation";
 
 @Entity("users")
 export class User {
+  map(arg0: (User: any) => void) {
+      throw new Error('Method not implemented.');
+  }
   @PrimaryGeneratedColumn()
   id: number;
 

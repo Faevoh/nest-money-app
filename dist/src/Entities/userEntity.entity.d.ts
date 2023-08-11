@@ -3,6 +3,7 @@ import { Wallet } from "./walletEntity.entity";
 import { Transactions } from "./transactionEntity.entity";
 import { BankPin } from "./pinCreation";
 export declare class User {
+    map(arg0: (User: any) => void): void;
     id: number;
     firstName: string;
     lastName: string;

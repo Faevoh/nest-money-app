@@ -39,7 +39,7 @@ export declare class UserController {
         statusCode: number;
         message: string;
         data: {
-            id: number;
+            user: void;
             compliance: import("../Entities/compEntity.entity").Compliances;
             wallet: import("../Entities/walletEntity.entity").Wallet;
             transaction: void;
