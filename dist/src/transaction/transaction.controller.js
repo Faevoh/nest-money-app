@@ -131,7 +131,7 @@ let TransactionController = class TransactionController {
                 throw new common_1.UnauthorizedException("Token has expired");
             }
             const userId = tokenDecode.sub;
-            const airtimedata = Object.assign(Object.assign({}, createAirtimeDto), { userId: userId, status: "success" });
+            const airtimedata = Object.assign(Object.assign({}, createAirtimeDto), { userId: userId, status: "success", payMethod: "airtime" });
             const walletData = await this.walletService.findByUserId(userId);
             const { amount } = createAirtimeDto;
             if (walletData.accountBalance === 0 || walletData.accountBalance < 0 || walletData.accountBalance < amount) {

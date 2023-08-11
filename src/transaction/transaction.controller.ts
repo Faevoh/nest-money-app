@@ -142,7 +142,8 @@ export class TransactionController {
             const airtimedata ={
                 ...createAirtimeDto,
                 userId: userId,
-                status: "success"
+                status: "success",
+                payMethod: "airtime"
             }
 
             const walletData = await this.walletService.findByUserId(userId)
