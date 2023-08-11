@@ -100,11 +100,8 @@ let UserService = class UserService {
             where: { id },
             relations: ["compliance", "wallet", "transaction", "bankPin"]
         });
-        const users = await this.userRepo.findOne({
-            where: { id }
-        });
         const usrDto = {
-            user: users.map(User => {
+            user: user.map(User => {
                 const { resetToken, resetTokenExpiry, verifyToken, password } = User, others = __rest(User, ["resetToken", "resetTokenExpiry", "verifyToken", "password"]);
                 return others;
             }),
