@@ -6,7 +6,7 @@ export declare class TransactionService {
     private userService;
     constructor(transRepo: Repository<Transactions>, userService: UserService);
     transaction(data: Partial<Transactions>): Promise<Partial<Transactions> & Transactions>;
-    recharge(data: Partial<Transactions>): Promise<Transactions>;
+    recharge(data: Partial<Transactions>): Promise<Partial<Transactions> & Transactions>;
     allTransactions(): Promise<Transactions[]>;
     findByUserId(userId: number): Promise<Transactions>;
 }

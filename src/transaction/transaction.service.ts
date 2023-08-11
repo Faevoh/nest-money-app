@@ -27,19 +27,14 @@ export class TransactionService {
     }
 
     async recharge (data: Partial<Transactions>) {
-        try{
-            const airtimeRecharge = this.transRepo.create(data)
-            const prefix = 'REF';
-            const timestamp = Date.now().toString();
-            const fillString = uuidv4();
-            const randomNum = Math.floor(Math.random() * 10000).toString().padStart(50, fillString);
-            const result =  `${prefix}-${timestamp}-${randomNum}`
+        const prefix = 'REF';
+        const timestamp = Date.now().toString();
+        const fillString = uuidv4();
+        const randomNum = Math.floor(Math.random() * 10000).toString().padStart(50, fillString);
+        const result =  `${prefix}-${timestamp}-${randomNum}`
 
-            data.transactionRef = result;
-            return await this.transRepo.save(airtimeRecharge)
-        }catch(err){
-            throw new InternalServerErrorException("Something went wrong, Airtime Recharge couldn't process")
-        }
+        data.transactionRef = result;
+        return await this.transRepo.save(data)
     }
 
 

@@ -27,7 +27,7 @@ export declare class TransactionController {
     recharge(createAirtimeDto: CreateAirtimeDto, userPinDto: UserPinDto, access_token: string, payload: any): Promise<{
         statusCode: number;
         message: string;
-        data: import("../Entities/transactionEntity.entity").Transactions;
+        data: Partial<import("../Entities/transactionEntity.entity").Transactions> & import("../Entities/transactionEntity.entity").Transactions;
     }>;
     singleTransaction(access_token: string, payload: any): Promise<{
         statusCode: number;
