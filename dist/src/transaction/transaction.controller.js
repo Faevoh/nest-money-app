@@ -23,12 +23,14 @@ const transfer_1 = require("../DTO/transfer");
 const bankpin_service_1 = require("../bankpin/bankpin.service");
 const deposit_1 = require("../DTO/deposit");
 const createAirtime_1 = require("../DTO/createAirtime");
+const user_service_1 = require("../user/user.service");
 let TransactionController = class TransactionController {
-    constructor(transactionService, walletService, jwtService, pinService) {
+    constructor(transactionService, walletService, jwtService, pinService, userService) {
         this.transactionService = transactionService;
         this.walletService = walletService;
         this.jwtService = jwtService;
         this.pinService = pinService;
+        this.userService = userService;
     }
     async transferTransaction(transferDto, userPinDto, access_token, payload) {
         try {
@@ -56,6 +58,8 @@ let TransactionController = class TransactionController {
             }
             const recieverAccount = transferDto.accountNumber;
             const recieverdetails = await this.walletService.findByUserAcc(recieverAccount);
+            const recieverData = await this.userService.findById(recieverdetails.userId);
+            console.log("recieverData", recieverData);
             walletdata.accountBalance -= transferDto.amount;
             recieverdetails.accountBalance += transferDto.amount;
             const savedWallet = await this.walletService.saveWallet(walletdata);
@@ -66,7 +70,7 @@ let TransactionController = class TransactionController {
             delete maindata.expiryDate;
             delete maindata.phoneNumber;
             delete maindata.serviceNetwork;
-            return { statusCode: 201, message: "Transfer successful" };
+            return { statusCode: 201, message: "Transfer successful", data: maindata };
         }
         catch (err) {
             if (err instanceof common_1.UnauthorizedException) {
@@ -106,7 +110,7 @@ let TransactionController = class TransactionController {
             delete maindata.expiryDate;
             delete maindata.phoneNumber;
             delete maindata.serviceNetwork;
-            return { statusCode: 201, message: "Deposit successful" };
+            return { statusCode: 201, message: "Deposit successful", data: maindata };
         }
         catch (err) {
             if (err instanceof common_1.UnauthorizedException) {
@@ -153,7 +157,7 @@ let TransactionController = class TransactionController {
             delete newRecharge.expiryDate;
             delete newRecharge.payMethod;
             delete newRecharge.narration;
-            return { statusCode: 201, message: "Successful Recharge" };
+            return { statusCode: 201, message: "Successful Recharge", data: newRecharge };
         }
         catch (err) {
             if (err instanceof common_1.UnauthorizedException) {
@@ -216,7 +220,7 @@ __decorate([
 ], TransactionController.prototype, "singleTransaction", null);
 TransactionController = __decorate([
     (0, common_1.Controller)('transaction'),
-    __metadata("design:paramtypes", [transaction_service_1.TransactionService, wallet_service_1.WalletService, jwt_1.JwtService, bankpin_service_1.BankpinService])
+    __metadata("design:paramtypes", [transaction_service_1.TransactionService, wallet_service_1.WalletService, jwt_1.JwtService, bankpin_service_1.BankpinService, user_service_1.UserService])
 ], TransactionController);
 exports.TransactionController = TransactionController;
 //# sourceMappingURL=transaction.controller.js.map

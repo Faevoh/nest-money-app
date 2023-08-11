@@ -39,8 +39,23 @@ export declare class UserController {
         statusCode: number;
         message: string;
         data: {
-            userObject: import("../Entities/userEntity.entity").User;
-            trans: import("../Entities/transactionEntity.entity").Transactions;
+            id: number;
+            firstName: string;
+            lastName: string;
+            email: string;
+            accountType: "Business" | "Personal";
+            status: boolean;
+            accountName: string;
+            phoneNumber: string;
+            sex: string;
+            imageurl?: string;
+            verified: boolean;
+            createDate: Date;
+            updateDate: Date;
+            bankPin: import("../Entities/pinCreation").BankPin;
+            compliance: import("../Entities/compEntity.entity").Compliances;
+            wallet: import("../Entities/walletEntity.entity").Wallet;
+            transaction: import("../Entities/transactionEntity.entity").Transactions;
         };
     }>;
     updateUser(access_token: string, updateUserDto: UpdateUserDto, payload: any, file: Express.Multer.File): Promise<{

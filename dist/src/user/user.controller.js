@@ -92,19 +92,8 @@ let UserController = class UserController {
             }
             const id = tokenDecode.sub;
             const [userObject] = await this.userService.findIdWithRelations(id);
-            const trans = userObject.transaction;
-            if (trans.CVV || trans.accountNumber || trans.cardNumber || trans.expiryDate || trans.narration === null || trans.phoneNumber === null || trans.serviceNetwork === null) {
-                delete trans.CVV;
-                delete trans.accountNumber;
-                delete trans.cardNumber;
-                delete trans.expiryDate;
-                delete trans.narration;
-                delete trans.phoneNumber;
-                delete trans.serviceNetwork;
-            }
             const { resetToken, resetTokenExpiry, verifyToken, password } = userObject, others = __rest(userObject, ["resetToken", "resetTokenExpiry", "verifyToken", "password"]);
-            const data = { userObject, trans };
-            return { statusCode: 200, message: `success, id ${id}`, data: data };
+            return { statusCode: 200, message: `success, id ${id}`, data: others };
         }
         catch (err) {
             if (err instanceof common_1.NotFoundException) {

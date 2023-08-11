@@ -8,10 +8,11 @@ import { TransferDto } from 'src/DTO/transfer';
 import { BankpinService } from 'src/bankpin/bankpin.service';
 import { DepositDto } from 'src/DTO/deposit';
 import { CreateAirtimeDto } from 'src/DTO/createAirtime';
+import { UserService } from 'src/user/user.service';
 
 @Controller('transaction')
 export class TransactionController {
-    constructor(private transactionService: TransactionService, private walletService: WalletService, private jwtService: JwtService, private pinService: BankpinService) {}
+    constructor(private transactionService: TransactionService, private walletService: WalletService, private jwtService: JwtService, private pinService: BankpinService, private userService: UserService) {}
 
     @Post("/transfer")
     async transferTransaction(@Body(ValidationPipe) transferDto: TransferDto, @Body(ValidationPipe) userPinDto: UserPinDto, @Query("access_token") access_token: string, payload) {
@@ -46,6 +47,9 @@ export class TransactionController {
 
         const recieverAccount = transferDto.accountNumber
         const recieverdetails = await this.walletService.findByUserAcc(recieverAccount)
+        const recieverData = await this.userService.findById( recieverdetails.userId)
+
+        console.log("recieverData",recieverData)
 
         walletdata.accountBalance -= transferDto.amount
         recieverdetails.accountBalance += transferDto.amount
@@ -61,7 +65,7 @@ export class TransactionController {
         delete maindata.phoneNumber
         delete maindata.serviceNetwork
 
-        return{statusCode: 201, message: "Transfer successful"}
+        return{statusCode: 201, message: "Transfer successful", data: maindata}
         
        }catch(err){
         if(err instanceof UnauthorizedException) {
@@ -112,7 +116,7 @@ export class TransactionController {
         delete maindata.phoneNumber
         delete maindata.serviceNetwork
 
-        return{statusCode: 201, message: "Deposit successful"}
+        return{statusCode: 201, message: "Deposit successful", data: maindata}
         
        }catch(err){
         // console.log(err.message)
@@ -174,7 +178,7 @@ export class TransactionController {
             delete newRecharge.payMethod
             delete newRecharge.narration
 
-            return {statusCode: 201, message: "Successful Recharge"}
+            return {statusCode: 201, message: "Successful Recharge", data: newRecharge}
         }catch(err){
             if(err instanceof UnauthorizedException) {
             throw new UnauthorizedException(err.message)
