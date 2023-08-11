@@ -39,7 +39,19 @@ export declare class UserController {
         statusCode: number;
         message: string;
         data: {
-            user: void;
+            user: {
+                id: number;
+                firstName: string;
+                lastName: string;
+                email: string;
+                accountType: "Business" | "Personal";
+                accountName: string;
+                phoneNumber: string;
+                sex: string;
+                imageurl: string;
+                verified: boolean;
+                verifyToken: string;
+            };
             compliance: import("../Entities/compEntity.entity").Compliances;
             wallet: import("../Entities/walletEntity.entity").Wallet;
             transaction: void;

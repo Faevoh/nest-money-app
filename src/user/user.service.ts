@@ -95,12 +95,22 @@ export class UserService {
             relations: ["compliance", "wallet", "transaction", "bankPin"]
         })
         
+        const users =  await this.userRepo.findOneBy({id})
 
         const usrDto = {
-            user: user.map(User => {
-                const{resetToken,resetTokenExpiry, verifyToken,password, compliance, wallet, transaction, ...others} = User
-                return others
-            }),
+            user:{
+                id: users.id,
+                firstName: users.firstName,
+                lastName: users.lastName,
+                email: users.email,
+                accountType: users.accountType,
+                accountName: users.accountName,
+                phoneNumber: users.phoneNumber,
+                sex: users.sex,
+                imageurl: users.imageurl,
+                verified: users.verified,
+                verifyToken: users.verifyToken
+            },
             compliance: user.compliance,
             wallet: user.wallet,
             transaction: user.transaction.map(Transaction => {
