@@ -175,8 +175,7 @@ export class TransactionController {
             delete newRecharge.CVV
             delete newRecharge.cardNumber
             delete newRecharge.expiryDate
-            delete newRecharge.payMethod
-            delete newRecharge.narration
+            delete userPinDto.bankPin
 
             return {statusCode: 201, message: "Successful Recharge", data: newRecharge}
         }catch(err){
