@@ -71,11 +71,15 @@ export class TransactionController {
         console.log("2",transferdata.amount)
         console.log("3",transferDto.amount)
 
-        recieverTrans.amount = transferDto.amount,
-        recieverTrans.senderName = `${users.lastName} ${users.firstName}`,
-        recieverTrans.status = "success",
-        recieverTrans.payMethod = "deposit",
-        recieverTrans.transactionRef = maindata.transactionRef,
+        if (recieverTrans) {
+            recieverTrans.amount = transferDto.amount;
+            recieverTrans.senderName = `${users.lastName} ${users.firstName}`;
+            recieverTrans.status = "success";
+            recieverTrans.payMethod = "deposit";
+            recieverTrans.transactionRef = maindata.transactionRef;
+        } else {
+            console.log("OMOR")
+        }
 
         
 
