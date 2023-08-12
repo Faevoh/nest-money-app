@@ -50,7 +50,7 @@ export class TransactionController {
         const recieverAccount = transferDto.accountNumber
         const recieverdetails = await this.walletService.findByUserAcc(recieverAccount)
         const recieverData = await this.userService.findById( recieverdetails.userId)
-        const recieverTrans = await this.transactionService.findByUserId(recieverData.id)
+        const recieverTrans = await this.transactionService.findByUserId( recieverData.id)
 
         // console.log("recieverData",recieverData)
 
@@ -71,11 +71,13 @@ export class TransactionController {
         console.log("2",transferdata.amount)
         console.log("3",transferDto.amount)
 
-        recieverTrans.amount = transferDto.amount
-        recieverTrans.senderName = `${users.lastName} ${users.firstName}`
-        recieverTrans.status = "success"
-        recieverTrans.payMethod = "deposit"
-        recieverTrans.transactionRef = maindata.transactionRef
+        recieverTrans.amount = transferDto.amount,
+        recieverTrans.senderName = `${users.lastName} ${users.firstName}`,
+        recieverTrans.status = "success",
+        recieverTrans.payMethod = "deposit",
+        recieverTrans.transactionRef = maindata.transactionRef,
+
+        
 
         console.log("1",recieverTrans.amount)
 
