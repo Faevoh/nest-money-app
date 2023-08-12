@@ -61,6 +61,8 @@ let TransactionController = class TransactionController {
             const recieverdetails = await this.walletService.findByUserAcc(recieverAccount);
             const recieverData = await this.userService.findById(recieverdetails.userId);
             const recieverTrans = await this.transactionService.findByUserId(recieverData.id);
+            console.log("a", recieverTrans);
+            console.log("1", recieverTrans.amount);
             walletdata.accountBalance -= transferDto.amount;
             recieverdetails.accountBalance += transferDto.amount;
             const savedWallet = await this.walletService.saveWallet(walletdata);
@@ -83,7 +85,6 @@ let TransactionController = class TransactionController {
             else {
                 console.log("OMOR");
             }
-            console.log("1", recieverTrans.amount);
             return { statusCode: 201, message: "Transfer successful" };
         }
         catch (err) {

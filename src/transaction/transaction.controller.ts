@@ -51,6 +51,8 @@ export class TransactionController {
         const recieverdetails = await this.walletService.findByUserAcc(recieverAccount)
         const recieverData = await this.userService.findById( recieverdetails.userId)
         const recieverTrans = await this.transactionService.findByUserId( recieverData.id)
+        console.log("a",recieverTrans)
+        console.log("1",recieverTrans.amount)
 
         // console.log("recieverData",recieverData)
 
@@ -80,10 +82,6 @@ export class TransactionController {
         } else {
             console.log("OMOR")
         }
-
-        
-
-        console.log("1",recieverTrans.amount)
 
         // data: maindata}
 
