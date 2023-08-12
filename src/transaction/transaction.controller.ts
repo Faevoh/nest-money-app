@@ -69,8 +69,8 @@ export class TransactionController {
 
         console.log("1",recieverData.transaction.amount)
         console.log("2",maindata.amount)
-        
-        recieverData.transaction.amount = maindata.amount
+
+        recieverData.transaction.amount = transferdata.amount
         recieverData.transaction.senderName = `${users.lastName} ${users.firstName}`
         recieverData.transaction.status = "success"
         recieverData.transaction.payMethod = "deposit"
