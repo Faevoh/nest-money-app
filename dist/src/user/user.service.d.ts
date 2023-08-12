@@ -27,7 +27,7 @@ export declare class UserService {
             firstName: string;
             lastName: string;
             email: string;
-            accountType: "Business" | "Personal";
+            accountType: "Personal" | "Business";
             accountName: string;
             phoneNumber: string;
             sex: string;

@@ -45,6 +45,7 @@ let TransactionController = class TransactionController {
                 throw new common_1.UnauthorizedException("Token has expired");
             }
             const userid = tokenDecode.sub;
+            const users = await this.userService.findById(userid);
             const { bankPin } = userPinDto;
             const user = await this.pinService.findByUserId(userid);
             const pinDecode = await bcrypt.compare(bankPin, user.bankPin);
@@ -59,7 +60,6 @@ let TransactionController = class TransactionController {
             const recieverAccount = transferDto.accountNumber;
             const recieverdetails = await this.walletService.findByUserAcc(recieverAccount);
             const recieverData = await this.userService.findById(recieverdetails.userId);
-            console.log("recieverData", recieverData);
             walletdata.accountBalance -= transferDto.amount;
             recieverdetails.accountBalance += transferDto.amount;
             const savedWallet = await this.walletService.saveWallet(walletdata);
@@ -70,6 +70,10 @@ let TransactionController = class TransactionController {
             delete maindata.expiryDate;
             delete maindata.phoneNumber;
             delete maindata.serviceNetwork;
+            recieverData.transaction.amount = maindata.amount;
+            recieverData.transaction.senderName = `${users.lastName} ${users.firstName}`;
+            recieverData.transaction.status = "success";
+            recieverData.transaction.payMethod = "deposit";
             return { statusCode: 201, message: "Transfer successful" };
         }
         catch (err) {

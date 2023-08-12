@@ -14,6 +14,9 @@ const typeorm_1 = require("typeorm");
 const userEntity_entity_1 = require("./userEntity.entity");
 const walletEntity_entity_1 = require("./walletEntity.entity");
 let Transactions = class Transactions {
+    push() {
+        throw new Error('Method not implemented.');
+    }
     map(arg0) {
         throw new Error('Method not implemented.');
     }
@@ -46,6 +49,10 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Transactions.prototype, "expiryDate", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Transactions.prototype, "senderName", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)

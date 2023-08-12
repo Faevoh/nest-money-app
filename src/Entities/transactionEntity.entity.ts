@@ -4,6 +4,9 @@ import { Wallet } from "./walletEntity.entity";
 
 @Entity()
 export class Transactions {
+    push() {
+        throw new Error('Method not implemented.');
+    }
     map(arg0: (Transaction: any) => void) {
         throw new Error('Method not implemented.');
     }
@@ -27,6 +30,9 @@ export class Transactions {
 
     @Column({nullable: true})
     expiryDate: string;
+
+    @Column({nullable: true})
+    senderName: string;
 
     @Column({nullable: true})
     CVV: string;

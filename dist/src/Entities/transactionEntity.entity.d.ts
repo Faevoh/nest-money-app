@@ -1,6 +1,7 @@
 import { User } from "./userEntity.entity";
 import { Wallet } from "./walletEntity.entity";
 export declare class Transactions {
+    push(): void;
     map(arg0: (Transaction: any) => void): void;
     id: number;
     accountNumber: string;
@@ -9,6 +10,7 @@ export declare class Transactions {
     transactionRef: string;
     cardNumber: string;
     expiryDate: string;
+    senderName: string;
     CVV: string;
     phoneNumber: string;
     serviceNetwork: string;

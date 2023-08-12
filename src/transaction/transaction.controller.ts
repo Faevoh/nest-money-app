@@ -26,6 +26,8 @@ export class TransactionController {
         }      
         const userid = tokenDecode.sub;
 
+        const users = await this.userService.findById(userid)
+
         const {bankPin} = userPinDto;
         const user = await this.pinService.findByUserId(userid)
         const pinDecode = await bcrypt.compare(bankPin, user.bankPin)
@@ -49,7 +51,7 @@ export class TransactionController {
         const recieverdetails = await this.walletService.findByUserAcc(recieverAccount)
         const recieverData = await this.userService.findById( recieverdetails.userId)
 
-        console.log("recieverData",recieverData)
+        // console.log("recieverData",recieverData)
 
         walletdata.accountBalance -= transferDto.amount
         recieverdetails.accountBalance += transferDto.amount
@@ -64,6 +66,11 @@ export class TransactionController {
         delete maindata.expiryDate
         delete maindata.phoneNumber
         delete maindata.serviceNetwork
+
+        recieverData.transaction.amount = maindata.amount
+        recieverData.transaction.senderName = `${users.lastName} ${users.firstName}`
+        recieverData.transaction.status = "success"
+        recieverData.transaction.payMethod = "deposit"
 
         // data: maindata}
 
