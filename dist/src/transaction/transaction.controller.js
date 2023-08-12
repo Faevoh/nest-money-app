@@ -70,13 +70,14 @@ let TransactionController = class TransactionController {
             delete maindata.expiryDate;
             delete maindata.phoneNumber;
             delete maindata.serviceNetwork;
-            console.log("1", recieverData.transaction.amount);
-            console.log("2", maindata.amount);
-            recieverData.transaction.amount = transferdata.amount;
+            console.log("2", transferdata.amount);
+            console.log("3", transferDto.amount);
+            recieverData.transaction.amount = transferDto.amount;
             recieverData.transaction.senderName = `${users.lastName} ${users.firstName}`;
             recieverData.transaction.status = "success";
             recieverData.transaction.payMethod = "deposit";
             recieverData.transaction.transactionRef = maindata.transactionRef;
+            console.log("1", recieverData.transaction.amount);
             return { statusCode: 201, message: "Transfer successful" };
         }
         catch (err) {
