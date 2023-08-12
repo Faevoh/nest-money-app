@@ -20,7 +20,7 @@ export class ComplianceController {
             if (file) {
                 const uploadedImage = await this.cloudinaryService.uploadImage(file);
                 createCompDto.imageUrl = uploadedImage.secure_url;
-                console.log("2",createCompDto.imageUrl)
+                // console.log("2",createCompDto.imageUrl)
             }
     
             const user = await this.jwtService.decode(access_token);
@@ -37,7 +37,7 @@ export class ComplianceController {
             // console.log(data);
             return data;
         }catch(err){
-            console.log(err)
+            // console.log(err)
             if(err instanceof NotFoundException) {
                 throw new NotFoundException(err.message)
             }

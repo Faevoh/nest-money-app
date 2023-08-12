@@ -70,7 +70,7 @@ let TransactionController = class TransactionController {
             delete maindata.expiryDate;
             delete maindata.phoneNumber;
             delete maindata.serviceNetwork;
-            return { statusCode: 201, message: "Transfer successful", data: maindata };
+            return { statusCode: 201, message: "Transfer successful" };
         }
         catch (err) {
             if (err instanceof common_1.UnauthorizedException) {
@@ -110,7 +110,7 @@ let TransactionController = class TransactionController {
             delete maindata.expiryDate;
             delete maindata.phoneNumber;
             delete maindata.serviceNetwork;
-            return { statusCode: 201, message: "Deposit successful", data: maindata };
+            return { statusCode: 201, message: "Deposit successful" };
         }
         catch (err) {
             if (err instanceof common_1.UnauthorizedException) {
@@ -156,7 +156,7 @@ let TransactionController = class TransactionController {
             delete newRecharge.cardNumber;
             delete newRecharge.expiryDate;
             delete userPinDto.bankPin;
-            return { statusCode: 201, message: "Successful Recharge", data: newRecharge };
+            return { statusCode: 201, message: "Successful Recharge" };
         }
         catch (err) {
             if (err instanceof common_1.UnauthorizedException) {

@@ -45,11 +45,11 @@ export class ComplianceService {
             }
             const newComp = this.compRepo.create(comp)
             newComp.imageUrl = createCompDto.imageUrl;
-            console.log(newComp.imageUrl)
+            // console.log(newComp.imageUrl)
             const result = await this.compRepo.save(newComp)
             return {statusCode: 201, message: "Compliance Added", data: result}
         }catch(err) {
-            console.log(err)
+            // console.log(err)
             if(err instanceof BadRequestException){
                 throw new BadRequestException(err.message)
             }

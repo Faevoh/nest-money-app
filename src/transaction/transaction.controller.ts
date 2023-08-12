@@ -65,7 +65,9 @@ export class TransactionController {
         delete maindata.phoneNumber
         delete maindata.serviceNetwork
 
-        return{statusCode: 201, message: "Transfer successful", data: maindata}
+        // data: maindata}
+
+        return{statusCode: 201, message: "Transfer successful"}
         
        }catch(err){
         if(err instanceof UnauthorizedException) {
@@ -116,7 +118,9 @@ export class TransactionController {
         delete maindata.phoneNumber
         delete maindata.serviceNetwork
 
-        return{statusCode: 201, message: "Deposit successful", data: maindata}
+        // data: maindata
+
+        return{statusCode: 201, message: "Deposit successful"}
         
        }catch(err){
         // console.log(err.message)
@@ -177,7 +181,9 @@ export class TransactionController {
             delete newRecharge.expiryDate
             delete userPinDto.bankPin
 
-            return {statusCode: 201, message: "Successful Recharge", data: newRecharge}
+            // data: newRecharge
+
+            return {statusCode: 201, message: "Successful Recharge"}
         }catch(err){
             if(err instanceof UnauthorizedException) {
             throw new UnauthorizedException(err.message)
