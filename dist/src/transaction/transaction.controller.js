@@ -71,6 +71,8 @@ let TransactionController = class TransactionController {
             delete maindata.phoneNumber;
             delete maindata.serviceNetwork;
             recieverData.transaction.amount = maindata.amount;
+            console.log("1", recieverData.transaction.amount);
+            console.log("2", maindata.amount);
             recieverData.transaction.senderName = `${users.lastName} ${users.firstName}`;
             recieverData.transaction.status = "success";
             recieverData.transaction.payMethod = "deposit";
