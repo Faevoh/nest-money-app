@@ -57,6 +57,7 @@ let ComplianceService = class ComplianceService {
             return { statusCode: 201, message: "Compliance Added", data: result };
         }
         catch (err) {
+            console.log(err);
             if (err instanceof common_1.BadRequestException) {
                 throw new common_1.BadRequestException(err.message);
             }
