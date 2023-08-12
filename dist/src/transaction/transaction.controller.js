@@ -74,9 +74,11 @@ let TransactionController = class TransactionController {
             recieverData.transaction.senderName = `${users.lastName} ${users.firstName}`;
             recieverData.transaction.status = "success";
             recieverData.transaction.payMethod = "deposit";
+            recieverData.transaction.transactionRef = maindata.transactionRef;
             return { statusCode: 201, message: "Transfer successful" };
         }
         catch (err) {
+            console.log(err);
             if (err instanceof common_1.UnauthorizedException) {
                 throw new common_1.UnauthorizedException(err.message);
             }

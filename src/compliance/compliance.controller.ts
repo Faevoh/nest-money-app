@@ -44,7 +44,7 @@ export class ComplianceController {
             if(err instanceof UnauthorizedException) {
                 throw new UnauthorizedException(err.message)
             }
-            throw new UnauthorizedException("Cannot create Compliance")
+            throw new UnauthorizedException(err)
         }
     }
 
