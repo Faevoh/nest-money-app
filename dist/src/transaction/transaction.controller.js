@@ -60,8 +60,9 @@ let TransactionController = class TransactionController {
             const recieverAccount = transferDto.accountNumber;
             const recieverdetails = await this.walletService.findByUserAcc(recieverAccount);
             const recieverData = await this.userService.findById(recieverdetails.userId);
+            console.log("a", recieverData);
             const recieverTrans = await this.transactionService.findByUserId(recieverData.id);
-            console.log("a", recieverTrans);
+            console.log("b", recieverTrans);
             console.log("1", recieverTrans.amount);
             walletdata.accountBalance -= transferDto.amount;
             recieverdetails.accountBalance += transferDto.amount;
@@ -75,16 +76,11 @@ let TransactionController = class TransactionController {
             delete maindata.serviceNetwork;
             console.log("2", transferdata.amount);
             console.log("3", transferDto.amount);
-            if (recieverTrans) {
-                recieverTrans.amount = transferDto.amount;
-                recieverTrans.senderName = `${users.lastName} ${users.firstName}`;
-                recieverTrans.status = "success";
-                recieverTrans.payMethod = "deposit";
-                recieverTrans.transactionRef = maindata.transactionRef;
-            }
-            else {
-                console.log("OMOR");
-            }
+            recieverTrans.amount = transferDto.amount;
+            recieverTrans.senderName = `${users.lastName} ${users.firstName}`;
+            recieverTrans.status = "success";
+            recieverTrans.payMethod = "deposit";
+            recieverTrans.transactionRef = maindata.transactionRef;
             return { statusCode: 201, message: "Transfer successful" };
         }
         catch (err) {
