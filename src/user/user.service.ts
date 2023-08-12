@@ -116,7 +116,8 @@ export class UserService {
             transaction: user.transaction.map(Transaction => {
                 const {CVV, accountNumber, cardNumber, expiryDate, phoneNumber, serviceNetwork, ...others} = Transaction
                 return others
-            })
+            }),
+            bankPin: user.bankPin
         }
        
         return usrDto

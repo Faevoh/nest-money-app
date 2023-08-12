@@ -120,7 +120,8 @@ let UserService = class UserService {
             transaction: user.transaction.map(Transaction => {
                 const { CVV, accountNumber, cardNumber, expiryDate, phoneNumber, serviceNetwork } = Transaction, others = __rest(Transaction, ["CVV", "accountNumber", "cardNumber", "expiryDate", "phoneNumber", "serviceNetwork"]);
                 return others;
-            })
+            }),
+            bankPin: user.bankPin
         };
         return usrDto;
     }

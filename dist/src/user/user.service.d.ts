@@ -7,6 +7,7 @@ import { Wallet } from 'src/Entities/walletEntity.entity';
 import { WalletService } from 'src/wallet/wallet.service';
 import { accountGenerator } from "../auth/generator.service";
 import { MailService } from 'src/mail/mail.service';
+import { BankPin } from 'src/Entities/pinCreation';
 export declare class UserService {
     private userRepo;
     private walletService;
@@ -37,6 +38,7 @@ export declare class UserService {
         compliance: import("../Entities/compEntity.entity").Compliances;
         wallet: Wallet;
         transaction: void;
+        bankPin: BankPin;
     }>;
     findByAccountType(accountType: any): Promise<User>;
     findByEmail(email: string): Promise<User>;

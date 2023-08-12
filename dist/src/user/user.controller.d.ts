@@ -55,6 +55,7 @@ export declare class UserController {
             compliance: import("../Entities/compEntity.entity").Compliances;
             wallet: import("../Entities/walletEntity.entity").Wallet;
             transaction: void;
+            bankPin: import("../Entities/pinCreation").BankPin;
         };
     }>;
     updateUser(access_token: string, updateUserDto: UpdateUserDto, payload: any, file: Express.Multer.File): Promise<{
