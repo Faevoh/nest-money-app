@@ -33,6 +33,7 @@ let ComplianceController = class ComplianceController {
             if (file) {
                 const uploadedImage = await this.cloudinaryService.uploadImage(file);
                 createCompDto.imageUrl = uploadedImage.secure_url;
+                console.log("2", createCompDto.imageUrl);
             }
             const user = await this.jwtService.decode(access_token);
             if (!user) {
