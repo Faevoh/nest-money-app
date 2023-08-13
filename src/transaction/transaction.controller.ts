@@ -73,7 +73,7 @@ export class TransactionController {
             payMethod: "deposit",
             narration: transferDto.narration
         })
-
+        await this,this.userService.addToUserTransaction(recievrTransaction, recieverData.id)
 
         // data: maindata}
 
