@@ -24,5 +24,5 @@ export declare class User {
     bankPin: BankPin;
     compliance: Compliances;
     wallet: Wallet;
-    transaction: Transactions;
+    transaction: Transactions[];
 }

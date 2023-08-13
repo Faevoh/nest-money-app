@@ -72,6 +72,6 @@ export class User {
   wallet: Wallet;
 
   @OneToMany( () => Transactions, (transaction) => transaction.user)
-  transaction: Transactions;
+  transaction: Transactions[];
 
 }

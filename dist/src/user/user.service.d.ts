@@ -8,6 +8,7 @@ import { WalletService } from 'src/wallet/wallet.service';
 import { accountGenerator } from "../auth/generator.service";
 import { MailService } from 'src/mail/mail.service';
 import { BankPin } from 'src/Entities/pinCreation';
+import { Transactions } from 'src/Entities/transactionEntity.entity';
 export declare class UserService {
     private userRepo;
     private walletService;
@@ -37,7 +38,20 @@ export declare class UserService {
         };
         compliance: import("../Entities/compEntity.entity").Compliances;
         wallet: Wallet;
-        transaction: void;
+        transaction: {
+            id: number;
+            amount: number;
+            narration: string;
+            transactionRef: string;
+            senderName: string;
+            status: string;
+            payMethod: string;
+            createDate: Date;
+            updateDate: Date;
+            userId: number;
+            user: User;
+            wallet: Wallet;
+        }[];
         bankPin: BankPin;
     }>;
     findByAccountType(accountType: any): Promise<User>;
@@ -46,6 +60,7 @@ export declare class UserService {
     update(id: number, dataToUpdate: Partial<User>): Promise<User>;
     findByToken(resetToken: string): Promise<User>;
     allUser(): Promise<User[]>;
+    addToUserTransaction(transaction: Transactions, id: number): Promise<void>;
     updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User>;
     findByVerifyToken(verifyToken: string): Promise<User>;
     updateStatus(id: number, verified: boolean): Promise<import("typeorm").UpdateResult>;

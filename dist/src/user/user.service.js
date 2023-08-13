@@ -150,6 +150,16 @@ let UserService = class UserService {
             relations: ["compliance", "wallet", "transaction", "bankPin"]
         });
     }
+    async addToUserTransaction(transaction, id) {
+        const user = await this.userRepo.findOne({
+            where: { id },
+            relations: ["transaction"]
+        });
+        if (user) {
+            user.transaction.push(transaction);
+            await this.userRepo.save(user);
+        }
+    }
     async updateUser(id, updateUserDto) {
         try {
             const userUpdate = await this.userRepo.findOneBy({ id });

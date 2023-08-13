@@ -104,7 +104,7 @@ __decorate([
 ], User.prototype, "wallet", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => transactionEntity_entity_1.Transactions, (transaction) => transaction.user),
-    __metadata("design:type", transactionEntity_entity_1.Transactions)
+    __metadata("design:type", Array)
 ], User.prototype, "transaction", void 0);
 User = __decorate([
     (0, typeorm_1.Entity)("users")

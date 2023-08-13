@@ -13,6 +13,8 @@ import {accountGenerator} from "../auth/generator.service"
 import { MailService } from 'src/mail/mail.service';
 import { BankPin } from 'src/Entities/pinCreation';
 import { UserPinDto } from 'src/DTO/pindto';
+import { async } from 'rxjs';
+import { Transactions } from 'src/Entities/transactionEntity.entity';
 @Injectable()
 export class UserService {
     constructor(@InjectRepository(User) private userRepo: Repository<User>, private walletService: WalletService, private jwtService: JwtService, private acctService: accountGenerator, private mailService: MailService,) {}
@@ -153,6 +155,18 @@ export class UserService {
         return await this.userRepo.find({
             relations: ["compliance", "wallet", "transaction", "bankPin"]
         })
+    }
+
+    async addToUserTransaction(transaction: Transactions, id: number){
+        const user =  await this.userRepo.findOne({
+            where:{id},
+            relations: [ "transaction"]
+        })
+    
+        if (user) {
+          user.transaction.push(transaction);
+          await this.userRepo.save(user);
+        }
     }
 
     async updateUser(id: number, updateUserDto: UpdateUserDto) {

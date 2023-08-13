@@ -54,7 +54,20 @@ export declare class UserController {
             };
             compliance: import("../Entities/compEntity.entity").Compliances;
             wallet: import("../Entities/walletEntity.entity").Wallet;
-            transaction: void;
+            transaction: {
+                id: number;
+                amount: number;
+                narration: string;
+                transactionRef: string;
+                senderName: string;
+                status: string;
+                payMethod: string;
+                createDate: Date;
+                updateDate: Date;
+                userId: number;
+                user: import("../Entities/userEntity.entity").User;
+                wallet: import("../Entities/walletEntity.entity").Wallet;
+            }[];
             bankPin: import("../Entities/pinCreation").BankPin;
         };
     }>;
