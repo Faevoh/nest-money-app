@@ -8,5 +8,5 @@ export declare class TransactionService {
     transaction(data: Partial<Transactions>): Promise<Partial<Transactions> & Transactions>;
     recharge(data: Partial<Transactions>): Promise<Partial<Transactions> & Transactions>;
     allTransactions(): Promise<Transactions[]>;
-    findByUserId(userId: number): Promise<Transactions>;
+    findByUserId(transactionRef: string): Promise<Transactions>;
 }

@@ -45,8 +45,8 @@ let TransactionService = class TransactionService {
     async allTransactions() {
         return await this.transRepo.find();
     }
-    async findByUserId(userId) {
-        return await this.transRepo.findOneBy({ userId });
+    async findByUserId(transactionRef) {
+        return await this.transRepo.findOneBy({ transactionRef });
     }
 };
 TransactionService = __decorate([

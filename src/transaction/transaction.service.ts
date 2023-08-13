@@ -42,7 +42,7 @@ export class TransactionService {
         return await this.transRepo.find();
     }
 
-    async findByUserId(userId: number) {
-        return await this.transRepo.findOneBy({userId})
+    async findByUserId(transactionRef: string) {
+        return await this.transRepo.findOneBy({transactionRef})
     }
 }

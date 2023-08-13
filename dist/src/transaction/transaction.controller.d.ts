@@ -26,7 +26,7 @@ export declare class TransactionController {
         statusCode: number;
         message: string;
     }>;
-    singleTransaction(access_token: string, payload: any): Promise<{
+    singleTransaction(access_token: string, payload: any, transactionRef: string): Promise<{
         statusCode: number;
         message: string;
         data: import("../Entities/transactionEntity.entity").Transactions;

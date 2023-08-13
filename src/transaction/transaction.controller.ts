@@ -207,7 +207,7 @@ export class TransactionController {
     }
 
     @Get()
-    async singleTransaction(@Query("access_token") access_token: string, payload) {
+    async singleTransaction(@Query("access_token") access_token: string, payload, @Query("transactionRef") transactionRef: string) {
 
         const tokenDecode = this.jwtService.decode(access_token);
         if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
@@ -217,7 +217,7 @@ export class TransactionController {
         throw new UnauthorizedException("Token has expired");
         }      
         const userid = tokenDecode.sub;
-        const data = await this.transactionService.findByUserId(userid)
+        const data = await this.transactionService.findByUserId(transactionRef)
 
         return {statusCode: 200, message: "Success", data: data}
     }

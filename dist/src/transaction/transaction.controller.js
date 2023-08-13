@@ -178,7 +178,7 @@ let TransactionController = class TransactionController {
             throw new common_1.BadRequestException("Could not Process Airtime");
         }
     }
-    async singleTransaction(access_token, payload) {
+    async singleTransaction(access_token, payload, transactionRef) {
         const tokenDecode = this.jwtService.decode(access_token);
         if (!tokenDecode) {
             throw new common_1.NotFoundException("Invalid Token");
@@ -190,7 +190,7 @@ let TransactionController = class TransactionController {
             throw new common_1.UnauthorizedException("Token has expired");
         }
         const userid = tokenDecode.sub;
-        const data = await this.transactionService.findByUserId(userid);
+        const data = await this.transactionService.findByUserId(transactionRef);
         return { statusCode: 200, message: "Success", data: data };
     }
 };
@@ -223,8 +223,9 @@ __decorate([
 __decorate([
     (0, common_1.Get)(),
     __param(0, (0, common_1.Query)("access_token")),
+    __param(2, (0, common_1.Query)("transactionRef")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String, Object, String]),
     __metadata("design:returntype", Promise)
 ], TransactionController.prototype, "singleTransaction", null);
 TransactionController = __decorate([
