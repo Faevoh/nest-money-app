@@ -219,6 +219,33 @@ export class TransactionController {
         const userid = tokenDecode.sub;
         const data = await this.transactionService.findByUserId(transactionRef)
 
+        if(data.payMethod === "transfer"){
+            delete data.CVV
+            delete data.cardNumber
+            delete data.expiryDate
+            delete data.phoneNumber
+            delete data.serviceNetwork
+        }
+
+        if(data.payMethod === "airtime"){
+            delete data.CVV
+            delete data.cardNumber
+            delete data.expiryDate
+            delete data.senderName
+            delete data.accountNumber
+            delete data.narration
+        }
+
+        if(data.payMethod === "deposit"){
+            delete data.accountNumber
+            delete data.narration
+            delete data.phoneNumber
+            delete data.serviceNetwork
+            delete data.CVV
+            delete data.cardNumber
+            delete data.expiryDate
+        }
+
         return {statusCode: 200, message: "Success", data: data}
     }
     
