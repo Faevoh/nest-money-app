@@ -4,8 +4,7 @@ export class CreateCompDto {
     @IsNotEmpty()
     BVN: string;
 
-    @IsNotEmpty()
-    NIN: string;
+    NIN ?: string;
 
     @IsNotEmpty()
     state: string;
@@ -23,6 +22,10 @@ export class CreateCompDto {
     address: string;
 
     imageUrl ?: string;
+
+    certUrl ?: string;
+
+    memoUrl ?: string;
 
     businessName ?: string;
 

@@ -53,6 +53,8 @@ let ComplianceService = class ComplianceService {
             }
             const newComp = this.compRepo.create(comp);
             newComp.imageUrl = createCompDto.imageUrl;
+            newComp.certUrl = createCompDto.certUrl;
+            newComp.memoUrl = createCompDto.imageUrl;
             const result = await this.compRepo.save(newComp);
             return { statusCode: 201, message: "Compliance Added", data: result };
         }
@@ -63,7 +65,7 @@ let ComplianceService = class ComplianceService {
             if (err instanceof common_1.UnauthorizedException) {
                 throw new common_1.BadRequestException(err.message);
             }
-            throw new common_1.InternalServerErrorException("something occured. Compliance not updated...try again later");
+            throw new common_1.BadRequestException(err.message);
         }
     }
     async updateComp(id, updateCompDto) {

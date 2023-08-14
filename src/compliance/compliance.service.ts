@@ -45,6 +45,8 @@ export class ComplianceService {
             }
             const newComp = this.compRepo.create(comp)
             newComp.imageUrl = createCompDto.imageUrl;
+            newComp.certUrl = createCompDto.certUrl;
+            newComp.memoUrl = createCompDto.imageUrl;
             // console.log(newComp.imageUrl)
             const result = await this.compRepo.save(newComp)
             return {statusCode: 201, message: "Compliance Added", data: result}
@@ -56,7 +58,7 @@ export class ComplianceService {
             if(err instanceof UnauthorizedException){
                 throw new BadRequestException(err.message)
             }
-            throw new InternalServerErrorException("something occured. Compliance not updated...try again later")
+            throw new BadRequestException(err.message)
             
         }
     }

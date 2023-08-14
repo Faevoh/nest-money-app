@@ -31,6 +31,8 @@ export declare class ComplianceController {
         LGA: string;
         city: string;
         imageUrl: string;
+        certUrl: string;
+        memoUrl: string;
         userId: number;
         user: import("../Entities/userEntity.entity").User;
     } & Compliances>;

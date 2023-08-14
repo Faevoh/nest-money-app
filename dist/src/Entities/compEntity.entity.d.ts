@@ -11,6 +11,8 @@ export declare class Compliances {
     LGA: string;
     city: string;
     imageUrl: string;
+    certUrl: string;
+    memoUrl: string;
     userId: number;
     user: User;
 }

@@ -37,6 +37,12 @@ export class Compliances {
     imageUrl: string;
 
     @Column()
+    certUrl: string;
+
+    @Column()
+    memoUrl: string;
+
+    @Column()
     userId: number;
 
     @OneToOne( () => User, (user) => user.compliance)

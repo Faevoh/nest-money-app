@@ -60,6 +60,14 @@ __decorate([
 ], Compliances.prototype, "imageUrl", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Compliances.prototype, "certUrl", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Compliances.prototype, "memoUrl", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Compliances.prototype, "userId", void 0);
 __decorate([
