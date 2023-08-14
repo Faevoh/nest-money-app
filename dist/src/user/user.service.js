@@ -113,7 +113,8 @@ let UserService = class UserService {
                 sex: users.sex,
                 imageurl: users.imageurl,
                 verified: users.verified,
-                verifyToken: users.verifyToken
+                verifyToken: users.verifyToken,
+                status: users.status
             },
             compliance: user.compliance,
             wallet: user.wallet,

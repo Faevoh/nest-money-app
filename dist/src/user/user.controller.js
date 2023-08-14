@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
@@ -347,7 +348,7 @@ __decorate([
     __param(1, (0, common_1.Body)()),
     __param(3, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, updateUser_1.UpdateUserDto, Object, Object]),
+    __metadata("design:paramtypes", [String, typeof (_a = typeof updateUser_1.UpdateUserDto !== "undefined" && updateUser_1.UpdateUserDto) === "function" ? _a : Object, Object, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "updateUser", null);
 __decorate([

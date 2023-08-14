@@ -28,13 +28,14 @@ export declare class UserService {
             firstName: string;
             lastName: string;
             email: string;
-            accountType: "Personal" | "Business";
+            accountType: "Business" | "Personal";
             accountName: string;
             phoneNumber: string;
             sex: string;
             imageurl: string;
             verified: boolean;
             verifyToken: string;
+            status: boolean;
         };
         compliance: import("../Entities/compEntity.entity").Compliances;
         wallet: Wallet;
