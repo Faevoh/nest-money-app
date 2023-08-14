@@ -36,10 +36,10 @@ export class Compliances {
     @Column()
     imageUrl: string;
 
-    @Column()
+    @Column({nullable: true})
     certUrl: string;
 
-    @Column()
+    @Column({nullable: true})
     memoUrl: string;
 
     @Column()
