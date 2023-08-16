@@ -110,7 +110,7 @@ export declare class UserController {
     }): Promise<{
         statusCode: number;
         message: string;
-        data: import("../Entities/userEntity.entity").User;
+        data: string;
     }>;
     logOut(access_token: string): Promise<{
         statusCode: number;
