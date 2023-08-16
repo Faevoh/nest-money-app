@@ -110,7 +110,7 @@ export declare class UserController {
     }): Promise<{
         statusCode: number;
         message: string;
-        data: string;
+        accountName: string;
     }>;
     logOut(access_token: string): Promise<{
         statusCode: number;
