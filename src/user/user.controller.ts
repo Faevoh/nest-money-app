@@ -314,7 +314,8 @@ export class UserController {
     @Get("/accountName")
     async getAccountName(@Body() body: {accountNumber: string}) {
         const {accountNumber} = body;
-        await this.walletService.findByAccountNumber(accountNumber)
+        const data = await this.walletService.findByAccountNumber(accountNumber)
+        return {statusCode: 200, message: "User Account Name", data: data}
     }
 
     @Post("/logout")

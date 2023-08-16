@@ -107,7 +107,11 @@ export declare class UserController {
     }>;
     getAccountName(body: {
         accountNumber: string;
-    }): Promise<void>;
+    }): Promise<{
+        statusCode: number;
+        message: string;
+        data: import("../Entities/walletEntity.entity").Wallet;
+    }>;
     logOut(access_token: string): Promise<{
         statusCode: number;
         message: string;
