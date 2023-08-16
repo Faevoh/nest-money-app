@@ -304,7 +304,8 @@ let UserController = class UserController {
     async getAccountName(body) {
         const { accountNumber } = body;
         const data = await this.walletService.findByAccountNumber(accountNumber);
-        return { statusCode: 200, message: "User Account Name", data: data };
+        const user = await this.userService.findById(data.userId);
+        return { statusCode: 200, message: "User Account Name", data: user };
     }
     async logOut(access_token) {
         const user_token = access_token.split(" ")[1];
