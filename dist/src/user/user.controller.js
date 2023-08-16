@@ -32,9 +32,10 @@ const platform_express_1 = require("@nestjs/platform-express");
 const pindto_1 = require("../DTO/pindto");
 const bankpin_service_1 = require("../bankpin/bankpin.service");
 const dotenv_1 = require("dotenv");
+const wallet_service_1 = require("../wallet/wallet.service");
 (0, dotenv_1.config)();
 let UserController = class UserController {
-    constructor(userService, mailService, authService, acctService, jwtService, cloudinaryService, bankPinservice) {
+    constructor(userService, mailService, authService, acctService, jwtService, cloudinaryService, bankPinservice, walletService) {
         this.userService = userService;
         this.mailService = mailService;
         this.authService = authService;
@@ -42,6 +43,7 @@ let UserController = class UserController {
         this.jwtService = jwtService;
         this.cloudinaryService = cloudinaryService;
         this.bankPinservice = bankPinservice;
+        this.walletService = walletService;
     }
     async registerUser(createUserDto) {
         return this.userService.register(createUserDto);
@@ -299,6 +301,10 @@ let UserController = class UserController {
             throw err.message;
         }
     }
+    async getAccountName(body) {
+        const { accountNumber } = body;
+        await this.walletService.findByAccountNumber(accountNumber);
+    }
     async logOut(access_token) {
         const user_token = access_token.split(" ")[1];
         await this.authService.revokeToken(user_token);
@@ -398,6 +404,13 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "confirmPin", null);
 __decorate([
+    (0, common_1.Get)("/accountName"),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getAccountName", null);
+__decorate([
     (0, common_1.Post)("/logout"),
     __param(0, (0, common_1.Query)("access_token")),
     __metadata("design:type", Function),
@@ -406,7 +419,7 @@ __decorate([
 ], UserController.prototype, "logOut", null);
 UserController = __decorate([
     (0, common_1.Controller)('user'),
-    __metadata("design:paramtypes", [user_service_1.UserService, mail_service_1.MailService, auth_service_1.AuthService, generator_service_1.accountGenerator, jwt_1.JwtService, cloudinary_service_1.CloudinaryService, bankpin_service_1.BankpinService])
+    __metadata("design:paramtypes", [user_service_1.UserService, mail_service_1.MailService, auth_service_1.AuthService, generator_service_1.accountGenerator, jwt_1.JwtService, cloudinary_service_1.CloudinaryService, bankpin_service_1.BankpinService, wallet_service_1.WalletService])
 ], UserController);
 exports.UserController = UserController;
 //# sourceMappingURL=user.controller.js.map

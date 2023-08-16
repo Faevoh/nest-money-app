@@ -37,6 +37,9 @@ let WalletService = class WalletService {
         });
         return wallet;
     }
+    async findByAccountNumber(accountNumber) {
+        return await this.walletRepo.findOneBy({ accountNumber });
+    }
     async findByUserId(userId) {
         return await this.walletRepo.findOneBy({ userId });
     }

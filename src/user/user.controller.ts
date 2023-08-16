@@ -18,12 +18,13 @@ import { UserPinDto } from 'src/DTO/pindto';
 import * as crypto from 'crypto-js'
 import { BankpinService } from 'src/bankpin/bankpin.service';
 import { config } from 'dotenv';
+import { WalletService } from 'src/wallet/wallet.service';
 
 config();
 
 @Controller('user')
 export class UserController {
-    constructor(private userService: UserService, private mailService: MailService, private authService: AuthService, private acctService: accountGenerator, private jwtService: JwtService, private cloudinaryService: CloudinaryService, private bankPinservice: BankpinService){}
+    constructor(private userService: UserService, private mailService: MailService, private authService: AuthService, private acctService: accountGenerator, private jwtService: JwtService, private cloudinaryService: CloudinaryService, private bankPinservice: BankpinService, private walletService: WalletService){}
 
     @Post("/register")
     async registerUser(@Body(ValidationPipe) createUserDto: CreateUserDto){ 
@@ -308,6 +309,12 @@ export class UserController {
             }
             throw err.message;
         }
+    }
+
+    @Get("/accountName")
+    async getAccountName(@Body() body: {accountNumber: string}) {
+        const {accountNumber} = body;
+        await this.walletService.findByAccountNumber(accountNumber)
     }
 
     @Post("/logout")

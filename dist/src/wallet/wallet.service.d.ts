@@ -8,6 +8,7 @@ export declare class WalletService {
     constructor(walletRepo: Repository<Wallet>, acctService: accountGenerator);
     newWallet(user: User): Promise<Wallet>;
     getWallet(): Promise<Wallet[]>;
+    findByAccountNumber(accountNumber: string): Promise<Wallet>;
     findByUserId(userId: number): Promise<Wallet>;
     findByUserAcc(accountNumber: string): Promise<Wallet>;
     findById(id: number): Promise<Wallet>;
