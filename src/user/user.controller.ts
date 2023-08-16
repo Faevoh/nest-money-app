@@ -313,10 +313,20 @@ export class UserController {
 
     @Get("/accountName")
     async getAccountName(@Body() body: {accountNumber: string}) {
-        const {accountNumber} = body;
-        const data = await this.walletService.findByAccountNumber(accountNumber)
-        const user = await this.userService.findById(data.userId)
-        return {statusCode: 200, message: "User Account Name", accountName: user.accountName}
+        try{
+            const {accountNumber} = body;
+            const data = await this.walletService.findByAccountNumber(accountNumber)
+            const user = await this.userService.findById(data.userId)
+            if(!user){
+                throw new NotFoundException("Error, Account Not Found")
+            }
+            return {statusCode: 200, message: "User Account Name", accountName: user.accountName}
+        }catch(err){
+            if(err instanceof NotFoundException){
+                throw new NotFoundException(err.message)
+            }
+            throw err.message
+        }
     }
 
     @Post("/logout")

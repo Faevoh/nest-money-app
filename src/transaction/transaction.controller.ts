@@ -49,6 +49,9 @@ export class TransactionController {
 
         const recieverAccount = transferDto.accountNumber
         const recieverdetails = await this.walletService.findByUserAcc(recieverAccount)
+        if(!recieverdetails){
+            throw new NotFoundException("Couldn't find user with Account Number")
+        }
         const recieverData = await this.userService.findById( recieverdetails.userId)
 
         walletdata.accountBalance -= transferDto.amount
@@ -73,7 +76,7 @@ export class TransactionController {
             payMethod: "deposit",
             narration: transferDto.narration
         })
-        await this,this.userService.addToUserTransaction(recievrTransaction, recieverData.id)
+        await this.userService.addToUserTransaction(recievrTransaction, recieverData.id)
 
         // data: maindata}
 
@@ -90,7 +93,7 @@ export class TransactionController {
         if(err instanceof BadRequestException) {
             throw new BadRequestException(err.message)
         }
-        throw new BadRequestException("Could not Process Transfer")
+        throw new BadRequestException("Could not Process Transfer", err.message)
        }
     }
 
