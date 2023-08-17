@@ -38,7 +38,9 @@ let WalletService = class WalletService {
         return wallet;
     }
     async findByAccountNumber(accountNumber) {
-        return await this.walletRepo.findOneBy({ accountNumber });
+        const data = await this.walletRepo.findOneBy({ accountNumber });
+        console.log("walletdata", data);
+        return data;
     }
     async findByUserId(userId) {
         return await this.walletRepo.findOneBy({ userId });
