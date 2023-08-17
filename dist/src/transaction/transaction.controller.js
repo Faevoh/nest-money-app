@@ -59,6 +59,9 @@ let TransactionController = class TransactionController {
             }
             const recieverAccount = transferDto.accountNumber;
             const recieverdetails = await this.walletService.findByUserAcc(recieverAccount);
+            if (!recieverdetails) {
+                throw new common_1.NotFoundException("Couldn't find user with Account Number");
+            }
             const recieverData = await this.userService.findById(recieverdetails.userId);
             walletdata.accountBalance -= transferDto.amount;
             recieverdetails.accountBalance += transferDto.amount;
@@ -78,7 +81,7 @@ let TransactionController = class TransactionController {
                 payMethod: "deposit",
                 narration: transferDto.narration
             });
-            await this, this.userService.addToUserTransaction(recievrTransaction, recieverData.id);
+            await this.userService.addToUserTransaction(recievrTransaction, recieverData.id);
             return { statusCode: 201, message: "Transfer successful" };
         }
         catch (err) {
@@ -92,7 +95,7 @@ let TransactionController = class TransactionController {
             if (err instanceof common_1.BadRequestException) {
                 throw new common_1.BadRequestException(err.message);
             }
-            throw new common_1.BadRequestException("Could not Process Transfer");
+            throw new common_1.BadRequestException("Could not Process Transfer", err.message);
         }
     }
     async depositTransaction(depositDto, access_token, payload) {

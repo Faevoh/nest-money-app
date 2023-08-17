@@ -302,10 +302,21 @@ let UserController = class UserController {
         }
     }
     async getAccountName(body) {
-        const { accountNumber } = body;
-        const data = await this.walletService.findByAccountNumber(accountNumber);
-        const user = await this.userService.findById(data.userId);
-        return { statusCode: 200, message: "User Account Name", accountName: user.accountName };
+        try {
+            const { accountNumber } = body;
+            const data = await this.walletService.findByAccountNumber(accountNumber);
+            const user = await this.userService.findById(data.userId);
+            if (!user) {
+                throw new common_1.NotFoundException("Error, Account Not Found");
+            }
+            return { statusCode: 200, message: "User Account Name", accountName: user.accountName };
+        }
+        catch (err) {
+            if (err instanceof common_1.NotFoundException) {
+                throw new common_1.NotFoundException(err.message);
+            }
+            throw err.message;
+        }
     }
     async logOut(access_token) {
         const user_token = access_token.split(" ")[1];
