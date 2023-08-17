@@ -304,8 +304,14 @@ let UserController = class UserController {
     async getAccountName(body) {
         try {
             const { accountNumber } = body;
+            console.log(accountNumber);
             const data = await this.walletService.findByAccountNumber(accountNumber);
+            console.log("2", data);
+            if (!data) {
+                throw new common_1.NotFoundException("Error, Account Not Found");
+            }
             const user = await this.userService.findById(data.userId);
+            console.log("3", user);
             if (!user) {
                 throw new common_1.NotFoundException("Error, Account Not Found");
             }
