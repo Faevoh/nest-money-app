@@ -306,7 +306,7 @@ let UserController = class UserController {
             const { accountNumber } = body;
             const data = await this.walletService.findByAccountNumber(accountNumber);
             if (!data || data === undefined) {
-                throw new common_1.NotFoundException("Error, Account Not Found");
+                throw new common_1.NotFoundException("Account Not Found");
             }
             const user = await this.userService.findById(data.userId);
             if (!user) {
