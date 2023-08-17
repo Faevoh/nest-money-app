@@ -315,17 +315,13 @@ export class UserController {
     async getAccountName(@Body() body: {accountNumber: string}) {
         try{
             const {accountNumber} = body;
-            console.log("body",body)
-            console.log("accountNumber", accountNumber)
             const data = await this.walletService.findByAccountNumber(accountNumber)
-            console.log("data",data)
             if(!data || data === undefined){
                 throw new NotFoundException("Error, Account Not Found")
             }
             const user = await this.userService.findById(data.userId)
-            console.log("user", user)
             if(!user){
-                throw new NotFoundException("Error, Account Not Found")
+                throw new NotFoundException("Account Not Found")
             }
             return {statusCode: 200, message: "User Account Name", accountName: user.accountName}
         }catch(err){

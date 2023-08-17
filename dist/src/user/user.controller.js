@@ -304,17 +304,13 @@ let UserController = class UserController {
     async getAccountName(body) {
         try {
             const { accountNumber } = body;
-            console.log("body", body);
-            console.log("accountNumber", accountNumber);
             const data = await this.walletService.findByAccountNumber(accountNumber);
-            console.log("data", data);
             if (!data || data === undefined) {
                 throw new common_1.NotFoundException("Error, Account Not Found");
             }
             const user = await this.userService.findById(data.userId);
-            console.log("user", user);
             if (!user) {
-                throw new common_1.NotFoundException("Error, Account Not Found");
+                throw new common_1.NotFoundException("Account Not Found");
             }
             return { statusCode: 200, message: "User Account Name", accountName: user.accountName };
         }
