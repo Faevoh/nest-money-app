@@ -311,7 +311,7 @@ export class UserController {
         }
     }
 
-    @Get("/accountName")
+    @Post("/accountName")
     async getAccountName(@Body() body: {accountNumber: string}) {
         try{
             const {accountNumber} = body;
