@@ -60,12 +60,12 @@ let ComplianceController = class ComplianceController {
             return data;
         }
         catch (err) {
-            console.log(err.message);
+            console.log("4", err.message);
             if (err instanceof common_1.NotFoundException) {
-                throw new common_1.NotFoundException(err.message);
+                console.log('5', err.message);
             }
             if (err instanceof common_1.UnauthorizedException) {
-                throw new common_1.UnauthorizedException(err.message);
+                console.log("6", err.message);
             }
         }
     }

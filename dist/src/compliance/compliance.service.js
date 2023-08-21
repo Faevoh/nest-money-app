@@ -60,12 +60,12 @@ let ComplianceService = class ComplianceService {
         }
         catch (err) {
             if (err instanceof common_1.BadRequestException) {
-                throw new common_1.BadRequestException(err.message);
+                console.log("1", err.message);
             }
             if (err instanceof common_1.UnauthorizedException) {
-                throw new common_1.BadRequestException(err.message);
+                console.log("2", err.message);
             }
-            console.log(err.message);
+            console.log("3", err.message);
         }
     }
     async updateComp(id, updateCompDto) {

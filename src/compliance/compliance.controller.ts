@@ -53,12 +53,14 @@ export class ComplianceController {
             // console.log(data);
             return data;
         }catch(err){
-            console.log(err.message)
+            console.log("4",err.message)
             if(err instanceof NotFoundException) {
-                throw new NotFoundException(err.message)
+                // throw new NotFoundException(err.message)
+                console.log('5',err.message)
             }
             if(err instanceof UnauthorizedException) {
-                throw new UnauthorizedException(err.message)
+                // throw new UnauthorizedException(err.message)
+                console.log("6",err.message)
             }
             // throw new UnauthorizedException(err)
         }

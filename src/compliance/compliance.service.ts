@@ -52,13 +52,15 @@ export class ComplianceService {
             return {statusCode: 201, message: "Compliance Added", data: result}
         }catch(err) {
             if(err instanceof BadRequestException){
-                throw new BadRequestException(err.message)
+                // throw new BadRequestException(err.message)
+                console.log("1",err.message)
             }
             if(err instanceof UnauthorizedException){
-                throw new BadRequestException(err.message)
+                // throw new BadRequestException(err.message)
+                console.log("2", err.message)
             }
             // throw new BadRequestException(err.message)
-            console.log(err.message)
+            console.log("3", err.message)
             
         }
     }
