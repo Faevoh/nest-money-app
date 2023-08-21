@@ -60,7 +60,7 @@ export class ComplianceController {
             if(err instanceof UnauthorizedException) {
                 throw new UnauthorizedException(err.message)
             }
-            throw new UnauthorizedException(err)
+            // throw new UnauthorizedException(err)
         }
     }
 

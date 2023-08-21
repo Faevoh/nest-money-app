@@ -67,7 +67,6 @@ let ComplianceController = class ComplianceController {
             if (err instanceof common_1.UnauthorizedException) {
                 throw new common_1.UnauthorizedException(err.message);
             }
-            throw new common_1.UnauthorizedException(err);
         }
     }
     async updateCompliance(updateCompDto, id) {
