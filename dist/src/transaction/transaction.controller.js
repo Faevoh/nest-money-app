@@ -51,6 +51,7 @@ let TransactionController = class TransactionController {
             const { bankPin } = userPinDto;
             console.log("bankpin", bankPin);
             const user = await this.pinService.findByUserId(userid);
+            console.log("user bankpin", user.bankPin);
             const pinDecode = await bcrypt.compare(bankPin, user.bankPin);
             if (!pinDecode) {
                 throw new common_1.UnauthorizedException("Invalid Pin");
