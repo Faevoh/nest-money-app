@@ -30,6 +30,7 @@ export class TransactionController {
         const users = await this.userService.findById(userid)
 
         const {bankPin} = userPinDto;
+        console.log("bankpin", bankPin)
         const user = await this.pinService.findByUserId(userid)
         const pinDecode = await bcrypt.compare(bankPin, user.bankPin)
         if(!pinDecode) {
