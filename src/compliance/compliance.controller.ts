@@ -14,13 +14,29 @@ export class ComplianceController {
     constructor(private compService: ComplianceService, private jwtService: JwtService, private userService: UserService, private cloudinaryService: CloudinaryService) {}    
 
     @Post("/new")
-    @UseInterceptors(FileInterceptor('image'))
-    async addCompliance(@Query("access_token") access_token: string,@Body(ValidationPipe) createCompDto: CreateCompDto, @UploadedFile() file: Express.Multer.File,payload ){
+    @UseInterceptors(FileInterceptor('nin'))
+    @UseInterceptors(FileInterceptor('cert'))
+    @UseInterceptors(FileInterceptor('memo'))
+    async addCompliance(@Query("access_token") access_token: string,@Body(ValidationPipe) createCompDto: CreateCompDto, 
+        @UploadedFile() ninfile: Express.Multer.File,  
+        @UploadedFile() certfile: Express.Multer.File,  
+        @UploadedFile() memofile: Express.Multer.File, 
+        payload ){
         try{
-            if (file) {
-                const uploadedImage = await this.cloudinaryService.uploadImage(file);
+            if (ninfile) {
+                const uploadedImage = await this.cloudinaryService.uploadNin(ninfile, 'image', 'NIN');
                 createCompDto.imageUrl = uploadedImage.secure_url;
                 // console.log("2",createCompDto.imageUrl)
+            }
+            if (certfile) {
+                const uploadedCert = await this.cloudinaryService.uploadCert(certfile, 'image', 'CERT');
+                createCompDto.certUrl = uploadedCert.secure_url;
+                console.log("2",createCompDto.certUrl)
+            }
+            if (memofile) {
+                const uploadedMemo = await this.cloudinaryService.uploadMemo(memofile, 'raw', 'MEMO');
+                createCompDto.memoUrl = uploadedMemo.secure_url;
+                console.log("3",createCompDto.memoUrl)
             }
     
             const user = await this.jwtService.decode(access_token);

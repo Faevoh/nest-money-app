@@ -93,7 +93,7 @@ export class UserController {
             const {imageurl} = updateUserDto;
 
             if (file) {
-                const uploadedImage = await this.cloudinaryService.uploadImage(file);
+                const uploadedImage = await this.cloudinaryService.uploadImage(file, 'image', 'IMAGE');
                 updateUserDto.imageurl = uploadedImage.secure_url;
             }
 

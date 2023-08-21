@@ -28,11 +28,21 @@ let ComplianceController = class ComplianceController {
         this.userService = userService;
         this.cloudinaryService = cloudinaryService;
     }
-    async addCompliance(access_token, createCompDto, file, payload) {
+    async addCompliance(access_token, createCompDto, ninfile, certfile, memofile, payload) {
         try {
-            if (file) {
-                const uploadedImage = await this.cloudinaryService.uploadImage(file);
+            if (ninfile) {
+                const uploadedImage = await this.cloudinaryService.uploadNin(ninfile, 'image', 'NIN');
                 createCompDto.imageUrl = uploadedImage.secure_url;
+            }
+            if (certfile) {
+                const uploadedCert = await this.cloudinaryService.uploadCert(certfile, 'image', 'CERT');
+                createCompDto.certUrl = uploadedCert.secure_url;
+                console.log("2", createCompDto.certUrl);
+            }
+            if (memofile) {
+                const uploadedMemo = await this.cloudinaryService.uploadMemo(memofile, 'raw', 'MEMO');
+                createCompDto.memoUrl = uploadedMemo.secure_url;
+                console.log("3", createCompDto.memoUrl);
             }
             const user = await this.jwtService.decode(access_token);
             if (!user) {
@@ -79,12 +89,16 @@ let ComplianceController = class ComplianceController {
 };
 __decorate([
     (0, common_1.Post)("/new"),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('image')),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('nin')),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('cert')),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('memo')),
     __param(0, (0, common_1.Query)("access_token")),
     __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
     __param(2, (0, common_1.UploadedFile)()),
+    __param(3, (0, common_1.UploadedFile)()),
+    __param(4, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, createComp_1.CreateCompDto, Object, Object]),
+    __metadata("design:paramtypes", [String, createComp_1.CreateCompDto, Object, Object, Object, Object]),
     __metadata("design:returntype", Promise)
 ], ComplianceController.prototype, "addCompliance", null);
 __decorate([

@@ -98,7 +98,7 @@ let UserController = class UserController {
         try {
             const { imageurl } = updateUserDto;
             if (file) {
-                const uploadedImage = await this.cloudinaryService.uploadImage(file);
+                const uploadedImage = await this.cloudinaryService.uploadImage(file, 'image', 'IMAGE');
                 updateUserDto.imageurl = uploadedImage.secure_url;
             }
             const tokenDecode = this.jwtService.decode(access_token);

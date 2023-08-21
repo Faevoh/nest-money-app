@@ -7,20 +7,83 @@ config();
 
 @Injectable()
 export class CloudinaryService {
-    async uploadImage(
-        fileName: Express.Multer.File,
-      ): Promise<UploadApiResponse | UploadApiErrorResponse> {
-        return new Promise((resolve, reject) => {
-          v2.config({
-            cloud_name: "dwt2lavnm",
-            api_key: "989516128674283",
-            api_secret: "aLYAw_Cs2Jy2CsfheRGHtiU4CFM",
-          });
-          const upload = v2.uploader.upload_stream((error, result) => {
-            if (error) return reject(error);
-            resolve(result);
-          });
-          toStream(fileName.buffer).pipe(upload);
-        });
-      }
+  async uploadNin(
+    fileName: Express.Multer.File,
+    resourceType: 'image' | 'raw' = 'image',
+    folder: 'NIN'
+  ): Promise<UploadApiResponse | UploadApiErrorResponse> {
+    return new Promise((resolve, reject) => {
+      v2.config({
+        cloud_name: "dwt2lavnm",
+        api_key: "989516128674283",
+        api_secret: "aLYAw_Cs2Jy2CsfheRGHtiU4CFM",
+      });
+      const upload = v2.uploader.upload_stream({resource_type: resourceType,folder},
+        (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      });
+      toStream(fileName.buffer).pipe(upload);
+    });
+  }
+
+  async uploadCert(
+    fileName: Express.Multer.File,
+    resourceType: 'image' | 'raw' = 'image',
+    folder: 'CERT'
+  ): Promise<UploadApiResponse | UploadApiErrorResponse> {
+    return new Promise((resolve, reject) => {
+      v2.config({
+        cloud_name: "dwt2lavnm",
+        api_key: "989516128674283",
+        api_secret: "aLYAw_Cs2Jy2CsfheRGHtiU4CFM",
+      });
+      const upload = v2.uploader.upload_stream({resource_type: resourceType,folder},
+        (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      });
+      toStream(fileName.buffer).pipe(upload);
+    });
+  }
+
+  async uploadMemo(
+    fileName: Express.Multer.File,
+    resourceType: 'image' | 'raw' = 'image',
+    folder: 'MEMO'
+  ): Promise<UploadApiResponse | UploadApiErrorResponse> {
+    return new Promise((resolve, reject) => {
+      v2.config({
+        cloud_name: "dwt2lavnm",
+        api_key: "989516128674283",
+        api_secret: "aLYAw_Cs2Jy2CsfheRGHtiU4CFM",
+      });
+      const upload = v2.uploader.upload_stream({resource_type: resourceType,folder},
+        (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      });
+      toStream(fileName.buffer).pipe(upload);
+    });
+  }
+
+  async uploadImage(
+    fileName: Express.Multer.File,
+    resourceType: 'image' | 'raw' = 'image',
+    folder: 'IMAGE'
+  ): Promise<UploadApiResponse | UploadApiErrorResponse> {
+    return new Promise((resolve, reject) => {
+      v2.config({
+        cloud_name: "dwt2lavnm",
+        api_key: "989516128674283",
+        api_secret: "aLYAw_Cs2Jy2CsfheRGHtiU4CFM",
+      });
+      const upload = v2.uploader.upload_stream({resource_type: resourceType,folder},
+        (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      });
+      toStream(fileName.buffer).pipe(upload);
+    });
+  }
 }

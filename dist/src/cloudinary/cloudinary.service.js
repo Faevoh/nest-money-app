@@ -13,14 +13,59 @@ const toStream = require("buffer-to-stream");
 const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)();
 let CloudinaryService = class CloudinaryService {
-    async uploadImage(fileName) {
+    async uploadNin(fileName, resourceType = 'image', folder) {
         return new Promise((resolve, reject) => {
             cloudinary_1.v2.config({
                 cloud_name: "dwt2lavnm",
                 api_key: "989516128674283",
                 api_secret: "aLYAw_Cs2Jy2CsfheRGHtiU4CFM",
             });
-            const upload = cloudinary_1.v2.uploader.upload_stream((error, result) => {
+            const upload = cloudinary_1.v2.uploader.upload_stream({ resource_type: resourceType, folder }, (error, result) => {
+                if (error)
+                    return reject(error);
+                resolve(result);
+            });
+            toStream(fileName.buffer).pipe(upload);
+        });
+    }
+    async uploadCert(fileName, resourceType = 'image', folder) {
+        return new Promise((resolve, reject) => {
+            cloudinary_1.v2.config({
+                cloud_name: "dwt2lavnm",
+                api_key: "989516128674283",
+                api_secret: "aLYAw_Cs2Jy2CsfheRGHtiU4CFM",
+            });
+            const upload = cloudinary_1.v2.uploader.upload_stream({ resource_type: resourceType, folder }, (error, result) => {
+                if (error)
+                    return reject(error);
+                resolve(result);
+            });
+            toStream(fileName.buffer).pipe(upload);
+        });
+    }
+    async uploadMemo(fileName, resourceType = 'image', folder) {
+        return new Promise((resolve, reject) => {
+            cloudinary_1.v2.config({
+                cloud_name: "dwt2lavnm",
+                api_key: "989516128674283",
+                api_secret: "aLYAw_Cs2Jy2CsfheRGHtiU4CFM",
+            });
+            const upload = cloudinary_1.v2.uploader.upload_stream({ resource_type: resourceType, folder }, (error, result) => {
+                if (error)
+                    return reject(error);
+                resolve(result);
+            });
+            toStream(fileName.buffer).pipe(upload);
+        });
+    }
+    async uploadImage(fileName, resourceType = 'image', folder) {
+        return new Promise((resolve, reject) => {
+            cloudinary_1.v2.config({
+                cloud_name: "dwt2lavnm",
+                api_key: "989516128674283",
+                api_secret: "aLYAw_Cs2Jy2CsfheRGHtiU4CFM",
+            });
+            const upload = cloudinary_1.v2.uploader.upload_stream({ resource_type: resourceType, folder }, (error, result) => {
                 if (error)
                     return reject(error);
                 resolve(result);
