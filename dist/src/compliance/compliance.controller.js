@@ -60,7 +60,7 @@ let ComplianceController = class ComplianceController {
             return data;
         }
         catch (err) {
-            console.log(err);
+            console.log(err.message);
             if (err instanceof common_1.NotFoundException) {
                 throw new common_1.NotFoundException(err.message);
             }

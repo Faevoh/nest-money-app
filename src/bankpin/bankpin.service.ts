@@ -34,7 +34,7 @@ export class BankpinService {
         return await this.pinRepo.findOneBy({bankPin})
     }
 
-    async findByUserId(id: number) {
-        return await this.pinRepo.findOneBy({id})
+    async findByUserId(userId: number) {
+        return await this.pinRepo.findOneBy({userId})
     }
 }

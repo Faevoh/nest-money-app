@@ -57,8 +57,8 @@ export class ComplianceService {
             if(err instanceof UnauthorizedException){
                 throw new BadRequestException(err.message)
             }
-            throw new BadRequestException(err.message)
-            console.log(err)
+            // throw new BadRequestException(err.message)
+            console.log(err.message)
             
         }
     }
