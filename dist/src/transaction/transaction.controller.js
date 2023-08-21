@@ -24,13 +24,15 @@ const bankpin_service_1 = require("../bankpin/bankpin.service");
 const deposit_1 = require("../DTO/deposit");
 const createAirtime_1 = require("../DTO/createAirtime");
 const user_service_1 = require("../user/user.service");
+const mail_service_1 = require("../mail/mail.service");
 let TransactionController = class TransactionController {
-    constructor(transactionService, walletService, jwtService, pinService, userService) {
+    constructor(transactionService, walletService, jwtService, pinService, userService, mailService) {
         this.transactionService = transactionService;
         this.walletService = walletService;
         this.jwtService = jwtService;
         this.pinService = pinService;
         this.userService = userService;
+        this.mailService = mailService;
     }
     async transferTransaction(transferDto, userPinDto, access_token, payload) {
         try {
@@ -82,6 +84,14 @@ let TransactionController = class TransactionController {
                 narration: transferDto.narration
             });
             await this.userService.addToUserTransaction(recievrTransaction, recieverData.id);
+            const text = `Hey ${recieverData.firstName},
+        A deposit of ${transferDto.amount} was sent to you on ${recievrTransaction.createDate}.
+        Check your app for other info.`;
+            await this.mailService.DepositMail(text, recieverData);
+            const texts = `Hey ${users.firstName},
+        A transfer of ${transferDto.amount} was made to on ${maindata.createDate}.
+        Check your app for other info.`;
+            await this.mailService.TransferMail(texts, users);
             return { statusCode: 201, message: "Transfer successful" };
         }
         catch (err) {
@@ -111,6 +121,7 @@ let TransactionController = class TransactionController {
                 throw new common_1.UnauthorizedException("Token has expired");
             }
             const userid = tokenDecode.sub;
+            const user = await this.userService.findById(userid);
             const depositdata = Object.assign(Object.assign({}, depositDto), { userId: userid, status: "success", payMethod: "deposit" });
             const walletdata = await this.walletService.findByUserId(userid);
             walletdata.accountBalance += depositDto.amount;
@@ -123,6 +134,10 @@ let TransactionController = class TransactionController {
             delete maindata.expiryDate;
             delete maindata.phoneNumber;
             delete maindata.serviceNetwork;
+            const text = `Hey ${user.firstName},
+        A deposit of ${depositDto.amount} was made by you on ${maindata.createDate}.
+        Check your app for other info.`;
+            await this.mailService.DepositMail(text, user);
             return { statusCode: 201, message: "Deposit successful" };
         }
         catch (err) {
@@ -257,7 +272,7 @@ __decorate([
 ], TransactionController.prototype, "singleTransaction", null);
 TransactionController = __decorate([
     (0, common_1.Controller)('transaction'),
-    __metadata("design:paramtypes", [transaction_service_1.TransactionService, wallet_service_1.WalletService, jwt_1.JwtService, bankpin_service_1.BankpinService, user_service_1.UserService])
+    __metadata("design:paramtypes", [transaction_service_1.TransactionService, wallet_service_1.WalletService, jwt_1.JwtService, bankpin_service_1.BankpinService, user_service_1.UserService, mail_service_1.MailService])
 ], TransactionController);
 exports.TransactionController = TransactionController;
 //# sourceMappingURL=transaction.controller.js.map

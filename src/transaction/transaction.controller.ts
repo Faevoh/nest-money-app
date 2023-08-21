@@ -9,10 +9,11 @@ import { BankpinService } from 'src/bankpin/bankpin.service';
 import { DepositDto } from 'src/DTO/deposit';
 import { CreateAirtimeDto } from 'src/DTO/createAirtime';
 import { UserService } from 'src/user/user.service';
+import { MailService } from 'src/mail/mail.service';
 
 @Controller('transaction')
 export class TransactionController {
-    constructor(private transactionService: TransactionService, private walletService: WalletService, private jwtService: JwtService, private pinService: BankpinService, private userService: UserService) {}
+    constructor(private transactionService: TransactionService, private walletService: WalletService, private jwtService: JwtService, private pinService: BankpinService, private userService: UserService, private mailService: MailService) {}
 
     @Post("/transfer")
     async transferTransaction(@Body(ValidationPipe) transferDto: TransferDto, @Body(ValidationPipe) userPinDto: UserPinDto, @Query("access_token") access_token: string, payload) {
@@ -76,9 +77,20 @@ export class TransactionController {
             payMethod: "deposit",
             narration: transferDto.narration
         })
+    
         await this.userService.addToUserTransaction(recievrTransaction, recieverData.id)
 
-        // data: maindata}
+        const text = `Hey ${recieverData.firstName},
+        A deposit of ${transferDto.amount} was sent to you on ${recievrTransaction.createDate}.
+        Check your app for other info.`
+
+        await this.mailService.DepositMail(text, recieverData)
+
+        const texts = `Hey ${users.firstName},
+        A transfer of ${transferDto.amount} was made to on ${maindata.createDate}.
+        Check your app for other info.`
+
+        await this.mailService.TransferMail(texts, users)
 
         return{statusCode: 201, message: "Transfer successful"}
         
@@ -109,6 +121,8 @@ export class TransactionController {
         }      
         const userid = tokenDecode.sub;
 
+        const user = await this.userService.findById(userid)
+
         const depositdata ={
             ...depositDto,
             userId: userid,
@@ -132,7 +146,11 @@ export class TransactionController {
         delete maindata.phoneNumber
         delete maindata.serviceNetwork
 
-        // data: maindata
+        const text = `Hey ${user.firstName},
+        A deposit of ${depositDto.amount} was made by you on ${maindata.createDate}.
+        Check your app for other info.`
+
+        await this.mailService.DepositMail(text, user)
 
         return{statusCode: 201, message: "Deposit successful"}
         

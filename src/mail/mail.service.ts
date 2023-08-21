@@ -59,4 +59,39 @@ export class MailService {
       return false;
     }
   }
+
+  async DepositMail(text: string, user: User) {
+    try {
+      await this.mailerService.sendMail({
+        to: user.email,
+        subject: `Yay!!.. You have a Deposit`,
+        template: './depositMail',
+        context: {
+          text: text
+        },
+      });
+      // console.log("user.email in deposit", user.email)
+      return true;
+    } catch (error) {
+      // console.log(error);
+      return false;
+    }
+  }
+  async TransferMail(text: string, user: User) {
+    try {
+      await this.mailerService.sendMail({
+        to: user.email,
+        subject: `Transfer was made`,
+        template: './transferMail',
+        context: {
+          text: text
+        },
+      });
+      // console.log("user.email in transfer", user.email)
+      return true;
+    } catch (error) {
+      // console.log(error);
+      return false;
+    }
+  }
 }

@@ -49,6 +49,38 @@ let MailService = class MailService {
             return false;
         }
     }
+    async DepositMail(text, user) {
+        try {
+            await this.mailerService.sendMail({
+                to: user.email,
+                subject: `Yay!!.. You have a Deposit`,
+                template: './depositMail',
+                context: {
+                    text: text
+                },
+            });
+            return true;
+        }
+        catch (error) {
+            return false;
+        }
+    }
+    async TransferMail(text, user) {
+        try {
+            await this.mailerService.sendMail({
+                to: user.email,
+                subject: `Transfer was made`,
+                template: './transferMail',
+                context: {
+                    text: text
+                },
+            });
+            return true;
+        }
+        catch (error) {
+            return false;
+        }
+    }
 };
 MailService = __decorate([
     (0, common_1.Injectable)(),

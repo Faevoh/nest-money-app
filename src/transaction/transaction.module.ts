@@ -9,10 +9,11 @@ import { ComplianceModule } from 'src/compliance/compliance.module';
 import { JwtService } from '@nestjs/jwt';
 import { BankpinService } from 'src/bankpin/bankpin.service';
 import { BankPin } from 'src/Entities/pinCreation';
+import { MailService } from 'src/mail/mail.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Transactions, BankPin]), UserModule, WalletModule, ComplianceModule],
   controllers: [TransactionController],
-  providers: [TransactionService, JwtService, BankpinService]
+  providers: [TransactionService, JwtService, BankpinService, MailService]
 })
 export class TransactionModule {}
