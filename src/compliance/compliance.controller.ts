@@ -53,7 +53,7 @@ export class ComplianceController {
             // console.log(data);
             return data;
         }catch(err){
-            // console.log(err)
+            console.log(err)
             if(err instanceof NotFoundException) {
                 throw new NotFoundException(err.message)
             }
