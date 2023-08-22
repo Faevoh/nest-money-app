@@ -19,6 +19,7 @@ const createComp_1 = require("../DTO/createComp");
 const updateComp_1 = require("../DTO/updateComp");
 const jwt_1 = require("@nestjs/jwt");
 const user_service_1 = require("../user/user.service");
+const platform_express_1 = require("@nestjs/platform-express");
 const cloudinary_service_1 = require("../cloudinary/cloudinary.service");
 let ComplianceController = class ComplianceController {
     constructor(compService, jwtService, userService, cloudinaryService) {
@@ -33,6 +34,39 @@ let ComplianceController = class ComplianceController {
         console.log('Received request with ninfile:', ninfile);
         console.log('Received request with certfile:', certfile);
         console.log('Received request with memofile:', memofile);
+        try {
+            if (ninfile) {
+                const uploadedImage = await this.cloudinaryService.uploadNin(ninfile, 'image', 'NIN');
+                createCompDto.imageUrl = uploadedImage.secure_url;
+                console.log("imageUrl", createCompDto.imageUrl);
+            }
+            else {
+                console.log("nin not avaliable", "1");
+            }
+            const user = await this.jwtService.decode(access_token);
+            if (!user) {
+                throw new common_1.NotFoundException("Invalid Token");
+            }
+            ;
+            payload = user;
+            const timeInSeconds = Math.floor(Date.now() / 1000);
+            if (payload.exp && payload.exp < timeInSeconds) {
+                throw new common_1.UnauthorizedException("Token has expired");
+            }
+            const id = user.sub;
+            const getUser = await this.userService.findById(id);
+            const data = await this.compService.createComp(createCompDto, getUser);
+            return data;
+        }
+        catch (err) {
+            console.log("4", err.message);
+            if (err instanceof common_1.NotFoundException) {
+                console.log('5', err.message);
+            }
+            if (err instanceof common_1.UnauthorizedException) {
+                console.log("6", err.message);
+            }
+        }
     }
     async updateCompliance(updateCompDto, id) {
         return await this.compService.updateComp(id, updateCompDto);
@@ -54,6 +88,7 @@ let ComplianceController = class ComplianceController {
 };
 __decorate([
     (0, common_1.Post)("/new"),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('nin')),
     __param(0, (0, common_1.Query)("access_token")),
     __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
     __param(2, (0, common_1.UploadedFile)()),

@@ -15,57 +15,57 @@ export class ComplianceService {
        
     async createComp (createCompDto: CreateCompDto, user: User) {
         console.log('whats going on no!!')
-        // try{ 
-        //     const {BVN, NIN, state, LGA, city, businessAddress, businessName, country, address} =createCompDto;
+        try{ 
+            const {BVN, NIN, state, LGA, city, businessAddress, businessName, country, address} =createCompDto;
 
-        //     const checkBVN = await this.compRepo.findOneBy({BVN})
-        //     if(checkBVN){
-        //         throw new BadRequestException("BVN already exists")
-        //     }
+            const checkBVN = await this.compRepo.findOneBy({BVN})
+            if(checkBVN){
+                throw new BadRequestException("BVN already exists")
+            }
 
-        //     const checkNIN = await this.compRepo.findOneBy({NIN})
-        //     if(checkNIN){ 
-        //         throw new BadRequestException("NIN already exists")
-        //     }
+            const checkNIN = await this.compRepo.findOneBy({NIN})
+            if(checkNIN){ 
+                throw new BadRequestException("NIN already exists")
+            }
 
-        //     const comp = new Compliances()
-        //     comp.BVN = BVN;
-        //     comp.NIN = NIN;
-        //     comp.state = state;
-        //     comp.LGA = LGA;
-        //     comp.city = city;
-        //     comp.country = country;
-        //     comp.address = address
-        //     comp.businessAddress = businessAddress;
-        //     comp.businessName = businessName;
-        //     comp.userId = user.id;
+            const comp = new Compliances()
+            comp.BVN = BVN;
+            comp.NIN = NIN;
+            comp.state = state;
+            comp.LGA = LGA;
+            comp.city = city;
+            comp.country = country;
+            comp.address = address
+            comp.businessAddress = businessAddress;
+            comp.businessName = businessName;
+            comp.userId = user.id;
 
-            // const userData = await this.userService.findById(user.id);
-        //     if(userData.status === true && (comp.businessAddress ===undefined||comp.businessAddress === null || comp.businessName === null || comp.businessName === undefined)) {
-        //         throw new UnauthorizedException("businessAddress and businessName cannot be empty")
-        //     }
-        //     const newComp = this.compRepo.create(comp)
-        //     newComp.imageUrl = createCompDto.imageUrl;
+            const userData = await this.userService.findById(user.id);
+            if(userData.status === true && (comp.businessAddress ===undefined||comp.businessAddress === null || comp.businessName === null || comp.businessName === undefined)) {
+                throw new UnauthorizedException("businessAddress and businessName cannot be empty")
+            }
+            const newComp = this.compRepo.create(comp)
+            newComp.imageUrl = createCompDto.imageUrl;
         //     newComp.certUrl = createCompDto.certUrl;
         //     newComp.memoUrl = createCompDto.memoUrl;
-        //     console.log(newComp.imageUrl)
+            console.log(newComp.imageUrl)
         //     console.log(newComp.certUrl)
         //     console.log(newComp.memoUrl)
-        //     const result = await this.compRepo.save(newComp)
-        //     return {statusCode: 201, message: "Compliance Added", data: result}
-        // }catch(err) {
-        //     if(err instanceof BadRequestException){
-        //         // throw new BadRequestException(err.message)
-        //         console.log("1",err.message)
-        //     }
-        //     if(err instanceof UnauthorizedException){
-        //         // throw new BadRequestException(err.message)
-        //         console.log("2", err.message)
-        //     }
-        //     // throw new BadRequestException(err.message)
-        //     console.log("3", err.message)
+            // const result = await this.compRepo.save(newComp)
+            return {statusCode: 201, message: "Compliance Added", message2: "Nawa for this compliance"}
+        }catch(err) {
+            if(err instanceof BadRequestException){
+                // throw new BadRequestException(err.message)
+                console.log("1",err.message)
+            }
+            if(err instanceof UnauthorizedException){
+                // throw new BadRequestException(err.message)
+                console.log("2", err.message)
+            }
+            // throw new BadRequestException(err.message)
+            console.log("3", err.message)
             
-        // }
+        }
     }
 
     async updateComp (id: number, updateCompDto: UpdateCompDto) {

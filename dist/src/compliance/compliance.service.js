@@ -27,6 +27,45 @@ let ComplianceService = class ComplianceService {
     }
     async createComp(createCompDto, user) {
         console.log('whats going on no!!');
+        try {
+            const { BVN, NIN, state, LGA, city, businessAddress, businessName, country, address } = createCompDto;
+            const checkBVN = await this.compRepo.findOneBy({ BVN });
+            if (checkBVN) {
+                throw new common_1.BadRequestException("BVN already exists");
+            }
+            const checkNIN = await this.compRepo.findOneBy({ NIN });
+            if (checkNIN) {
+                throw new common_1.BadRequestException("NIN already exists");
+            }
+            const comp = new compEntity_entity_1.Compliances();
+            comp.BVN = BVN;
+            comp.NIN = NIN;
+            comp.state = state;
+            comp.LGA = LGA;
+            comp.city = city;
+            comp.country = country;
+            comp.address = address;
+            comp.businessAddress = businessAddress;
+            comp.businessName = businessName;
+            comp.userId = user.id;
+            const userData = await this.userService.findById(user.id);
+            if (userData.status === true && (comp.businessAddress === undefined || comp.businessAddress === null || comp.businessName === null || comp.businessName === undefined)) {
+                throw new common_1.UnauthorizedException("businessAddress and businessName cannot be empty");
+            }
+            const newComp = this.compRepo.create(comp);
+            newComp.imageUrl = createCompDto.imageUrl;
+            console.log(newComp.imageUrl);
+            return { statusCode: 201, message: "Compliance Added", message2: "Nawa for this compliance" };
+        }
+        catch (err) {
+            if (err instanceof common_1.BadRequestException) {
+                console.log("1", err.message);
+            }
+            if (err instanceof common_1.UnauthorizedException) {
+                console.log("2", err.message);
+            }
+            console.log("3", err.message);
+        }
     }
     async updateComp(id, updateCompDto) {
         try {
