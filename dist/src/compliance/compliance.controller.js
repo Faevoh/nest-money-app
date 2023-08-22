@@ -30,6 +30,10 @@ let ComplianceController = class ComplianceController {
     }
     async addCompliance(access_token, createCompDto, ninfile, certfile, memofile, payload) {
         try {
+            console.log('Received request with createCompDto:', createCompDto);
+            console.log('Received request with ninfile:', ninfile);
+            console.log('Received request with certfile:', certfile);
+            console.log('Received request with memofile:', memofile);
             if (ninfile) {
                 const uploadedImage = await this.cloudinaryService.uploadNin(ninfile, 'image', 'NIN');
                 createCompDto.imageUrl = uploadedImage.secure_url;
