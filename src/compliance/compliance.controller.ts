@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Headers, InternalServerErrorException, NotFoundException, Param, ParseIntPipe, Patch, Post, Query, UnauthorizedException, UploadedFile, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Headers, InternalServerErrorException, NotFoundException, Param, ParseIntPipe, Patch, Post, Query, UnauthorizedException, UploadedFile, UploadedFiles, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { ComplianceService } from './compliance.service';
 import {  CreateCompDto } from 'src/DTO/createComp';
 import * as cloudinary from 'cloudinary';
@@ -20,7 +20,7 @@ export class ComplianceController {
         { name: 'memo', maxCount: 1 },
       ]))
     async addCompliance(@Query("access_token") access_token: string,@Body(ValidationPipe) createCompDto: CreateCompDto, 
-        @UploadedFile() files: {
+        @UploadedFiles() files: {
             nin?: Express.Multer.File[],
             cert?: Express.Multer.File[],
             memo?: Express.Multer.File[],

@@ -50,7 +50,7 @@ let ComplianceController = class ComplianceController {
             if (files.memo) {
                 const uploadedMemo = await this.cloudinaryService.uploadMemo(files.memo[0], 'raw', 'MEMO');
                 createCompDto.memoUrl = uploadedMemo.secure_url;
-                console.log("3", createCompDto.memoUrl);
+                console.log("memoUrl", createCompDto.memoUrl);
             }
             else {
                 createCompDto.memoUrl = null;
@@ -107,7 +107,7 @@ __decorate([
     ])),
     __param(0, (0, common_1.Query)("access_token")),
     __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
-    __param(2, (0, common_1.UploadedFile)()),
+    __param(2, (0, common_1.UploadedFiles)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, createComp_1.CreateCompDto, Object, Object]),
     __metadata("design:returntype", Promise)
