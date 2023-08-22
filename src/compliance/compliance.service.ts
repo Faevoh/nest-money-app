@@ -24,9 +24,7 @@ export class ComplianceService {
             }
 
             const checkNIN = await this.compRepo.findOneBy({NIN})
-            if(checkNIN){ 
-                throw new BadRequestException("NIN already exists")
-            }
+            
             console.log("NIN", NIN)
             console.log("checkNIN", checkNIN)
 
