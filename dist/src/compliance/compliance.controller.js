@@ -19,7 +19,6 @@ const createComp_1 = require("../DTO/createComp");
 const updateComp_1 = require("../DTO/updateComp");
 const jwt_1 = require("@nestjs/jwt");
 const user_service_1 = require("../user/user.service");
-const platform_express_1 = require("@nestjs/platform-express");
 const cloudinary_service_1 = require("../cloudinary/cloudinary.service");
 let ComplianceController = class ComplianceController {
     constructor(compService, jwtService, userService, cloudinaryService) {
@@ -55,9 +54,6 @@ let ComplianceController = class ComplianceController {
 };
 __decorate([
     (0, common_1.Post)("/new"),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('nin')),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('cert')),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('memo')),
     __param(0, (0, common_1.Query)("access_token")),
     __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
     __param(2, (0, common_1.UploadedFile)()),
