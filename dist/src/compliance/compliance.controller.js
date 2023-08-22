@@ -104,9 +104,11 @@ let ComplianceController = class ComplianceController {
 };
 __decorate([
     (0, common_1.Post)("/new"),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('nin')),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('cert')),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('memo')),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileFieldsInterceptor)([
+        { name: 'nin', maxCount: 1 },
+        { name: 'cert', maxCount: 1 },
+        { name: 'memo', maxCount: 1 },
+    ])),
     __param(0, (0, common_1.Query)("access_token")),
     __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
     __param(2, (0, common_1.UploadedFile)()),

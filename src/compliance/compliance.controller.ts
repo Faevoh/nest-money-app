@@ -5,7 +5,7 @@ import * as cloudinary from 'cloudinary';
 import { UpdateCompDto } from 'src/DTO/updateComp';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { Compliances } from 'src/Entities/compEntity.entity';
 
@@ -14,9 +14,11 @@ export class ComplianceController {
     constructor(private compService: ComplianceService, private jwtService: JwtService, private userService: UserService, private cloudinaryService: CloudinaryService) {}    
 
     @Post("/new")
-    @UseInterceptors(FileInterceptor('nin'))
-    @UseInterceptors(FileInterceptor('cert'))
-    @UseInterceptors(FileInterceptor('memo'))
+    @UseInterceptors(FileFieldsInterceptor([
+        { name: 'nin', maxCount: 1 },
+        { name: 'cert', maxCount: 1 },
+        { name: 'memo', maxCount: 1 },
+      ]))
     async addCompliance(@Query("access_token") access_token: string,@Body(ValidationPipe) createCompDto: CreateCompDto, 
         @UploadedFile() ninfile: Express.Multer.File,  
         @UploadedFile() certfile: Express.Multer.File,  
