@@ -61,8 +61,8 @@ export class ComplianceController {
             const id = user.sub;
             const getUser = await this.userService.findById(id);
             const data = await this.compService.createComp(createCompDto, getUser);
-            // console.log(data);
-            return data;
+            console.log("compliance controller",data);
+            // return data;
         }catch(err){
             console.log("4",err.message)
             if(err instanceof NotFoundException) {
