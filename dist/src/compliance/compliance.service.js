@@ -55,9 +55,6 @@ let ComplianceService = class ComplianceService {
             newComp.imageUrl = createCompDto.imageUrl;
             newComp.certUrl = createCompDto.certUrl;
             newComp.memoUrl = createCompDto.memoUrl;
-            console.log("nin", newComp.imageUrl);
-            console.log("cert", newComp.certUrl);
-            console.log("memo", newComp.memoUrl);
             const result = await this.compRepo.save(newComp);
             return { statusCode: 201, message: "Compliance Added", data: result };
         }
