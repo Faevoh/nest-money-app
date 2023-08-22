@@ -27,16 +27,22 @@ export class ComplianceController {
                 const uploadedImage = await this.cloudinaryService.uploadNin(ninfile, 'image', 'NIN');
                 createCompDto.imageUrl = uploadedImage.secure_url;
                 // console.log("2",createCompDto.imageUrl)
+            }else{
+                console.log("nin not avaliable","1")
             }
             if (certfile) {
                 const uploadedCert = await this.cloudinaryService.uploadCert(certfile, 'image', 'CERT');
                 createCompDto.certUrl = uploadedCert.secure_url;
                 console.log("2",createCompDto.certUrl)
+            }else{
+                console.log("cert not avaliable","2")
             }
             if (memofile) {
                 const uploadedMemo = await this.cloudinaryService.uploadMemo(memofile, 'raw', 'MEMO');
                 createCompDto.memoUrl = uploadedMemo.secure_url;
                 console.log("3",createCompDto.memoUrl)
+            }else{
+                console.log("memo not avaliable","3")
             }
     
             const user = await this.jwtService.decode(access_token);
