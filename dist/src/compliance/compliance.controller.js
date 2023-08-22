@@ -30,58 +30,10 @@ let ComplianceController = class ComplianceController {
     }
     async addCompliance(access_token, createCompDto, ninfile, certfile, memofile, payload) {
         console.log("Where is the problem from");
-        try {
-            console.log('Received request with createCompDto:', createCompDto);
-            console.log('Received request with ninfile:', ninfile);
-            console.log('Received request with certfile:', certfile);
-            console.log('Received request with memofile:', memofile);
-            if (ninfile) {
-                const uploadedImage = await this.cloudinaryService.uploadNin(ninfile, 'image', 'NIN');
-                createCompDto.imageUrl = uploadedImage.secure_url;
-            }
-            else {
-                console.log("nin not avaliable", "1");
-            }
-            if (certfile) {
-                const uploadedCert = await this.cloudinaryService.uploadCert(certfile, 'image', 'CERT');
-                createCompDto.certUrl = uploadedCert.secure_url;
-                console.log("2", createCompDto.certUrl);
-            }
-            else {
-                console.log("cert not avaliable", "2");
-            }
-            if (memofile) {
-                const uploadedMemo = await this.cloudinaryService.uploadMemo(memofile, 'raw', 'MEMO');
-                createCompDto.memoUrl = uploadedMemo.secure_url;
-                console.log("3", createCompDto.memoUrl);
-            }
-            else {
-                console.log("memo not avaliable", "3");
-            }
-            const user = await this.jwtService.decode(access_token);
-            if (!user) {
-                throw new common_1.NotFoundException("Invalid Token");
-            }
-            ;
-            payload = user;
-            const timeInSeconds = Math.floor(Date.now() / 1000);
-            if (payload.exp && payload.exp < timeInSeconds) {
-                throw new common_1.UnauthorizedException("Token has expired");
-            }
-            const id = user.sub;
-            const getUser = await this.userService.findById(id);
-            const data = await this.compService.createComp(createCompDto, getUser);
-            return data;
-        }
-        catch (err) {
-            console.log("4", err.message);
-            if (err instanceof common_1.NotFoundException) {
-                console.log('5', err.message);
-            }
-            if (err instanceof common_1.UnauthorizedException) {
-                console.log("6", err.message);
-            }
-        }
+        console.log('Received request with createCompDto:', createCompDto);
+        console.log('Received request with ninfile:', ninfile);
+        console.log('Received request with certfile:', certfile);
+        console.log('Received request with memofile:', memofile);
     }
     async updateCompliance(updateCompDto, id) {
         return await this.compService.updateComp(id, updateCompDto);
