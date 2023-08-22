@@ -9,7 +9,7 @@ export class Compliances {
     @Column({unique: true})
     BVN: string;
 
-    @Column({unique: true, nullable: true})
+    @Column({nullable: true})
     NIN: string;
 
     @Column({nullable: true})

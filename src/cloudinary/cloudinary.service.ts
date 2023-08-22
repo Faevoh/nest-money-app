@@ -41,7 +41,6 @@ export class CloudinaryService {
       const upload = v2.uploader.upload_stream({resource_type: resourceType,folder},
         (error, result) => {
         if (error) return reject(error);
-        console.log("this is cert's error", error)
         resolve(result);
       });
       toStream(file.buffer).pipe(upload);
@@ -62,7 +61,6 @@ export class CloudinaryService {
       const upload = v2.uploader.upload_stream({resource_type: resourceType,folder},
         (error, result) => {
         if (error) return reject(error);
-        console.log("this is memo's error", error)
         resolve(result);
       });
       toStream(file.buffer).pipe(upload);

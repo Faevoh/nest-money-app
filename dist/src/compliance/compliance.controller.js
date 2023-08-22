@@ -35,7 +35,7 @@ let ComplianceController = class ComplianceController {
                 createCompDto.imageUrl = uploadedImage.secure_url;
             }
             else {
-                console.log("nin not avaliable");
+                createCompDto.imageUrl = null;
             }
             if (files.cert) {
                 const uploadedCert = await this.cloudinaryService.uploadCert(files.cert[0], 'image', 'CERT');
