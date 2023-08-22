@@ -14,6 +14,7 @@ export class ComplianceService {
     constructor(@InjectRepository(Compliances) private compRepo: Repository<Compliances>, private authService: AuthService, private userService: UserService) {}
        
     async createComp (createCompDto: CreateCompDto, user: User) {
+        console.log('whats going on no!!')
         try{ 
             const {BVN, NIN, state, LGA, city, businessAddress, businessName, country, address} =createCompDto;
 

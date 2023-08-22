@@ -26,6 +26,7 @@ let ComplianceService = class ComplianceService {
         this.userService = userService;
     }
     async createComp(createCompDto, user) {
+        console.log('whats going on no!!');
         try {
             const { BVN, NIN, state, LGA, city, businessAddress, businessName, country, address } = createCompDto;
             const checkBVN = await this.compRepo.findOneBy({ BVN });

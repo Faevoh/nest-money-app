@@ -29,6 +29,7 @@ let ComplianceController = class ComplianceController {
         this.cloudinaryService = cloudinaryService;
     }
     async addCompliance(access_token, createCompDto, ninfile, certfile, memofile, payload) {
+        console.log("Where is the problem from");
         try {
             console.log('Received request with createCompDto:', createCompDto);
             console.log('Received request with ninfile:', ninfile);

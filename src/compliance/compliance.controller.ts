@@ -22,6 +22,7 @@ export class ComplianceController {
         @UploadedFile() certfile: Express.Multer.File,  
         @UploadedFile() memofile: Express.Multer.File, 
         payload ){
+            console.log("Where is the problem from")
         try{
             console.log('Received request with createCompDto:', createCompDto);
             console.log('Received request with ninfile:', ninfile);
