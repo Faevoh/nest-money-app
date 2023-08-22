@@ -10,11 +10,7 @@ export declare class ComplianceService {
     private authService;
     private userService;
     constructor(compRepo: Repository<Compliances>, authService: AuthService, userService: UserService);
-    createComp(createCompDto: CreateCompDto, user: User): Promise<{
-        statusCode: number;
-        message: string;
-        data: Compliances;
-    }>;
+    createComp(createCompDto: CreateCompDto, user: User): Promise<void>;
     updateComp(id: number, updateCompDto: UpdateCompDto): Promise<{
         accountName?: string;
         businessAddress?: string;
