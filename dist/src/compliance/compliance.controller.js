@@ -46,7 +46,7 @@ let ComplianceController = class ComplianceController {
             if (certfile) {
                 const uploadedCert = await this.cloudinaryService.uploadCert(certfile, 'image', 'CERT');
                 createCompDto.certUrl = uploadedCert.secure_url;
-                console.log("certUrl", createCompDto.certUrl);
+                console.log("2", createCompDto.certUrl);
             }
             else {
                 console.log("cert not avaliable", "2");
@@ -54,7 +54,7 @@ let ComplianceController = class ComplianceController {
             if (memofile) {
                 const uploadedMemo = await this.cloudinaryService.uploadMemo(memofile, 'raw', 'MEMO');
                 createCompDto.memoUrl = uploadedMemo.secure_url;
-                console.log("memoUrl", createCompDto.memoUrl);
+                console.log("3", createCompDto.memoUrl);
             }
             else {
                 console.log("memo not avaliable", "3");
@@ -105,8 +105,6 @@ let ComplianceController = class ComplianceController {
 __decorate([
     (0, common_1.Post)("/new"),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('nin')),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('cert')),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('memo')),
     __param(0, (0, common_1.Query)("access_token")),
     __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
     __param(2, (0, common_1.UploadedFile)()),

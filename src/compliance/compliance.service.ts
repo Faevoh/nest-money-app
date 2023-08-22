@@ -46,11 +46,11 @@ export class ComplianceService {
             }
             const newComp = this.compRepo.create(comp)
             newComp.imageUrl = createCompDto.imageUrl;
-        //     newComp.certUrl = createCompDto.certUrl;
-        //     newComp.memoUrl = createCompDto.memoUrl;
+            newComp.certUrl = createCompDto.certUrl;
+            newComp.memoUrl = createCompDto.memoUrl;
             console.log(newComp.imageUrl)
-        //     console.log(newComp.certUrl)
-        //     console.log(newComp.memoUrl)
+            console.log(newComp.certUrl)
+            console.log(newComp.memoUrl)
             // const result = await this.compRepo.save(newComp)
             return {statusCode: 201, message: "Compliance Added", message2: "Nawa for this compliance"}
         }catch(err) {

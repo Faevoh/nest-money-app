@@ -15,8 +15,8 @@ export class ComplianceController {
 
     @Post("/new")
     @UseInterceptors(FileInterceptor('nin'))
-    @UseInterceptors(FileInterceptor('cert'))
-    @UseInterceptors(FileInterceptor('memo'))
+    // @UseInterceptors(FileInterceptor('cert'))
+    // @UseInterceptors(FileInterceptor('memo'))
     async addCompliance(@Query("access_token") access_token: string,@Body(ValidationPipe) createCompDto: CreateCompDto, 
         @UploadedFile() ninfile: Express.Multer.File,  
         @UploadedFile() certfile: Express.Multer.File,  
