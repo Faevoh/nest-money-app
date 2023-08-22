@@ -26,7 +26,6 @@ let ComplianceService = class ComplianceService {
         this.userService = userService;
     }
     async createComp(createCompDto, user) {
-        console.log('whats going on no!!');
         try {
             const { BVN, NIN, state, LGA, city, businessAddress, businessName, country, address } = createCompDto;
             const checkBVN = await this.compRepo.findOneBy({ BVN });
@@ -56,9 +55,9 @@ let ComplianceService = class ComplianceService {
             newComp.imageUrl = createCompDto.imageUrl;
             newComp.certUrl = createCompDto.certUrl;
             newComp.memoUrl = createCompDto.memoUrl;
-            console.log(newComp.imageUrl);
-            console.log(newComp.certUrl);
-            console.log(newComp.memoUrl);
+            console.log("nin", newComp.imageUrl);
+            console.log("cert", newComp.certUrl);
+            console.log("memo", newComp.memoUrl);
             return { statusCode: 201, message: "Compliance Added", message2: "Nawa for this compliance" };
         }
         catch (err) {

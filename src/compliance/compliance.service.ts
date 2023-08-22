@@ -14,7 +14,7 @@ export class ComplianceService {
     constructor(@InjectRepository(Compliances) private compRepo: Repository<Compliances>, private authService: AuthService, private userService: UserService) {}
        
     async createComp (createCompDto: CreateCompDto, user: User) {
-        console.log('whats going on no!!')
+        // console.log('whats going on no!!')
         try{ 
             const {BVN, NIN, state, LGA, city, businessAddress, businessName, country, address} =createCompDto;
 
@@ -48,9 +48,9 @@ export class ComplianceService {
             newComp.imageUrl = createCompDto.imageUrl;
             newComp.certUrl = createCompDto.certUrl;
             newComp.memoUrl = createCompDto.memoUrl;
-            console.log(newComp.imageUrl)
-            console.log(newComp.certUrl)
-            console.log(newComp.memoUrl)
+            console.log("nin",newComp.imageUrl)
+            console.log("cert",newComp.certUrl)
+            console.log("memo",newComp.memoUrl)
             // const result = await this.compRepo.save(newComp)
             return {statusCode: 201, message: "Compliance Added", message2: "Nawa for this compliance"}
         }catch(err) {

@@ -12,7 +12,11 @@ export declare class ComplianceController {
     private userService;
     private cloudinaryService;
     constructor(compService: ComplianceService, jwtService: JwtService, userService: UserService, cloudinaryService: CloudinaryService);
-    addCompliance(access_token: string, createCompDto: CreateCompDto, ninfile: Express.Multer.File, certfile: Express.Multer.File, memofile: Express.Multer.File, payload: any): Promise<void>;
+    addCompliance(access_token: string, createCompDto: CreateCompDto, ninfile: Express.Multer.File, certfile: Express.Multer.File, memofile: Express.Multer.File, payload: any): Promise<{
+        statusCode: number;
+        message: string;
+        message2: string;
+    }>;
     updateCompliance(updateCompDto: UpdateCompDto, id: number): Promise<{
         accountName?: string;
         businessAddress?: string;

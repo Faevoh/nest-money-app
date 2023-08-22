@@ -24,7 +24,6 @@ export class ComplianceController {
         @UploadedFile() certfile: Express.Multer.File,  
         @UploadedFile() memofile: Express.Multer.File, 
         payload ){
-            console.log("Where is the problem from")
             console.log('Received request with createCompDto:', createCompDto);
             console.log('Received request with ninfile:', ninfile);
             console.log('Received request with certfile:', certfile);
@@ -35,7 +34,7 @@ export class ComplianceController {
                 createCompDto.imageUrl = uploadedImage.secure_url;
                 console.log("imageUrl",createCompDto.imageUrl)
             }else{
-                console.log("nin not avaliable","1")
+                console.log("nin not avaliable")
             }
             if (certfile) {
                 const uploadedCert = await this.cloudinaryService.uploadCert(certfile, 'image', 'CERT');
@@ -63,8 +62,8 @@ export class ComplianceController {
             const id = user.sub;
             const getUser = await this.userService.findById(id);
             const data = await this.compService.createComp(createCompDto, getUser);
-            console.log("compliance controller",data);
-            // return data;
+            // console.log("compliance controller",data);
+            return data;
         }catch(err){
             console.log("4",err.message)
             if(err instanceof NotFoundException) {
