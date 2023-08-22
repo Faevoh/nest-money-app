@@ -27,9 +27,9 @@ export class ComplianceController {
         }, 
         payload ){
             console.log('Received request with createCompDto:', createCompDto);
-            console.log('Received request with ninfile:', files.nin[0]);
-            console.log('Received request with certfile:', files.cert[0]);
-            console.log('Received request with memofile:', files.memo[0]);
+            // console.log('Received request with ninfile:', files.nin[0]);
+            // console.log('Received request with certfile:', files.cert[0]);
+            // console.log('Received request with memofile:', files.memo[0]);
         try{ 
             if (files.nin) {
                 const uploadedImage = await this.cloudinaryService.uploadNin(files.nin[0], 'image', 'NIN');
@@ -41,14 +41,14 @@ export class ComplianceController {
             if (files.cert) {
                 const uploadedCert = await this.cloudinaryService.uploadCert(files.cert[0], 'image', 'CERT');
                 createCompDto.certUrl = uploadedCert.secure_url;
-                console.log("2",createCompDto.certUrl)
+                console.log("certUrl",createCompDto.certUrl)
             }else{
                 createCompDto.certUrl = null;
             }
             if (files.memo) {
                 const uploadedMemo = await this.cloudinaryService.uploadMemo(files.memo[0], 'raw', 'MEMO');
                 createCompDto.memoUrl = uploadedMemo.secure_url;
-                console.log("3",createCompDto.memoUrl)
+                console.log("memoUrl",createCompDto.memoUrl)
             }else{
                 createCompDto.memoUrl = null; 
             }
