@@ -58,16 +58,17 @@ let ComplianceService = class ComplianceService {
             console.log("nin", newComp.imageUrl);
             console.log("cert", newComp.certUrl);
             console.log("memo", newComp.memoUrl);
-            return { statusCode: 201, message: "Compliance Added", message2: "Nawa for this compliance" };
+            const result = await this.compRepo.save(newComp);
+            return { statusCode: 201, message: "Compliance Added", data: result };
         }
         catch (err) {
             if (err instanceof common_1.BadRequestException) {
-                console.log("1", err.message);
+                throw new common_1.BadRequestException(err.message);
             }
             if (err instanceof common_1.UnauthorizedException) {
-                console.log("2", err.message);
+                throw new common_1.BadRequestException(err.message);
             }
-            console.log("3", err.message);
+            throw new common_1.BadRequestException(err.message);
         }
     }
     async updateComp(id, updateCompDto) {

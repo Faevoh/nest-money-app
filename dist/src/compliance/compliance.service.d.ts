@@ -13,7 +13,7 @@ export declare class ComplianceService {
     createComp(createCompDto: CreateCompDto, user: User): Promise<{
         statusCode: number;
         message: string;
-        message2: string;
+        data: Compliances;
     }>;
     updateComp(id: number, updateCompDto: UpdateCompDto): Promise<{
         accountName?: string;

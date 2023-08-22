@@ -19,7 +19,7 @@ export declare class ComplianceController {
     }, payload: any): Promise<{
         statusCode: number;
         message: string;
-        message2: string;
+        data: Compliances;
     }>;
     updateCompliance(updateCompDto: UpdateCompDto, id: number): Promise<{
         accountName?: string;

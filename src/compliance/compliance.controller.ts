@@ -26,29 +26,25 @@ export class ComplianceController {
             memo?: Express.Multer.File[],
         }, 
         payload ){
-            console.log('Received request with createCompDto:', createCompDto);
-            // console.log('Received request with ninfile:', files.nin[0]);
-            // console.log('Received request with certfile:', files.cert[0]);
-            // console.log('Received request with memofile:', files.memo[0]);
         try{ 
             if (files.nin) {
                 const uploadedImage = await this.cloudinaryService.uploadNin(files.nin[0], 'image', 'NIN');
                 createCompDto.imageUrl = uploadedImage.secure_url;
-                console.log("imageUrl",createCompDto.imageUrl)
+                // console.log("imageUrl",createCompDto.imageUrl)
             }else{
                 console.log("nin not avaliable")
             }
             if (files.cert) {
                 const uploadedCert = await this.cloudinaryService.uploadCert(files.cert[0], 'image', 'CERT');
                 createCompDto.certUrl = uploadedCert.secure_url;
-                console.log("certUrl",createCompDto.certUrl)
+                // console.log("certUrl",createCompDto.certUrl)
             }else{
                 createCompDto.certUrl = null;
             }
             if (files.memo) {
                 const uploadedMemo = await this.cloudinaryService.uploadMemo(files.memo[0], 'raw', 'MEMO');
                 createCompDto.memoUrl = uploadedMemo.secure_url;
-                console.log("memoUrl",createCompDto.memoUrl)
+                // console.log("memoUrl",createCompDto.memoUrl)
             }else{
                 createCompDto.memoUrl = null; 
             }
@@ -67,16 +63,16 @@ export class ComplianceController {
             // console.log("compliance controller",data);
             return data;
         }catch(err){
-            console.log("4",err.message)
+            // console.log("4",err.message)
             if(err instanceof NotFoundException) {
-                // throw new NotFoundException(err.message)
-                console.log('5',err.message)
+                throw new NotFoundException(err.message)
+                // console.log('5',err.message)
             }
             if(err instanceof UnauthorizedException) {
-                // throw new UnauthorizedException(err.message)
-                console.log("6",err.message)
+                throw new UnauthorizedException(err.message)
+                // console.log("6",err.message)
             }
-            // throw new UnauthorizedException(err)
+            throw new UnauthorizedException(err)
         }
     }
 

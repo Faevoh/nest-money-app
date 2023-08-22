@@ -29,12 +29,10 @@ let ComplianceController = class ComplianceController {
         this.cloudinaryService = cloudinaryService;
     }
     async addCompliance(access_token, createCompDto, files, payload) {
-        console.log('Received request with createCompDto:', createCompDto);
         try {
             if (files.nin) {
                 const uploadedImage = await this.cloudinaryService.uploadNin(files.nin[0], 'image', 'NIN');
                 createCompDto.imageUrl = uploadedImage.secure_url;
-                console.log("imageUrl", createCompDto.imageUrl);
             }
             else {
                 console.log("nin not avaliable");
@@ -42,7 +40,6 @@ let ComplianceController = class ComplianceController {
             if (files.cert) {
                 const uploadedCert = await this.cloudinaryService.uploadCert(files.cert[0], 'image', 'CERT');
                 createCompDto.certUrl = uploadedCert.secure_url;
-                console.log("certUrl", createCompDto.certUrl);
             }
             else {
                 createCompDto.certUrl = null;
@@ -50,7 +47,6 @@ let ComplianceController = class ComplianceController {
             if (files.memo) {
                 const uploadedMemo = await this.cloudinaryService.uploadMemo(files.memo[0], 'raw', 'MEMO');
                 createCompDto.memoUrl = uploadedMemo.secure_url;
-                console.log("memoUrl", createCompDto.memoUrl);
             }
             else {
                 createCompDto.memoUrl = null;
@@ -71,13 +67,13 @@ let ComplianceController = class ComplianceController {
             return data;
         }
         catch (err) {
-            console.log("4", err.message);
             if (err instanceof common_1.NotFoundException) {
-                console.log('5', err.message);
+                throw new common_1.NotFoundException(err.message);
             }
             if (err instanceof common_1.UnauthorizedException) {
-                console.log("6", err.message);
+                throw new common_1.UnauthorizedException(err.message);
             }
+            throw new common_1.UnauthorizedException(err);
         }
     }
     async updateCompliance(updateCompDto, id) {
