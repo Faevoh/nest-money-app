@@ -43,6 +43,22 @@ let ComplianceController = class ComplianceController {
             else {
                 console.log("nin not avaliable", "1");
             }
+            if (certfile) {
+                const uploadedCert = await this.cloudinaryService.uploadCert(certfile, 'image', 'CERT');
+                createCompDto.certUrl = uploadedCert.secure_url;
+                console.log("certUrl", createCompDto.certUrl);
+            }
+            else {
+                console.log("cert not avaliable", "2");
+            }
+            if (memofile) {
+                const uploadedMemo = await this.cloudinaryService.uploadMemo(memofile, 'raw', 'MEMO');
+                createCompDto.memoUrl = uploadedMemo.secure_url;
+                console.log("memoUrl", createCompDto.memoUrl);
+            }
+            else {
+                console.log("memo not avaliable", "3");
+            }
             const user = await this.jwtService.decode(access_token);
             if (!user) {
                 throw new common_1.NotFoundException("Invalid Token");
@@ -89,6 +105,8 @@ let ComplianceController = class ComplianceController {
 __decorate([
     (0, common_1.Post)("/new"),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('nin')),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('cert')),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('memo')),
     __param(0, (0, common_1.Query)("access_token")),
     __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
     __param(2, (0, common_1.UploadedFile)()),

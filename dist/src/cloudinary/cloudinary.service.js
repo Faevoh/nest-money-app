@@ -23,7 +23,6 @@ let CloudinaryService = class CloudinaryService {
             const upload = cloudinary_1.v2.uploader.upload_stream({ resource_type: resourceType, folder }, (error, result) => {
                 if (error)
                     return reject(error);
-                console.log("this is nin's error", error);
                 resolve(result);
             });
             toStream(fileName.buffer).pipe(upload);
