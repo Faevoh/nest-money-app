@@ -15,8 +15,8 @@ export class ComplianceController {
 
     @Post("/new")
     @UseInterceptors(FileInterceptor('nin'))
-    // @UseInterceptors(FileInterceptor('cert'))
-    // @UseInterceptors(FileInterceptor('memo'))
+    @UseInterceptors(FileInterceptor('cert'))
+    @UseInterceptors(FileInterceptor('memo'))
     async addCompliance(@Query("access_token") access_token: string,@Body(ValidationPipe) createCompDto: CreateCompDto, 
         @UploadedFile() ninfile: Express.Multer.File,  
         @UploadedFile() certfile: Express.Multer.File,  
@@ -40,14 +40,14 @@ export class ComplianceController {
                 createCompDto.certUrl = uploadedCert.secure_url;
                 console.log("2",createCompDto.certUrl)
             }else{
-                console.log("cert not avaliable","2")
+                createCompDto.certUrl = null;
             }
             if (memofile) {
                 const uploadedMemo = await this.cloudinaryService.uploadMemo(memofile, 'raw', 'MEMO');
                 createCompDto.memoUrl = uploadedMemo.secure_url;
                 console.log("3",createCompDto.memoUrl)
             }else{
-                console.log("memo not avaliable","3")
+                createCompDto.memoUrl = null; 
             }
     
             const user = await this.jwtService.decode(access_token);

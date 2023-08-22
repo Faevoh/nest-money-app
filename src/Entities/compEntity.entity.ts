@@ -33,7 +33,7 @@ export class Compliances {
     @Column()
     city: string;
 
-    @Column()
+    @Column({nullable: true})
     imageUrl: string;
 
     @Column({nullable: true})

@@ -49,7 +49,7 @@ let ComplianceController = class ComplianceController {
                 console.log("2", createCompDto.certUrl);
             }
             else {
-                console.log("cert not avaliable", "2");
+                createCompDto.certUrl = null;
             }
             if (memofile) {
                 const uploadedMemo = await this.cloudinaryService.uploadMemo(memofile, 'raw', 'MEMO');
@@ -57,7 +57,7 @@ let ComplianceController = class ComplianceController {
                 console.log("3", createCompDto.memoUrl);
             }
             else {
-                console.log("memo not avaliable", "3");
+                createCompDto.memoUrl = null;
             }
             const user = await this.jwtService.decode(access_token);
             if (!user) {
@@ -105,6 +105,8 @@ let ComplianceController = class ComplianceController {
 __decorate([
     (0, common_1.Post)("/new"),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('nin')),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('cert')),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('memo')),
     __param(0, (0, common_1.Query)("access_token")),
     __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
     __param(2, (0, common_1.UploadedFile)()),
