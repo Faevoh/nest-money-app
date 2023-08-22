@@ -20,31 +20,33 @@ export class ComplianceController {
         { name: 'memo', maxCount: 1 },
       ]))
     async addCompliance(@Query("access_token") access_token: string,@Body(ValidationPipe) createCompDto: CreateCompDto, 
-        @UploadedFile() ninfile: Express.Multer.File,  
-        @UploadedFile() certfile: Express.Multer.File,  
-        @UploadedFile() memofile: Express.Multer.File, 
+        @UploadedFile() files: {
+            nin?: Express.Multer.File[],
+            cert?: Express.Multer.File[],
+            memo?: Express.Multer.File[],
+        }, 
         payload ){
             console.log('Received request with createCompDto:', createCompDto);
-            console.log('Received request with ninfile:', ninfile);
-            console.log('Received request with certfile:', certfile);
-            console.log('Received request with memofile:', memofile);
+            console.log('Received request with ninfile:', files.nin);
+            console.log('Received request with certfile:', files.cert);
+            console.log('Received request with memofile:', files.memo);
         try{ 
-            if (ninfile) {
-                const uploadedImage = await this.cloudinaryService.uploadNin(ninfile, 'image', 'NIN');
+            if (files.nin) {
+                const uploadedImage = await this.cloudinaryService.uploadNin(files.nin[0], 'image', 'NIN');
                 createCompDto.imageUrl = uploadedImage.secure_url;
                 console.log("imageUrl",createCompDto.imageUrl)
             }else{
                 console.log("nin not avaliable")
             }
-            if (certfile) {
-                const uploadedCert = await this.cloudinaryService.uploadCert(certfile, 'image', 'CERT');
+            if (files.cert) {
+                const uploadedCert = await this.cloudinaryService.uploadCert(files.cert[0], 'image', 'CERT');
                 createCompDto.certUrl = uploadedCert.secure_url;
                 console.log("2",createCompDto.certUrl)
             }else{
                 createCompDto.certUrl = null;
             }
-            if (memofile) {
-                const uploadedMemo = await this.cloudinaryService.uploadMemo(memofile, 'raw', 'MEMO');
+            if (files.memo) {
+                const uploadedMemo = await this.cloudinaryService.uploadMemo(files.memo[0], 'raw', 'MEMO');
                 createCompDto.memoUrl = uploadedMemo.secure_url;
                 console.log("3",createCompDto.memoUrl)
             }else{

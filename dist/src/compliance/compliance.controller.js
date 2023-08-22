@@ -28,30 +28,30 @@ let ComplianceController = class ComplianceController {
         this.userService = userService;
         this.cloudinaryService = cloudinaryService;
     }
-    async addCompliance(access_token, createCompDto, ninfile, certfile, memofile, payload) {
+    async addCompliance(access_token, createCompDto, files, payload) {
         console.log('Received request with createCompDto:', createCompDto);
-        console.log('Received request with ninfile:', ninfile);
-        console.log('Received request with certfile:', certfile);
-        console.log('Received request with memofile:', memofile);
+        console.log('Received request with ninfile:', files.nin);
+        console.log('Received request with certfile:', files.cert);
+        console.log('Received request with memofile:', files.memo);
         try {
-            if (ninfile) {
-                const uploadedImage = await this.cloudinaryService.uploadNin(ninfile, 'image', 'NIN');
+            if (files.nin) {
+                const uploadedImage = await this.cloudinaryService.uploadNin(files.nin[0], 'image', 'NIN');
                 createCompDto.imageUrl = uploadedImage.secure_url;
                 console.log("imageUrl", createCompDto.imageUrl);
             }
             else {
                 console.log("nin not avaliable");
             }
-            if (certfile) {
-                const uploadedCert = await this.cloudinaryService.uploadCert(certfile, 'image', 'CERT');
+            if (files.cert) {
+                const uploadedCert = await this.cloudinaryService.uploadCert(files.cert[0], 'image', 'CERT');
                 createCompDto.certUrl = uploadedCert.secure_url;
                 console.log("2", createCompDto.certUrl);
             }
             else {
                 createCompDto.certUrl = null;
             }
-            if (memofile) {
-                const uploadedMemo = await this.cloudinaryService.uploadMemo(memofile, 'raw', 'MEMO');
+            if (files.memo) {
+                const uploadedMemo = await this.cloudinaryService.uploadMemo(files.memo[0], 'raw', 'MEMO');
                 createCompDto.memoUrl = uploadedMemo.secure_url;
                 console.log("3", createCompDto.memoUrl);
             }
@@ -111,10 +111,8 @@ __decorate([
     __param(0, (0, common_1.Query)("access_token")),
     __param(1, (0, common_1.Body)(common_1.ValidationPipe)),
     __param(2, (0, common_1.UploadedFile)()),
-    __param(3, (0, common_1.UploadedFile)()),
-    __param(4, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, createComp_1.CreateCompDto, Object, Object, Object, Object]),
+    __metadata("design:paramtypes", [String, createComp_1.CreateCompDto, Object, Object]),
     __metadata("design:returntype", Promise)
 ], ComplianceController.prototype, "addCompliance", null);
 __decorate([

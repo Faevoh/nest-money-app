@@ -13,7 +13,7 @@ const toStream = require("buffer-to-stream");
 const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)();
 let CloudinaryService = class CloudinaryService {
-    async uploadNin(fileName, resourceType = 'image', folder) {
+    async uploadNin(file, resourceType = 'image', folder) {
         return new Promise((resolve, reject) => {
             cloudinary_1.v2.config({
                 cloud_name: "dwt2lavnm",
@@ -25,10 +25,10 @@ let CloudinaryService = class CloudinaryService {
                     return reject(error);
                 resolve(result);
             });
-            toStream(fileName.buffer).pipe(upload);
+            toStream(file.buffer).pipe(upload);
         });
     }
-    async uploadCert(fileName, resourceType = 'image', folder) {
+    async uploadCert(file, resourceType = 'image', folder) {
         return new Promise((resolve, reject) => {
             cloudinary_1.v2.config({
                 cloud_name: "dwt2lavnm",
@@ -41,10 +41,10 @@ let CloudinaryService = class CloudinaryService {
                 console.log("this is cert's error", error);
                 resolve(result);
             });
-            toStream(fileName.buffer).pipe(upload);
+            toStream(file.buffer).pipe(upload);
         });
     }
-    async uploadMemo(fileName, resourceType = 'image', folder) {
+    async uploadMemo(file, resourceType = 'image', folder) {
         return new Promise((resolve, reject) => {
             cloudinary_1.v2.config({
                 cloud_name: "dwt2lavnm",
@@ -57,7 +57,7 @@ let CloudinaryService = class CloudinaryService {
                 console.log("this is memo's error", error);
                 resolve(result);
             });
-            toStream(fileName.buffer).pipe(upload);
+            toStream(file.buffer).pipe(upload);
         });
     }
     async uploadImage(fileName, resourceType = 'image', folder) {

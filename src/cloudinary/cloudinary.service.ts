@@ -8,7 +8,7 @@ config();
 @Injectable()
 export class CloudinaryService {
   async uploadNin(
-    fileName: Express.Multer.File,
+    file: Express.Multer.File,
     resourceType: 'image' | 'raw' = 'image',
     folder: 'NIN'
   ): Promise<UploadApiResponse | UploadApiErrorResponse> {
@@ -23,12 +23,12 @@ export class CloudinaryService {
         if (error) return reject(error);
         resolve(result);
       });
-      toStream(fileName.buffer).pipe(upload);
+      toStream(file.buffer).pipe(upload);
     });
   }
 
   async uploadCert(
-    fileName: Express.Multer.File,
+    file: Express.Multer.File,
     resourceType: 'image' | 'raw' = 'image',
     folder: 'CERT'
   ): Promise<UploadApiResponse | UploadApiErrorResponse> {
@@ -44,12 +44,12 @@ export class CloudinaryService {
         console.log("this is cert's error", error)
         resolve(result);
       });
-      toStream(fileName.buffer).pipe(upload);
+      toStream(file.buffer).pipe(upload);
     });
   }
 
   async uploadMemo(
-    fileName: Express.Multer.File,
+    file: Express.Multer.File,
     resourceType: 'image' | 'raw' = 'image',
     folder: 'MEMO'
   ): Promise<UploadApiResponse | UploadApiErrorResponse> {
@@ -65,7 +65,7 @@ export class CloudinaryService {
         console.log("this is memo's error", error)
         resolve(result);
       });
-      toStream(fileName.buffer).pipe(upload);
+      toStream(file.buffer).pipe(upload);
     });
   }
 
