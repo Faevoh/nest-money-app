@@ -10,7 +10,7 @@ export class Compliances {
     BVN: string;
 
     @Column({nullable: true})
-    NIN: string;
+    NIN ?: string;
 
     @Column({nullable: true})
     businessName ?: string;

@@ -22,7 +22,7 @@ export declare class ComplianceService {
         bankCode?: string;
         id: number;
         BVN: string;
-        NIN: string;
+        NIN?: string;
         state: string;
         country: string;
         address: string;

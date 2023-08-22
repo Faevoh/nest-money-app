@@ -1,4 +1,4 @@
-import { BadRequestException, HttpException, HttpStatus, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateCompDto } from 'src/DTO/createComp';
 import { UpdateCompDto } from 'src/DTO/updateComp';
@@ -25,11 +25,10 @@ export class ComplianceService {
 
             const checkNIN = await this.compRepo.findOneBy({NIN})
             if(checkNIN){ 
-                throw new HttpException(
-                    { message: "NIN already exists", error: "Bad Request" },
-                    HttpStatus.BAD_REQUEST
-                );
+                throw new BadRequestException("NIN already exists")
             }
+            console.log("NIN", NIN)
+            console.log("checkNIN", checkNIN)
 
             const comp = new Compliances()
             comp.BVN = BVN;

@@ -34,8 +34,10 @@ let ComplianceService = class ComplianceService {
             }
             const checkNIN = await this.compRepo.findOneBy({ NIN });
             if (checkNIN) {
-                throw new common_1.HttpException({ message: "NIN already exists", error: "Bad Request" }, common_1.HttpStatus.BAD_REQUEST);
+                throw new common_1.BadRequestException("NIN already exists");
             }
+            console.log("NIN", NIN);
+            console.log("checkNIN", checkNIN);
             const comp = new compEntity_entity_1.Compliances();
             comp.BVN = BVN;
             comp.NIN = NIN;
