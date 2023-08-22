@@ -27,9 +27,9 @@ export class ComplianceController {
         }, 
         payload ){
             console.log('Received request with createCompDto:', createCompDto);
-            console.log('Received request with ninfile:', files.nin);
-            console.log('Received request with certfile:', files.cert);
-            console.log('Received request with memofile:', files.memo);
+            console.log('Received request with ninfile:', files.nin[0]);
+            console.log('Received request with certfile:', files.cert[0]);
+            console.log('Received request with memofile:', files.memo[0]);
         try{ 
             if (files.nin) {
                 const uploadedImage = await this.cloudinaryService.uploadNin(files.nin[0], 'image', 'NIN');
