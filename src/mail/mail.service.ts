@@ -94,4 +94,22 @@ export class MailService {
       return false;
     }
   }
+
+  async AirtimeMail(text: string, user: User) {
+    try {
+      await this.mailerService.sendMail({
+        to: user.email,
+        subject: `Airtime Transaction`,
+        template: './airtimeMail',
+        context: {
+          text: text
+        },
+      });
+      // console.log("user.email in transfer", user.email)
+      return true;
+    } catch (error) {
+      // console.log(error);
+      return false;
+    }
+  }
 }

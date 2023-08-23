@@ -7,4 +7,5 @@ export declare class MailService {
     VerifyMail(text: string, link: string, user: User): Promise<boolean>;
     DepositMail(text: string, user: User): Promise<boolean>;
     TransferMail(text: string, user: User): Promise<boolean>;
+    AirtimeMail(text: string, user: User): Promise<boolean>;
 }

@@ -81,6 +81,22 @@ let MailService = class MailService {
             return false;
         }
     }
+    async AirtimeMail(text, user) {
+        try {
+            await this.mailerService.sendMail({
+                to: user.email,
+                subject: `Airtime Transaction`,
+                template: './airtimeMail',
+                context: {
+                    text: text
+                },
+            });
+            return true;
+        }
+        catch (error) {
+            return false;
+        }
+    }
 };
 MailService = __decorate([
     (0, common_1.Injectable)(),

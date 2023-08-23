@@ -182,6 +182,8 @@ export class TransactionController {
             
             const userId = tokenDecode.sub;
 
+            const users = await this.userService.findById(userId)
+
             const airtimedata ={
                 ...createAirtimeDto,
                 userId: userId,
@@ -216,7 +218,9 @@ export class TransactionController {
             delete newRecharge.expiryDate
             delete userPinDto.bankPin
 
-            // data: newRecharge
+            const texts = `Hey ${users.firstName},
+            You account has been deducted of ${createAirtimeDto.amount} for the Airtime Transactio that was made to on ${newRecharge.createDate}.`
+            await this.mailService.AirtimeMail(texts, users)
 
             return {statusCode: 201, message: "Successful Recharge"}
         }catch(err){
