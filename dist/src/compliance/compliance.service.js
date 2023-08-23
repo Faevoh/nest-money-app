@@ -32,12 +32,6 @@ let ComplianceService = class ComplianceService {
             if (checkBVN) {
                 throw new common_1.BadRequestException({ message: "BVN already exists", error: 'Bad Request' });
             }
-            if (NIN !== null) {
-                const checkNIN = await this.compRepo.findOneBy({ NIN });
-                if (checkNIN) {
-                    throw new common_1.BadRequestException({ message: 'NIN already exists', error: 'Bad Request' });
-                }
-            }
             const comp = new compEntity_entity_1.Compliances();
             comp.BVN = BVN;
             comp.NIN = NIN;

@@ -23,16 +23,6 @@ export class ComplianceService {
                 throw new BadRequestException({message: "BVN already exists", error: 'Bad Request' })
             }
 
-            if(NIN !== null){
-                const checkNIN = await this.compRepo.findOneBy({NIN})
-                if(checkNIN){ 
-                    // throw new BadRequestException("NIN already exists")
-                    throw new BadRequestException({ message: 'NIN already exists', error: 'Bad Request' });
-                }
-                // console.log("NIN", NIN)
-                // console.log("checkNIN", checkNIN)
-            }
-
             const comp = new Compliances()
             comp.BVN = BVN;
             comp.NIN = NIN;
