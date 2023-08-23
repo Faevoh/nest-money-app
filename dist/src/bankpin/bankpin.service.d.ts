@@ -8,4 +8,5 @@ export declare class BankpinService {
     createPin(user: User, userPinDto: UserPinDto): Promise<BankPin>;
     findByPin(bankPin: string): Promise<BankPin>;
     findByUserId(userId: number): Promise<BankPin>;
+    update(userId: number, dataToUpdate: Partial<BankPin>): Promise<BankPin>;
 }

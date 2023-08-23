@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserPinDto } from 'src/DTO/pindto';
 import { BankPin } from 'src/Entities/pinCreation';
@@ -36,5 +36,15 @@ export class BankpinService {
 
     async findByUserId(userId: number) {
         return await this.pinRepo.findOneBy({userId})
+    }
+
+    async update(userId: number, dataToUpdate: Partial<BankPin>) {
+        const getid = await this.pinRepo.findOneBy({userId});
+
+        if(!getid) { throw new NotFoundException("user not found")}
+
+        Object.assign(getid, dataToUpdate);
+
+        return await this.pinRepo.save(getid)
     }
 }

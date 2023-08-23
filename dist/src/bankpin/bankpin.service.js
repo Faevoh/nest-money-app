@@ -46,6 +46,14 @@ let BankpinService = class BankpinService {
     async findByUserId(userId) {
         return await this.pinRepo.findOneBy({ userId });
     }
+    async update(userId, dataToUpdate) {
+        const getid = await this.pinRepo.findOneBy({ userId });
+        if (!getid) {
+            throw new common_1.NotFoundException("user not found");
+        }
+        Object.assign(getid, dataToUpdate);
+        return await this.pinRepo.save(getid);
+    }
 };
 BankpinService = __decorate([
     (0, common_1.Injectable)(),

@@ -33,6 +33,7 @@ const pindto_1 = require("../DTO/pindto");
 const bankpin_service_1 = require("../bankpin/bankpin.service");
 const dotenv_1 = require("dotenv");
 const wallet_service_1 = require("../wallet/wallet.service");
+const changePin_1 = require("../DTO/changePin");
 (0, dotenv_1.config)();
 let UserController = class UserController {
     constructor(userService, mailService, authService, acctService, jwtService, cloudinaryService, bankPinservice, walletService) {
@@ -301,6 +302,40 @@ let UserController = class UserController {
             throw err.message;
         }
     }
+    async changePin(access_token, payload, changePinDto) {
+        try {
+            const tokenDecode = this.jwtService.decode(access_token);
+            if (!tokenDecode) {
+                throw new common_1.NotFoundException("Invalid Token");
+            }
+            ;
+            payload = tokenDecode;
+            const timeInSeconds = Math.floor(Date.now() / 1000);
+            if (payload.exp && payload.exp < timeInSeconds) {
+                throw new common_1.UnauthorizedException("Token has expired");
+            }
+            const id = tokenDecode.sub;
+            const user = await this.bankPinservice.findByUserId(id);
+            const { oldPin, newPin } = changePinDto;
+            const checkOldPassword = await bcrypt.compare(oldPin, user.bankPin);
+            if (!checkOldPassword) {
+                throw new common_1.UnauthorizedException("Incorrect Password");
+            }
+            const hashedPassword = await bcrypt.hash(newPin, 10);
+            user.bankPin = hashedPassword;
+            await this.bankPinservice.update(user.id, { bankPin: user.bankPin });
+            return { statusCode: 200, message: "Password has been changed" };
+        }
+        catch (err) {
+            if (err instanceof common_1.NotFoundException) {
+                throw new common_1.NotFoundException(err.message);
+            }
+            if (err instanceof common_1.UnauthorizedException) {
+                throw new common_1.UnauthorizedException(err.message);
+            }
+            throw new common_1.BadRequestException("Failed to change Password");
+        }
+    }
     async getAccountName(body) {
         try {
             const { accountNumber } = body;
@@ -419,6 +454,14 @@ __decorate([
     __metadata("design:paramtypes", [String, pindto_1.UserPinDto, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "confirmPin", null);
+__decorate([
+    (0, common_1.Patch)("/change-pin"),
+    __param(0, (0, common_1.Query)("access_token")),
+    __param(2, (0, common_1.Body)(common_1.ValidationPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object, changePin_1.ChangePinDto]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "changePin", null);
 __decorate([
     (0, common_1.Post)("/accountName"),
     __param(0, (0, common_1.Body)()),

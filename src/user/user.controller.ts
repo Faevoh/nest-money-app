@@ -19,6 +19,7 @@ import * as crypto from 'crypto-js'
 import { BankpinService } from 'src/bankpin/bankpin.service';
 import { config } from 'dotenv';
 import { WalletService } from 'src/wallet/wallet.service';
+import { ChangePinDto } from 'src/DTO/changePin';
 
 config();
 
@@ -310,6 +311,44 @@ export class UserController {
             throw err.message;
         }
     }
+
+    @Patch("/change-pin")
+    async changePin(@Query("access_token") access_token: string, payload, @Body(ValidationPipe) changePinDto: ChangePinDto) {
+        try{
+            const tokenDecode = this.jwtService.decode(access_token);
+            if(!tokenDecode) {throw new NotFoundException("Invalid Token")};
+            payload = tokenDecode
+            const timeInSeconds = Math.floor(Date.now() / 1000); 
+            if (payload.exp && payload.exp < timeInSeconds) {
+            throw new UnauthorizedException("Token has expired");
+            }
+            const id = tokenDecode.sub;
+            const user = await this.bankPinservice.findByUserId(id) 
+
+            const {oldPin, newPin} = changePinDto;
+            const checkOldPassword = await bcrypt.compare(oldPin, user.bankPin);
+            if(!checkOldPassword) {
+                throw new UnauthorizedException("Incorrect Password")
+            }
+
+            const hashedPassword = await bcrypt.hash(newPin, 10)
+            user.bankPin = hashedPassword;
+
+            await this.bankPinservice.update(user.id, {bankPin: user.bankPin});
+
+            return {statusCode: 200, message: "Password has been changed"}
+
+        }catch(err){
+            if(err instanceof NotFoundException){
+                throw new NotFoundException(err.message)
+            }
+            if(err instanceof UnauthorizedException){
+                throw new UnauthorizedException(err.message)
+            }
+            throw new BadRequestException("Failed to change Password")
+        }
+    }
+
 
     @Post("/accountName")
     async getAccountName(@Body() body: {accountNumber: string}) {

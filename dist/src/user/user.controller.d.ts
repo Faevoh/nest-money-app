@@ -13,6 +13,7 @@ import { ChangePasswordDto } from 'src/DTO/changePassword';
 import { UserPinDto } from 'src/DTO/pindto';
 import { BankpinService } from 'src/bankpin/bankpin.service';
 import { WalletService } from 'src/wallet/wallet.service';
+import { ChangePinDto } from 'src/DTO/changePin';
 export declare class UserController {
     private userService;
     private mailService;
@@ -102,6 +103,10 @@ export declare class UserController {
         message: string;
     }>;
     confirmPin(access_token: string, pinDto: UserPinDto, payload: any): Promise<{
+        statusCode: number;
+        message: string;
+    }>;
+    changePin(access_token: string, payload: any, changePinDto: ChangePinDto): Promise<{
         statusCode: number;
         message: string;
     }>;
