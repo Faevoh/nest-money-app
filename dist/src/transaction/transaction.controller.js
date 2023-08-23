@@ -165,6 +165,7 @@ let TransactionController = class TransactionController {
             }
             const userId = tokenDecode.sub;
             const users = await this.userService.findById(userId);
+            console.log("this is users from airtime", users);
             const airtimedata = Object.assign(Object.assign({}, createAirtimeDto), { userId: userId, status: "success", payMethod: "airtime" });
             const walletData = await this.walletService.findByUserId(userId);
             const { amount } = createAirtimeDto;
@@ -188,7 +189,8 @@ let TransactionController = class TransactionController {
             delete userPinDto.bankPin;
             const texts = `Hey ${users.firstName},
             You account has been deducted of ${createAirtimeDto.amount} for the Airtime Transactio that was made to on ${newRecharge.createDate}.`;
-            await this.mailService.AirtimeMail(texts, users);
+            const result = await this.mailService.AirtimeMail(texts, users);
+            console.log(result);
             return { statusCode: 201, message: "Successful Recharge" };
         }
         catch (err) {

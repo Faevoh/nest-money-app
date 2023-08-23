@@ -91,6 +91,7 @@ let MailService = class MailService {
                     text: text
                 },
             });
+            console.log("user.email in airtime", user.email);
             return true;
         }
         catch (error) {
