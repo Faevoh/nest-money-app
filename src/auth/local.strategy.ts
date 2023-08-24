@@ -23,7 +23,7 @@ export class LocalStraregy extends PassportStrategy(Strategy) {
                 throw new UnauthorizedException("email or password incorrect");
             }
             if (err instanceof BadRequestException){
-                throw new UnauthorizedException("Check email and verify account before sign in")
+                throw new UnauthorizedException("Check email to verify account")
             }
             throw err;
         }

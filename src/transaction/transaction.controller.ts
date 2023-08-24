@@ -48,7 +48,7 @@ export class TransactionController {
 
         const walletdata = await this.walletService.findByUserId(userid)
         if(walletdata.accountBalance === 0|| walletdata.accountBalance < 0 || walletdata.accountBalance <transferDto.amount){
-            throw new BadRequestException("Insufficient Balance can't make transfer")
+            throw new BadRequestException("Insufficient Funds")
         }
 
         const recieverAccount = transferDto.accountNumber
@@ -197,7 +197,7 @@ export class TransactionController {
 
             if(walletData.accountBalance === 0|| walletData.accountBalance < 0 || walletData.accountBalance < amount){
 
-                throw new UnauthorizedException("Insufficient Balance, Can't process Airtime")
+                throw new UnauthorizedException("Insufficient Funds")
             }
 
             walletData.accountBalance -= createAirtimeDto.amount
