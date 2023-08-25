@@ -15,14 +15,14 @@ export class AuthService {
         const user = await this.userService.login(email);
 
         if(!user){
-            throw new NotFoundException("Invalid User");
+            throw new NotFoundException("Not a User");
+        }
+        if(user.verified ==! true) {
+            throw new BadRequestException("Check email to verify account")
         }
         const checkPassword = await bcrypt.compare(password, user.password);
         if(!checkPassword){
             throw new UnauthorizedException("Wrong User Credentials");
-        }
-        if(user.verified ==! true) {
-            throw new BadRequestException("Check email to verify account")
         }
        return user;
     }
