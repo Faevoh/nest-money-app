@@ -22,7 +22,7 @@ export class AuthService {
             throw new UnauthorizedException("Wrong User Credentials");
         }
         if(user.verified ==! true) {
-            throw new BadRequestException("Check email and verify account before sign in")
+            throw new BadRequestException("Check email to verify account")
         }
        return user;
     }

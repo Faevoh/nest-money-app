@@ -58,7 +58,7 @@ let TransactionController = class TransactionController {
             const transferdata = Object.assign(Object.assign({}, transferDto), { userId: userid, status: "success", payMethod: "transfer" });
             const walletdata = await this.walletService.findByUserId(userid);
             if (walletdata.accountBalance === 0 || walletdata.accountBalance < 0 || walletdata.accountBalance < transferDto.amount) {
-                throw new common_1.BadRequestException("Insufficient Balance can't make transfer");
+                throw new common_1.BadRequestException("Insufficient Funds");
             }
             const recieverAccount = transferDto.accountNumber;
             const recieverdetails = await this.walletService.findByUserAcc(recieverAccount);
@@ -169,7 +169,7 @@ let TransactionController = class TransactionController {
             const walletData = await this.walletService.findByUserId(userId);
             const { amount } = createAirtimeDto;
             if (walletData.accountBalance === 0 || walletData.accountBalance < 0 || walletData.accountBalance < amount) {
-                throw new common_1.UnauthorizedException("Insufficient Balance, Can't process Airtime");
+                throw new common_1.UnauthorizedException("Insufficient Funds");
             }
             walletData.accountBalance -= createAirtimeDto.amount;
             await this.walletService.saveWallet(walletData);

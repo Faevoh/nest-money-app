@@ -34,7 +34,7 @@ let LocalStraregy = class LocalStraregy extends (0, passport_1.PassportStrategy)
                 throw new common_1.UnauthorizedException("email or password incorrect");
             }
             if (err instanceof common_1.BadRequestException) {
-                throw new common_1.UnauthorizedException("Check email and verify account before sign in");
+                throw new common_1.UnauthorizedException("Check email to verify account");
             }
             throw err;
         }
