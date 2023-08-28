@@ -36,14 +36,14 @@ let AuthService = class AuthService {
     async validateUser(email, password) {
         const user = await this.userService.login(email);
         if (!user) {
-            throw new common_1.NotFoundException("Invalid User");
+            throw new common_1.NotFoundException("Not a User");
+        }
+        if (user.verified == !true) {
+            throw new common_1.BadRequestException("Check email to verify account");
         }
         const checkPassword = await bcrypt.compare(password, user.password);
         if (!checkPassword) {
             throw new common_1.UnauthorizedException("Wrong User Credentials");
-        }
-        if (user.verified == !true) {
-            throw new common_1.BadRequestException("Check email and verify account before sign in");
         }
         return user;
     }

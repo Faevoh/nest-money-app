@@ -129,6 +129,12 @@ export class UserController {
             if(!checkUser) {
                 throw new NotFoundException("Email does not exist")
             }
+
+            const checkVerified = checkUser.verified
+            if(checkVerified === false) {
+                throw new BadRequestException("Account not verified")
+            }
+
             const resetToken = uuidv4();
 
             checkUser.resetToken = resetToken;

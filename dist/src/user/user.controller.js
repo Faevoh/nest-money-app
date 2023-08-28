@@ -133,6 +133,10 @@ let UserController = class UserController {
             if (!checkUser) {
                 throw new common_1.NotFoundException("Email does not exist");
             }
+            const checkVerified = checkUser.verified;
+            if (checkVerified === false) {
+                throw new common_1.BadRequestException("Account not verified");
+            }
             const resetToken = (0, uuid_1.v4)();
             checkUser.resetToken = resetToken;
             checkUser.resetTokenExpiry = new Date(Date.now() + 3600000);
