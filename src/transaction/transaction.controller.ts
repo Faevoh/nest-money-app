@@ -100,9 +100,9 @@ export class TransactionController {
         A transfer of ${transferDto.amount} was made to on ${maindata.createDate}.
         Check your app for other info.`
 
-        await this.mailService.TransferMail(texts, users)
-        console.log("narration for maindata", maindata.narration)
-        console.log("narration for reciever", recievrTransaction.narration)
+        // await this.mailService.TransferMail(texts, users)
+        // console.log("narration for maindata", maindata.narration)
+        // console.log("narration for reciever", recievrTransaction.narration)
         return{statusCode: 201, message: "Transfer successful", data: maindata.transactionRef}
         
        }catch(err){
