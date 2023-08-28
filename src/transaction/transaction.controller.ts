@@ -45,7 +45,7 @@ export class TransactionController {
             status: "success",
             payMethod: "transfer"
         }
-
+        console.log("transferuserdata", transferdata)
         const walletdata = await this.walletService.findByUserId(userid)
         if(walletdata.accountBalance === 0|| walletdata.accountBalance < 0 || walletdata.accountBalance <transferDto.amount){
             throw new BadRequestException("Insufficient Funds")
@@ -80,7 +80,7 @@ export class TransactionController {
             payMethod: "deposit",
             narration: transferDto.narration
         })
-    
+        console.log("recieveruserdata",recievrTransaction)
         await this.userService.addToUserTransaction(recievrTransaction, recieverData.id)
 
         const text = `Hey ${recieverData.firstName},
@@ -94,7 +94,7 @@ export class TransactionController {
         Check your app for other info.`
 
         await this.mailService.TransferMail(texts, users)
-
+        console.log("user's maindata", maindata)
         return{statusCode: 201, message: "Transfer successful", data: maindata}
         
        }catch(err){
