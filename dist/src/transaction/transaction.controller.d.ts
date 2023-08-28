@@ -19,14 +19,17 @@ export declare class TransactionController {
     transferTransaction(transferDto: TransferDto, userPinDto: UserPinDto, access_token: string, payload: any): Promise<{
         statusCode: number;
         message: string;
+        data: Partial<import("../Entities/transactionEntity.entity").Transactions> & import("../Entities/transactionEntity.entity").Transactions;
     }>;
     depositTransaction(depositDto: DepositDto, access_token: string, payload: any): Promise<{
         statusCode: number;
         message: string;
+        data: Partial<import("../Entities/transactionEntity.entity").Transactions> & import("../Entities/transactionEntity.entity").Transactions;
     }>;
     recharge(createAirtimeDto: CreateAirtimeDto, userPinDto: UserPinDto, access_token: string, payload: any): Promise<{
         statusCode: number;
         message: string;
+        data: Partial<import("../Entities/transactionEntity.entity").Transactions> & import("../Entities/transactionEntity.entity").Transactions;
     }>;
     singleTransaction(access_token: string, payload: any, transactionRef: string): Promise<{
         statusCode: number;

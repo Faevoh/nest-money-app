@@ -107,7 +107,7 @@ export class UserController {
             }
             const id = tokenDecode.sub;
             const updatedUser = await this.userService.update(id ,updateUserDto);
-            return { statusCode: 200, message: "success", user: updatedUser };
+            return { statusCode: 200, message: "Profile Update Successful", user: updatedUser };
         }catch(err){
             if(err instanceof NotFoundException) {
                 throw new NotFoundException(err.message)

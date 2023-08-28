@@ -114,7 +114,7 @@ let UserController = class UserController {
             }
             const id = tokenDecode.sub;
             const updatedUser = await this.userService.update(id, updateUserDto);
-            return { statusCode: 200, message: "success", user: updatedUser };
+            return { statusCode: 200, message: "Profile Update Successful", user: updatedUser };
         }
         catch (err) {
             if (err instanceof common_1.NotFoundException) {
@@ -149,7 +149,10 @@ let UserController = class UserController {
             if (err instanceof common_1.NotFoundException) {
                 throw new common_1.BadRequestException(err.message);
             }
-            throw new common_1.BadRequestException("Failed to Send Email");
+            if (err instanceof common_1.BadRequestException) {
+                throw new common_1.BadRequestException(err.message);
+            }
+            throw new common_1.BadRequestException("Failed to Send Email, Try again");
         }
     }
     async resetPassword(resetToken, resetPasswordDto) {

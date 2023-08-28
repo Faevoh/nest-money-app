@@ -93,7 +93,7 @@ let TransactionController = class TransactionController {
         A transfer of ${transferDto.amount} was made to on ${maindata.createDate}.
         Check your app for other info.`;
             await this.mailService.TransferMail(texts, users);
-            return { statusCode: 201, message: "Transfer successful" };
+            return { statusCode: 201, message: "Transfer successful", data: maindata };
         }
         catch (err) {
             console.log(err);
@@ -139,7 +139,7 @@ let TransactionController = class TransactionController {
         A deposit of ${depositDto.amount} was made by you on ${maindata.createDate}.
         Check your app for other info.`;
             await this.mailService.DepositMail(text, user);
-            return { statusCode: 201, message: "Deposit successful" };
+            return { statusCode: 201, message: "Deposit successful", data: maindata };
         }
         catch (err) {
             if (err instanceof common_1.UnauthorizedException) {
@@ -189,7 +189,7 @@ let TransactionController = class TransactionController {
             const texts = `Hey ${users.firstName},
             You account has been deducted of ${createAirtimeDto.amount} for the Airtime Transactio that was made to on ${newRecharge.createDate}.`;
             await this.mailService.AirtimeMail(texts, users);
-            return { statusCode: 201, message: "Successful Recharge" };
+            return { statusCode: 201, message: "Successful Recharge", data: newRecharge };
         }
         catch (err) {
             if (err instanceof common_1.UnauthorizedException) {
