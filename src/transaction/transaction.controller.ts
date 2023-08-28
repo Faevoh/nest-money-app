@@ -73,6 +73,7 @@ export class TransactionController {
         delete maindata.expiryDate
         delete maindata.phoneNumber
         delete maindata.serviceNetwork
+        delete userPinDto.bankPin
 
         const recievrTransaction = await this.transactionService.transaction({
             userId: recieverData.id,
