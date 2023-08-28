@@ -95,7 +95,7 @@ export class TransactionController {
 
         await this.mailService.TransferMail(texts, users)
 
-        return{statusCode: 201, message: "Transfer successful"}
+        return{statusCode: 201, message: "Transfer successful", data: maindata}
         
        }catch(err){
         console.log(err)
@@ -155,7 +155,7 @@ export class TransactionController {
 
         await this.mailService.DepositMail(text, user)
 
-        return{statusCode: 201, message: "Deposit successful"}
+        return{statusCode: 201, message: "Deposit successful", data: maindata}
         
        }catch(err){
         // console.log(err.message)
@@ -222,7 +222,7 @@ export class TransactionController {
             You account has been deducted of ${createAirtimeDto.amount} for the Airtime Transactio that was made to on ${newRecharge.createDate}.`
             await this.mailService.AirtimeMail(texts, users)
 
-            return {statusCode: 201, message: "Successful Recharge"}
+            return {statusCode: 201, message: "Successful Recharge", data: newRecharge}
         }catch(err){
             if(err instanceof UnauthorizedException) {
             throw new UnauthorizedException(err.message)
