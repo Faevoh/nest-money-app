@@ -151,7 +151,10 @@ export class UserController {
             if(err instanceof NotFoundException){
                 throw new BadRequestException(err.message)
             }
-            throw new BadRequestException("Failed to Send Email")
+            if(err instanceof BadRequestException){
+                throw new BadRequestException(err.message)
+            }
+            throw new BadRequestException("Failed to Send Email, Try again")
         }
     }
 
