@@ -53,7 +53,6 @@ let TransactionController = class TransactionController {
             const recieverData = await this.userService.findById(recieverdetails.userId);
             const { bankPin } = userPinDto;
             const user = await this.pinService.findByUserId(userid);
-            console.log("user bankpin", user.bankPin);
             const pinDecode = await bcrypt.compare(bankPin, user.bankPin);
             if (!pinDecode) {
                 throw new common_1.UnauthorizedException("Invalid Pin");
@@ -83,7 +82,7 @@ let TransactionController = class TransactionController {
                 senderName: `${users.lastName} ${users.firstName}`,
                 status: "success",
                 payMethod: "deposit",
-                narration: transferDto.narration
+                narration: maindata.narration
             });
             await this.userService.addToUserTransaction(recievrTransaction, recieverData.id);
             const text = `Hey ${recieverData.firstName},

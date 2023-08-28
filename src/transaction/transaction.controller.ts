@@ -37,7 +37,7 @@ export class TransactionController {
         // console.log("bankpin", bankPin)
         const user = await this.pinService.findByUserId(userid)
         // console.log("user11", user)
-        console.log("user bankpin", user.bankPin)
+        // console.log("user bankpin", user.bankPin)
         const pinDecode = await bcrypt.compare(bankPin, user.bankPin)
         if(!pinDecode) {
             throw new UnauthorizedException("Invalid Pin")
@@ -81,7 +81,7 @@ export class TransactionController {
             senderName: `${users.lastName} ${users.firstName}`,
             status: "success",
             payMethod: "deposit",
-            narration: transferDto.narration
+            narration: maindata.narration
         })
         // console.log("recieveruserdata",recievrTransaction)
         await this.userService.addToUserTransaction(recievrTransaction, recieverData.id)
