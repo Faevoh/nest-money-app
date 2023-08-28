@@ -56,6 +56,10 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
+], Transactions.prototype, "recieverName", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
 ], Transactions.prototype, "CVV", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),

@@ -35,6 +35,9 @@ export class Transactions {
     senderName: string;
 
     @Column({nullable: true})
+    recieverName: string;
+
+    @Column({nullable: true})
     CVV: string;
 
     @Column({nullable: true})

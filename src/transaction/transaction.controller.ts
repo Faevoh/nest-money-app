@@ -29,6 +29,10 @@ export class TransactionController {
 
         const users = await this.userService.findById(userid)
 
+        const recieverAccount = transferDto.accountNumber
+        const recieverdetails = await this.walletService.findByUserAcc(recieverAccount)
+        const recieverData = await this.userService.findById( recieverdetails.userId)
+
         const {bankPin} = userPinDto;
         // console.log("bankpin", bankPin)
         const user = await this.pinService.findByUserId(userid)
@@ -41,6 +45,7 @@ export class TransactionController {
 
         const transferdata ={
             ...transferDto,
+            recieverName: `${recieverData.lastName} ${recieverData.firstName}` ,
             userId: userid,
             status: "success",
             payMethod: "transfer"
@@ -51,12 +56,9 @@ export class TransactionController {
             throw new BadRequestException("Insufficient Funds")
         }
 
-        const recieverAccount = transferDto.accountNumber
-        const recieverdetails = await this.walletService.findByUserAcc(recieverAccount)
         if(!recieverdetails){
             throw new NotFoundException("Couldn't find user with Account Number")
         }
-        const recieverData = await this.userService.findById( recieverdetails.userId)
 
         walletdata.accountBalance -= transferDto.amount
         recieverdetails.accountBalance += transferDto.amount

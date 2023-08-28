@@ -45,6 +45,7 @@ export declare class UserService {
             narration: string;
             transactionRef: string;
             senderName: string;
+            recieverName: string;
             status: string;
             payMethod: string;
             createDate: Date;

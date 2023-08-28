@@ -48,6 +48,9 @@ let TransactionController = class TransactionController {
             }
             const userid = tokenDecode.sub;
             const users = await this.userService.findById(userid);
+            const recieverAccount = transferDto.accountNumber;
+            const recieverdetails = await this.walletService.findByUserAcc(recieverAccount);
+            const recieverData = await this.userService.findById(recieverdetails.userId);
             const { bankPin } = userPinDto;
             const user = await this.pinService.findByUserId(userid);
             console.log("user bankpin", user.bankPin);
@@ -55,17 +58,15 @@ let TransactionController = class TransactionController {
             if (!pinDecode) {
                 throw new common_1.UnauthorizedException("Invalid Pin");
             }
-            const transferdata = Object.assign(Object.assign({}, transferDto), { userId: userid, status: "success", payMethod: "transfer" });
+            const transferdata = Object.assign(Object.assign({}, transferDto), { recieverName: `${recieverData.lastName} ${recieverData.firstName}`, userId: userid, status: "success", payMethod: "transfer" });
+            console.log("transferuserdata", transferdata);
             const walletdata = await this.walletService.findByUserId(userid);
             if (walletdata.accountBalance === 0 || walletdata.accountBalance < 0 || walletdata.accountBalance < transferDto.amount) {
                 throw new common_1.BadRequestException("Insufficient Funds");
             }
-            const recieverAccount = transferDto.accountNumber;
-            const recieverdetails = await this.walletService.findByUserAcc(recieverAccount);
             if (!recieverdetails) {
                 throw new common_1.NotFoundException("Couldn't find user with Account Number");
             }
-            const recieverData = await this.userService.findById(recieverdetails.userId);
             walletdata.accountBalance -= transferDto.amount;
             recieverdetails.accountBalance += transferDto.amount;
             const savedWallet = await this.walletService.saveWallet(walletdata);
@@ -84,6 +85,7 @@ let TransactionController = class TransactionController {
                 payMethod: "deposit",
                 narration: transferDto.narration
             });
+            console.log("recieveruserdata", recievrTransaction);
             await this.userService.addToUserTransaction(recievrTransaction, recieverData.id);
             const text = `Hey ${recieverData.firstName},
         A deposit of ${transferDto.amount} was sent to you on ${recievrTransaction.createDate}.
@@ -93,6 +95,7 @@ let TransactionController = class TransactionController {
         A transfer of ${transferDto.amount} was made to on ${maindata.createDate}.
         Check your app for other info.`;
             await this.mailService.TransferMail(texts, users);
+            console.log("user's maindata", maindata);
             return { statusCode: 201, message: "Transfer successful", data: maindata };
         }
         catch (err) {

@@ -11,6 +11,7 @@ export declare class Transactions {
     cardNumber: string;
     expiryDate: string;
     senderName: string;
+    recieverName: string;
     CVV: string;
     phoneNumber: string;
     serviceNetwork: string;
