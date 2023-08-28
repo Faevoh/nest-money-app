@@ -50,7 +50,7 @@ export class TransactionController {
             status: "success",
             payMethod: "transfer"
         }
-        console.log("transferuserdata", transferdata)
+        // console.log("transferuserdata", transferdata)
         const walletdata = await this.walletService.findByUserId(userid)
         if(walletdata.accountBalance === 0|| walletdata.accountBalance < 0 || walletdata.accountBalance <transferDto.amount){
             throw new BadRequestException("Insufficient Funds")
@@ -83,7 +83,7 @@ export class TransactionController {
             payMethod: "deposit",
             narration: transferDto.narration
         })
-        console.log("recieveruserdata",recievrTransaction)
+        // console.log("recieveruserdata",recievrTransaction)
         await this.userService.addToUserTransaction(recievrTransaction, recieverData.id)
 
         const text = `Hey ${recieverData.firstName},
@@ -97,8 +97,8 @@ export class TransactionController {
         Check your app for other info.`
 
         await this.mailService.TransferMail(texts, users)
-        console.log("user's maindata", maindata)
-        return{statusCode: 201, message: "Transfer successful", data: maindata}
+        // console.log("user's maindata", maindata)
+        return{statusCode: 201, message: "Transfer successful", data: maindata.transactionRef}
         
        }catch(err){
         console.log(err)
@@ -158,7 +158,7 @@ export class TransactionController {
 
         await this.mailService.DepositMail(text, user)
 
-        return{statusCode: 201, message: "Deposit successful", data: maindata}
+        return{statusCode: 201, message: "Deposit successful", data: maindata.transactionRef}
         
        }catch(err){
         // console.log(err.message)
@@ -225,7 +225,7 @@ export class TransactionController {
             You account has been deducted of ${createAirtimeDto.amount} for the Airtime Transactio that was made to on ${newRecharge.createDate}.`
             await this.mailService.AirtimeMail(texts, users)
 
-            return {statusCode: 201, message: "Successful Recharge", data: newRecharge}
+            return {statusCode: 201, message: "Successful Recharge", data: newRecharge.transactionRef}
         }catch(err){
             if(err instanceof UnauthorizedException) {
             throw new UnauthorizedException(err.message)

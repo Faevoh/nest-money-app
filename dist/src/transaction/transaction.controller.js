@@ -59,7 +59,6 @@ let TransactionController = class TransactionController {
                 throw new common_1.UnauthorizedException("Invalid Pin");
             }
             const transferdata = Object.assign(Object.assign({}, transferDto), { recieverName: `${recieverData.lastName} ${recieverData.firstName}`, userId: userid, status: "success", payMethod: "transfer" });
-            console.log("transferuserdata", transferdata);
             const walletdata = await this.walletService.findByUserId(userid);
             if (walletdata.accountBalance === 0 || walletdata.accountBalance < 0 || walletdata.accountBalance < transferDto.amount) {
                 throw new common_1.BadRequestException("Insufficient Funds");
@@ -86,7 +85,6 @@ let TransactionController = class TransactionController {
                 payMethod: "deposit",
                 narration: transferDto.narration
             });
-            console.log("recieveruserdata", recievrTransaction);
             await this.userService.addToUserTransaction(recievrTransaction, recieverData.id);
             const text = `Hey ${recieverData.firstName},
         A deposit of ${transferDto.amount} was sent to you on ${recievrTransaction.createDate}.
@@ -96,8 +94,7 @@ let TransactionController = class TransactionController {
         A transfer of ${transferDto.amount} was made to on ${maindata.createDate}.
         Check your app for other info.`;
             await this.mailService.TransferMail(texts, users);
-            console.log("user's maindata", maindata);
-            return { statusCode: 201, message: "Transfer successful", data: maindata };
+            return { statusCode: 201, message: "Transfer successful", data: maindata.transactionRef };
         }
         catch (err) {
             console.log(err);
@@ -143,7 +140,7 @@ let TransactionController = class TransactionController {
         A deposit of ${depositDto.amount} was made by you on ${maindata.createDate}.
         Check your app for other info.`;
             await this.mailService.DepositMail(text, user);
-            return { statusCode: 201, message: "Deposit successful", data: maindata };
+            return { statusCode: 201, message: "Deposit successful", data: maindata.transactionRef };
         }
         catch (err) {
             if (err instanceof common_1.UnauthorizedException) {
@@ -193,7 +190,7 @@ let TransactionController = class TransactionController {
             const texts = `Hey ${users.firstName},
             You account has been deducted of ${createAirtimeDto.amount} for the Airtime Transactio that was made to on ${newRecharge.createDate}.`;
             await this.mailService.AirtimeMail(texts, users);
-            return { statusCode: 201, message: "Successful Recharge", data: newRecharge };
+            return { statusCode: 201, message: "Successful Recharge", data: newRecharge.transactionRef };
         }
         catch (err) {
             if (err instanceof common_1.UnauthorizedException) {
