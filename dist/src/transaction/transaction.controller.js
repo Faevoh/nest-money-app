@@ -84,6 +84,7 @@ let TransactionController = class TransactionController {
                 payMethod: "deposit",
                 narration: maindata.narration
             });
+            console.log("recieveruserdata", recievrTransaction);
             await this.userService.addToUserTransaction(recievrTransaction, recieverData.id);
             const text = `Hey ${recieverData.firstName},
         A deposit of ${transferDto.amount} was sent to you on ${recievrTransaction.createDate}.
