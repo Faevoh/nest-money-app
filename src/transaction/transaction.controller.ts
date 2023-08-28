@@ -79,8 +79,10 @@ export class TransactionController {
             userId: recieverData.id,
             amount: transferDto.amount,
             senderName: `${users.lastName} ${users.firstName}`,
+            narration: maindata.narration,
             status: "success",
             payMethod: "deposit",
+            
         })
 
         recievrTransaction.narration = maindata.narration;
@@ -99,7 +101,8 @@ export class TransactionController {
         Check your app for other info.`
 
         await this.mailService.TransferMail(texts, users)
-        // console.log("user's maindata", maindata)
+        console.log("narration for maindata", maindata.narration)
+        console.log("narration for reciever", recievrTransaction.narration)
         return{statusCode: 201, message: "Transfer successful", data: maindata.transactionRef}
         
        }catch(err){
@@ -251,6 +254,7 @@ export class TransactionController {
         }      
         const userid = tokenDecode.sub;
         const data = await this.transactionService.findByUserId(transactionRef)
+        console.log(data)
 
         if(data.payMethod === "transfer"){
             delete data.CVV
@@ -271,7 +275,6 @@ export class TransactionController {
 
         if(data.payMethod === "deposit"){
             delete data.accountNumber
-            delete data.narration
             delete data.phoneNumber
             delete data.serviceNetwork
             delete data.CVV
