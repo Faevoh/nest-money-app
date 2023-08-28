@@ -82,8 +82,8 @@ let TransactionController = class TransactionController {
                 senderName: `${users.lastName} ${users.firstName}`,
                 status: "success",
                 payMethod: "deposit",
-                narration: maindata.narration
             });
+            recievrTransaction.narration = maindata.narration;
             console.log("recieveruserdata", recievrTransaction);
             await this.userService.addToUserTransaction(recievrTransaction, recieverData.id);
             const text = `Hey ${recieverData.firstName},
