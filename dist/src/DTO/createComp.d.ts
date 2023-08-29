@@ -8,7 +8,7 @@ export declare class CreateCompDto {
     address: string;
     imageUrl?: string;
     certUrl?: string;
-    memoUrl?: string;
+    docUrl?: string;
     businessName?: string;
     businessAddress?: string;
 }

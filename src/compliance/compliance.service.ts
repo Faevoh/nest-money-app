@@ -42,7 +42,7 @@ export class ComplianceService {
             const newComp = this.compRepo.create(comp)
             newComp.imageUrl = createCompDto.imageUrl;
             newComp.certUrl = createCompDto.certUrl;
-            newComp.memoUrl = createCompDto.memoUrl;
+            newComp.docUrl = createCompDto.docUrl;
             // console.log("nin",newComp.imageUrl)
             // console.log("cert",newComp.certUrl)
             // console.log("memo",newComp.memoUrl)

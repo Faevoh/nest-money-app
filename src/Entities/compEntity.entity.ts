@@ -40,7 +40,7 @@ export class Compliances {
     certUrl: string;
 
     @Column({nullable: true})
-    memoUrl: string;
+    docUrl: string;
 
     @Column()
     userId: number;

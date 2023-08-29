@@ -44,12 +44,12 @@ let ComplianceController = class ComplianceController {
             else {
                 createCompDto.certUrl = null;
             }
-            if (files.memo) {
-                const uploadedMemo = await this.cloudinaryService.uploadMemo(files.memo[0], 'raw', 'MEMO');
-                createCompDto.memoUrl = uploadedMemo.secure_url;
+            if (files.doc) {
+                const uploadedMemo = await this.cloudinaryService.uploadDoc(files.doc[0], 'raw', 'DOC');
+                createCompDto.docUrl = uploadedMemo.secure_url;
             }
             else {
-                createCompDto.memoUrl = null;
+                createCompDto.docUrl = null;
             }
             const user = await this.jwtService.decode(access_token);
             if (!user) {
@@ -99,7 +99,7 @@ __decorate([
     (0, common_1.UseInterceptors)((0, platform_express_1.FileFieldsInterceptor)([
         { name: 'nin', maxCount: 1 },
         { name: 'cert', maxCount: 1 },
-        { name: 'memo', maxCount: 1 },
+        { name: 'doc', maxCount: 1 },
     ])),
     __param(0, (0, common_1.Query)("access_token")),
     __param(1, (0, common_1.Body)(common_1.ValidationPipe)),

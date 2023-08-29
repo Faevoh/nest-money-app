@@ -12,7 +12,7 @@ export declare class Compliances {
     city: string;
     imageUrl: string;
     certUrl: string;
-    memoUrl: string;
+    docUrl: string;
     userId: number;
     user: User;
 }

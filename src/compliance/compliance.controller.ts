@@ -17,13 +17,13 @@ export class ComplianceController {
     @UseInterceptors(FileFieldsInterceptor([
         { name: 'nin', maxCount: 1 },
         { name: 'cert', maxCount: 1 },
-        { name: 'memo', maxCount: 1 },
+        { name: 'doc', maxCount: 1 },
       ]))
     async addCompliance(@Query("access_token") access_token: string,@Body(ValidationPipe) createCompDto: CreateCompDto, 
         @UploadedFiles() files: {
             nin?: Express.Multer.File[],
             cert?: Express.Multer.File[],
-            memo?: Express.Multer.File[],
+            doc?: Express.Multer.File[],
         }, 
         payload ){
         try{ 
@@ -41,12 +41,12 @@ export class ComplianceController {
             }else{
                 createCompDto.certUrl = null;
             }
-            if (files.memo) {
-                const uploadedMemo = await this.cloudinaryService.uploadMemo(files.memo[0], 'raw', 'MEMO');
-                createCompDto.memoUrl = uploadedMemo.secure_url;
+            if (files.doc) {
+                const uploadedMemo = await this.cloudinaryService.uploadDoc(files.doc[0], 'raw', 'DOC');
+                createCompDto.docUrl = uploadedMemo.secure_url;
                 // console.log("memoUrl",createCompDto.memoUrl)
             }else{
-                createCompDto.memoUrl = null; 
+                createCompDto.docUrl = null; 
             }
     
             const user = await this.jwtService.decode(access_token);

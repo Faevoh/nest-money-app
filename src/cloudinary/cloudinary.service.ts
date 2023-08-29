@@ -47,10 +47,10 @@ export class CloudinaryService {
     });
   }
 
-  async uploadMemo(
+  async uploadDoc(
     file: Express.Multer.File,
     resourceType: 'image' | 'raw' = 'image',
-    folder: 'MEMO'
+    folder: 'DOC'
   ): Promise<UploadApiResponse | UploadApiErrorResponse> {
     return new Promise((resolve, reject) => {
       v2.config({

@@ -43,7 +43,7 @@ let CloudinaryService = class CloudinaryService {
             toStream(file.buffer).pipe(upload);
         });
     }
-    async uploadMemo(file, resourceType = 'image', folder) {
+    async uploadDoc(file, resourceType = 'image', folder) {
         return new Promise((resolve, reject) => {
             cloudinary_1.v2.config({
                 cloud_name: "dwt2lavnm",

@@ -25,7 +25,7 @@ export class CreateCompDto {
 
     certUrl ?: string;
 
-    memoUrl ?: string;
+    docUrl ?: string;
 
     businessName ?: string;
 

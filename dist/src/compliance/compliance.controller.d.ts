@@ -15,7 +15,7 @@ export declare class ComplianceController {
     addCompliance(access_token: string, createCompDto: CreateCompDto, files: {
         nin?: Express.Multer.File[];
         cert?: Express.Multer.File[];
-        memo?: Express.Multer.File[];
+        doc?: Express.Multer.File[];
     }, payload: any): Promise<{
         statusCode: number;
         message: string;
@@ -36,7 +36,7 @@ export declare class ComplianceController {
         city: string;
         imageUrl: string;
         certUrl: string;
-        memoUrl: string;
+        docUrl: string;
         userId: number;
         user: import("../Entities/userEntity.entity").User;
     } & Compliances>;
